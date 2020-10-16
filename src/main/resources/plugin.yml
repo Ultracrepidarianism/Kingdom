@@ -1,0 +1,14 @@
+name: Kingdom
+version: 1.0
+api-version: 1.16
+author: NullExceptionArg
+main: org.github.nullexceptionarg.Kingdom
+
+commands:
+  kingdom:
+    description: Allows you to use kingdom commands
+    usage: /execute <player>
+    permission: kingdom.use
+    aliases: [kd]
+
+permissions:
