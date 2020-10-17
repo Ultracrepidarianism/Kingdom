@@ -1,6 +1,7 @@
 package org.github.nullexceptionarg.listener;
 
 import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -8,7 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -21,9 +24,11 @@ import java.io.File;
 
 public class ClaimListener implements Listener {
     private Kingdom instance;
+    private File dataFolder;
 
     public ClaimListener(Kingdom kingdom){
         instance = kingdom;
+        dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "Claims");
     }
 
     @EventHandler
@@ -49,15 +54,28 @@ public class ClaimListener implements Listener {
     public boolean checkClaim(Player p, Chunk c){
         String worldName = p.getWorld().getName();
         String chunkName =c.getX() + "_" + c.getZ();
-        File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "Claims");
         File file = new File(dataFolder,worldName + " " + chunkName + ".yml");
         if(!file.exists()) return false;
         FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(file);
-
-        System.out.println(fileConfig.getString("town"));
-        System.out.println(db.getTownfromPlayer(p.getUniqueId().toString()));
+        if(db.getTownfromPlayer(p.getUniqueId().toString()) == null) return true;
 
         return !db.getTownfromPlayer(p.getUniqueId().toString()).getTownName().equalsIgnoreCase(fileConfig.getString("town"));
+    }
+
+    @EventHandler
+    public void onEntityExplosion(BlockExplodeEvent e){
+        File file;
+        String worldName;
+        String chunkName;
+        for(Block b  : e.blockList()){
+            worldName = b.getWorld().getName();
+            chunkName = b.getChunk().getX() + "_" + b.getChunk().getZ();
+            file = new File(dataFolder,worldName + " " + chunkName + ".yml");
+            if(file.exists()){
+                e.blockList().remove(b);
+            }
+        }
+
     }
 
 

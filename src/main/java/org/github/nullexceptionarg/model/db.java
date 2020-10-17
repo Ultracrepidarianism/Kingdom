@@ -169,10 +169,7 @@ public class db {
        return ply.getTown();
     }
 
-    public static void addPlayerToMap(Player ply){
-        PlayerKD uwu = getPlayer(ply);
-        playerTownMap.put(ply.getUniqueId().toString(),uwu.getTown());
-    }
+
 
     public static void setPlayerTown(String uuid, String townName ){
         File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
@@ -186,7 +183,10 @@ public class db {
         }
     }
 
-
+    public static void addPlayerToMap(Player ply){
+        PlayerKD uwu = getPlayer(ply);
+        playerTownMap.put(ply.getUniqueId().toString(),uwu.getTown());
+    }
     public static void removePlayerfromMap(Player ply){
         playerTownMap.remove(ply.getUniqueId().toString());
     }
