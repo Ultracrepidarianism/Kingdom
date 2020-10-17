@@ -1,6 +1,7 @@
 package org.github.nullexceptionarg.model;
 
 import com.google.gson.Gson;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class db {
     private static final Kingdom instance = JavaPlugin.getPlugin(Kingdom.class);
@@ -29,6 +31,7 @@ public class db {
                 FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
                 fileConfiguration.set("town","");
                 fileConfiguration.save(file);
+                playerTownMap.put(uuid,null);
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -144,7 +147,10 @@ public class db {
             File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
             dataFolder.mkdirs();
             File file = new File(dataFolder,ply.getUniqueId().toString() + ".yml");
-            if(!file.exists()) return null;
+            if(!file.exists()){
+                createPlayer(ply.getUniqueId().toString());
+                return new PlayerKD(ply,null);
+            }
 
             FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
             String townName = fileConfiguration.getString("town");
@@ -154,7 +160,13 @@ public class db {
     }
 
     public static Town getTownfromPlayer(String uuid){
-        return playerTownMap.getOrDefault(uuid,null);
+
+
+        if(playerTownMap.containsKey(uuid))
+            return playerTownMap.get(uuid);
+
+       PlayerKD ply = getPlayer(Bukkit.getPlayer(UUID.fromString(uuid)));
+       return ply.getTown();
     }
 
     public static void addPlayerToMap(Player ply){

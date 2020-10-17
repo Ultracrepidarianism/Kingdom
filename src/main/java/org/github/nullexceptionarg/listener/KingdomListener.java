@@ -30,11 +30,4 @@ public class KingdomListener implements Listener {
     public void onLeave(PlayerJoinEvent e){
         db.removePlayerfromMap(e.getPlayer());
     }
-
-    @EventHandler
-    public void checkChunk(PlayerInteractEvent e){
-        if(e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        Chunk test = e.getClickedBlock().getLocation().getChunk();
-        System.out.println("x:" + test.getX() + " z:" + test.getZ());
-    }
 }
