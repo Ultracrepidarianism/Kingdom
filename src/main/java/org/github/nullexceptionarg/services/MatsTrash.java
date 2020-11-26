@@ -65,15 +65,14 @@ public class MatsTrash {
         if (rep != null) {
             while (rep.next()) {
                 try{
-                    out.add(new Ban(
-                                rep.getInt("ID"),
-                                rep.getString("UUID"),
-                                rep.getString("USERNAME"),
-                                rep.getString("REASON"),
-                                rep.getString("BANNEDBY"),
-                                rep.getTimestamp("BANEND"),
-                                rep.getString("SERVER")
-                        ));
+//                    out.add(new Ban(
+//                                rep.getInt("ID"),
+//                                rep.getString("UUID"),
+//                                rep.getString("USERNAME"),
+//                                rep.getString("REASON"),
+//                                rep.getString("BANNEDBY"),
+//                                rep.getTimestamp("BANEND"),
+//                                rep.getString("SERVER")));
             }catch (Exception e){
                     System.out.println("Create BD service line 88");
                 }
@@ -83,9 +82,6 @@ public class MatsTrash {
 
     }
 
-    public static boolean Insert(Ban ban) throws SQLException {
-
-    }
 
 
 

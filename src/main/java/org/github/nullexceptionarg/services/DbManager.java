@@ -2,26 +2,46 @@ package org.github.nullexceptionarg.services;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.github.nullexceptionarg.Kingdom;
 import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Town;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
 
 public class DbManager implements IDatabase {
 
     private static DbManager instance;
 
-    public IDatabase DB = new YmlService();
+    public static IDatabase DB = null;
 
     protected Map<String, Town> playerTownMap = new HashMap<>();
     protected Map<String, Town> townMap = new HashMap<>();
 
 
-    public static void getInstance() {
+    public static DbManager getInstance() {
         if (instance == null) {
             instance = new DbManager();
         }
+        if (DB == null) {
+            if (JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("storagetype").equalsIgnoreCase("mysql") ||
+                    JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("storagetype").equalsIgnoreCase("sql")) {
+                DB = new MySQLService();
+                if (!MySQLService.checkDB()) {
+                    JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Failed to initialise MySql database. Reverting to flatfile (YML).");
+                    DB = new YmlService();
+                }
+            }
+            /*(JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("storagetype").equalsIgnoreCase("flatfile")||   //case flatfile
+                    JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("storagetype").equalsIgnoreCase("yml"))*/
+            else {
+                DB = new YmlService();
+            }
+        }
+        return instance;
     }
 
 
@@ -98,7 +118,7 @@ public class DbManager implements IDatabase {
      */
     @Override
     public void setPlayerTown(String uuid, String townName) {
-        DB.setPlayerTown(uuid,townName);
+        DB.setPlayerTown(uuid, townName);
     }
 
     /**
@@ -127,6 +147,6 @@ public class DbManager implements IDatabase {
      */
     @Override
     public void addPendingInvite(String displayName, String townName) {
-        DB.addPendingInvite(displayName,townName);
+        DB.addPendingInvite(displayName, townName);
     }
 }

@@ -18,6 +18,8 @@ public class YmlService implements IDatabase {
 
     private static final Kingdom instance = JavaPlugin.getPlugin(Kingdom.class);
 
+    public YmlService(){}
+
     /**
      * Creates user's information if it doesn't exist.
      *
@@ -35,7 +37,7 @@ public class YmlService implements IDatabase {
                 FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
                 fileConfiguration.set("town", "");
                 fileConfiguration.save(file);
-                instance.DB.playerTownMap.put(uuid, null);
+                Kingdom.DB.playerTownMap.put(uuid, null);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -66,12 +68,12 @@ public class YmlService implements IDatabase {
             fileConfiguration.set("members", new ArrayList<String>());
             fileConfiguration.set("claims", new ArrayList<String>());
             fileConfiguration.save(file);
-            instance.DB.townMap.put(townName, new Town(fileConfiguration.getString("town"),
+            Kingdom.DB.townMap.put(townName, new Town(fileConfiguration.getString("town"),
                     fileConfiguration.getString("owner"),
                     fileConfiguration.getStringList("claims"),
                     fileConfiguration.getStringList("officers"),
                     fileConfiguration.getStringList("members")));
-            instance.DB.playerTownMap.put(ply.getUniqueId().toString(), instance.DB.townMap.get(townName));
+            Kingdom.DB.playerTownMap.put(ply.getUniqueId().toString(), Kingdom.DB.townMap.get(townName));
             setPlayerTown(ply.getUniqueId().toString(), townName);
         } catch (Exception e) {
             e.printStackTrace();
