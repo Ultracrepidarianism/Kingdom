@@ -7,10 +7,14 @@ import org.github.nullexceptionarg.commands.CommandManager;
 import org.github.nullexceptionarg.listener.ClaimListener;
 import org.github.nullexceptionarg.listener.KingdomListener;
 import org.github.nullexceptionarg.model.Claim;
+import org.github.nullexceptionarg.services.DbManager;
 
 import java.io.File;
 
 public class Kingdom extends JavaPlugin {
+
+
+    public static DbManager DB = new DbManager();
 
     @Override
     public void onEnable() {
