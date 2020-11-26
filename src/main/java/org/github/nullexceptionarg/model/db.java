@@ -20,6 +20,7 @@ public class db {
     private static Map<String,Town> playerTownMap = new HashMap<>();
     private static Map<String,Town> townMap = new HashMap<>();
 
+
     public static void createPlayer(String uuid){
         File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
         dataFolder.mkdirs();
@@ -118,7 +119,6 @@ public class db {
         }
     }
 
-
     public static Town getTown(String townName){
         if(townMap.containsKey(townName)){
             return townMap.get(townName);
@@ -136,7 +136,6 @@ public class db {
         townMap.put(townName,town);
         return town;
     }
-
 
     public static PlayerKD getPlayer(Player ply){
         PlayerKD test;
@@ -161,15 +160,12 @@ public class db {
 
     public static Town getTownfromPlayer(String uuid){
 
-
         if(playerTownMap.containsKey(uuid))
             return playerTownMap.get(uuid);
 
        PlayerKD ply = getPlayer(Bukkit.getPlayer(UUID.fromString(uuid)));
        return ply.getTown();
     }
-
-
 
     public static void setPlayerTown(String uuid, String townName ){
         File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
@@ -187,6 +183,7 @@ public class db {
         PlayerKD uwu = getPlayer(ply);
         playerTownMap.put(ply.getUniqueId().toString(),uwu.getTown());
     }
+
     public static void removePlayerfromMap(Player ply){
         playerTownMap.remove(ply.getUniqueId().toString());
     }
