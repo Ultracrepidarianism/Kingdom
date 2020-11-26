@@ -1,0 +1,12 @@
+#mysql, flatfile
+
+prefix: "&r[&6Kingdom&r]"
+
+storagetype: "flatfile"
+DBserver:
+  ip: 127.0.0.1
+  port: 3306
+  database: "minecraft"
+  tableprefix: "kingdom_"
+  username: "user"
+  password: "passw0rd"

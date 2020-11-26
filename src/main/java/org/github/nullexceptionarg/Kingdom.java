@@ -13,8 +13,7 @@ import java.io.File;
 
 public class Kingdom extends JavaPlugin {
 
-
-    public static DbManager DB = new DbManager();
+    public static DbManager DB = null;
 
     @Override
     public void onEnable() {
@@ -25,5 +24,6 @@ public class Kingdom extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new KingdomListener(this),this);
         getServer().getPluginManager().registerEvents(new ClaimListener(this),this);
         getCommand("kingdom").setExecutor(new CommandManager(this));
+        DB = DbManager.getInstance();
     }
 }

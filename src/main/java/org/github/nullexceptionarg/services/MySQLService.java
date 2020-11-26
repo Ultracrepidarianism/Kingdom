@@ -2,40 +2,18 @@ package org.github.nullexceptionarg.services;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.github.nullexceptionarg.Kingdom;
 import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Town;
 
 import java.sql.*;
+import java.util.logging.Level;
 
 public class MySQLService implements IDatabase {
 
-    private static Connection connectDB() {
-        Connection con = null;
-        try {
-            String url = "jdbc:mysql://"+ Kingdom.getPlugin(Kingdom.class).getConfig().getString("DB.address")+":"+ Kingdom.getPlugin(Kingdom.class).getConfig().getInt("DB.port")+"/"+ Kingdom.getPlugin(Kingdom.class).getConfig().getString("DB.database")+
-                    "?verifyServerCertificate=false"+
-                    "&useSSL=true"+
-                    "&requireSSL=true";
-            System.out.println(url);
-            con = DriverManager.getConnection(url,  Kingdom.getPlugin(Kingdom.class).getConfig().getString("DB.username"),  Kingdom.getPlugin(Kingdom.class).getConfig().getString("DB.password"));
 
-            return con;
-        } catch (SQLException e) {
-            Kingdom.getPlugin(Kingdom.class).getLogger().info("Connection error!\n" + e.getMessage());
-            e.printStackTrace();
-            System.out.println("SQL might not be set up correctly please be sure to modify the config");
-            if (con != null)
-                try
-                {
-                    System.out.println("Crash-------------");
-                    con.close();
-                }
-                catch (Exception b){}
-        }
-        return null;
-    }
-
+    public MySQLService(){}
 
     /**
      * Creates user's information if it doesn't exist.
@@ -141,4 +119,112 @@ public class MySQLService implements IDatabase {
     public void addPendingInvite(String displayName, String townName) {
 
     }
+
+    //Region MySQL Utilities
+
+    private static Connection connectDB() {
+        Connection con = null;
+        try {
+            SqlInfo sql = new SqlInfo();
+            String url = "jdbc:mysql://" + sql.IP + ":" + sql.Port + "/" + sql.Database +
+                    "?verifyServerCertificate=false&useSSL=true&requireSSL=true";
+            con = DriverManager.getConnection(url, sql.username, sql.password);
+
+            return con;
+        } catch (SQLException e) {
+            Kingdom.getPlugin(Kingdom.class).getLogger().info("Connection error!\n" + e.getMessage());
+            e.printStackTrace();
+            System.out.println("SQL might not be set up correctly please be sure to modify the config");
+            if (con != null)
+                try {
+                    System.out.println("Crash-------------");
+                    con.close();
+                } catch (Exception b) {
+                }
+        }
+        return null;
+    }
+
+
+    public static boolean checkDB() {
+
+        JavaPlugin.getPlugin(Kingdom.class).getLogger().warning(" Performing database checkup.");
+        Connection con = null;
+        try {
+            con = connectDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (con == null)
+            return false;
+        for (String table : SqlTemplate.Tables) {
+            if (!checkTableExist(con, table)) {
+                JavaPlugin.getPlugin(Kingdom.class).getLogger().warning("Table " + table + " doesn't exist, attempting to create it.");
+                if (!generateTable(con, table)) {
+                    JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " could not be created.");
+                    return false;
+                }
+            }
+        }
+
+        try {
+            con.close();
+        } catch (Exception ignored){}
+        return true;
+    }
+
+
+    public static boolean checkTableExist(Connection con, String table) {
+        try {
+            DatabaseMetaData dbm = con.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, new SqlInfo().tableprefix+table, null);
+            if (tables.next()) {
+                tables.close();
+                return true;
+            } else {
+                tables.close();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean generateTable(Connection con, String table) {
+        PreparedStatement stmt = null;
+        try {
+            switch (table.toLowerCase()) {
+                case "claim":
+                    stmt = con.prepareStatement(SqlTemplate.getClaim());
+                    break;
+                case "town":
+                    stmt = con.prepareStatement(SqlTemplate.getTown());
+                    break;
+                case "playerkd":
+                    stmt = con.prepareStatement(SqlTemplate.getPlayer());
+                    break;
+                case "townuser":
+                    stmt = con.prepareStatement(SqlTemplate.getTownPlayer());
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " failed to prepare for generation.");
+            return false;
+        }
+
+        try {
+            stmt.execute();
+            JavaPlugin.getPlugin(Kingdom.class).getLogger().info("Table "+table+" created sucessfully");
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " failed to generate.");
+            return false;
+        }
+
+
+    }
+
 }
