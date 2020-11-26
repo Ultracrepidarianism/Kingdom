@@ -10,15 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.github.nullexceptionarg.Kingdom;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class db {
     private static final Kingdom instance = JavaPlugin.getPlugin(Kingdom.class);
     private static Map<String,Town> playerTownMap = new HashMap<>();
     private static Map<String,Town> townMap = new HashMap<>();
+    private static Map<String, List<String>> pendingInvitesMap = new HashMap<>();
 
 
     public static void createPlayer(String uuid){
@@ -188,4 +186,10 @@ public class db {
         playerTownMap.remove(ply.getUniqueId().toString());
     }
 
+    public static void addPendingInvite(String displayName, String townName) {
+        if(pendingInvitesMap.containsKey(displayName)){
+
+        }
+
+    }
 }

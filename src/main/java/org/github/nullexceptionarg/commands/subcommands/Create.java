@@ -1,5 +1,6 @@
 package org.github.nullexceptionarg.commands.subcommands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.github.nullexceptionarg.commands.SubCommand;
 import org.github.nullexceptionarg.model.Util;
@@ -35,6 +36,7 @@ public class Create extends SubCommand {
             ply.sendMessage(Util.getMessage("error.user.createTown"));
         }else{
             db.createTown(ply,args[1]);
+            ply.sendMessage(ChatColor.GREEN + "Town" + args[1] + "successfully created");
         }
     }
 }
