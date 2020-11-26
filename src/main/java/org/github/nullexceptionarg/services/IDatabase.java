@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Town;
 
+import java.util.List;
+
 public interface IDatabase {
 
     /**
@@ -58,7 +60,7 @@ public interface IDatabase {
      * Adds a player to the town.
      *
      * @param uuid      UUID of player you want to add to the town.
-     * @param townName  Name of down you want to add the Player to.
+     * @param townName  Name of town you want to set for the Player.
      */
     abstract void setPlayerTown(String uuid, String townName);
 
@@ -77,9 +79,23 @@ public interface IDatabase {
     abstract void removePlayerfromMap(Player ply);
 
     /**
-     *
-     * @param displayName
-     * @param townName
+     * Adds a town on the list of pending invites of a player.
+     * @param displayName name of the player
+     * @param townName name of the town
      */
     abstract void addPendingInvite(String displayName, String townName);
+
+    /**
+     *  Allows you to get the current list of pending invites for a player.
+     * @param displayname name of the player
+     * @return returns the list of actual pending invites
+     */
+    abstract List<String> getPendingInvites(String displayname);
+
+    /**
+     * Allows you to revoke an invitation to a town for a player.
+     * @param displayName name of the player
+     * @param townName name of the town
+     */
+    abstract void removePendingInvite(String displayName, String townName);
 }

@@ -6,6 +6,7 @@ import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Town;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DbManager implements IDatabase {
@@ -16,6 +17,7 @@ public class DbManager implements IDatabase {
 
     protected Map<String, Town> playerTownMap = new HashMap<>();
     protected Map<String, Town> townMap = new HashMap<>();
+    protected Map<String, List<String>> pendingInvitesMap = new HashMap<>();
 
 
     public static void getInstance() {
@@ -129,4 +131,10 @@ public class DbManager implements IDatabase {
     public void addPendingInvite(String displayName, String townName) {
         DB.addPendingInvite(displayName,townName);
     }
+
+    @Override
+    public List<String> getPendingInvites(String displayname) { return DB.getPendingInvites(displayname); }
+
+    @Override
+    public void removePendingInvite(String displayname,String townName) { DB.removePendingInvite(displayname,townName); }
 }

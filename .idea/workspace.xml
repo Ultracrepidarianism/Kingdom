@@ -11,6 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="09f2aac4-f6b1-4419-85ce-5e4574f3fd53" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/Kingdom.iml" afterDir="false" />
+<<<<<<< Updated upstream
       <change afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/services/DbManager.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/services/IDatabase.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/services/MatsTrash.java" afterDir="false" />
@@ -19,6 +20,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/Kingdom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/Kingdom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/model/db.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/model/db.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/commands/subcommands/Create.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/commands/subcommands/Create.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/commands/subcommands/Invite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/commands/subcommands/Invite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/listener/KingdomListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/listener/KingdomListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/model/db.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/github/nullexceptionarg/model/db.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +39,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -62,6 +72,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.1275862" />
   </component>
+<<<<<<< Updated upstream
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\Minecraft\Kingdom\src\main\java\org\github\nullexceptionarg\services" />
@@ -82,6 +93,8 @@
       </method>
     </configuration>
   </component>
+=======
+>>>>>>> Stashed changes
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
@@ -100,6 +113,8 @@
       <workItem from="1602641856452" duration="3694000" />
       <workItem from="1602703077148" duration="24172000" />
       <workItem from="1602871583389" duration="5757000" />
+      <workItem from="1604701894477" duration="804000" />
+      <workItem from="1606335408949" duration="7164000" />
     </task>
     <servers />
   </component>
@@ -144,18 +159,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="498" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602704803369" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1602874006717">
+    <state x="585" y="1" key="CommitChangelistDialog2" timestamp="1606347963589">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602874006717" />
-    <state x="440" y="94" key="SettingsEditor" timestamp="1602537455218">
+    <state x="585" y="1" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606347963589" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1604702096859">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+<<<<<<< Updated upstream
     <state x="440" y="94" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602537455218" />
     <state x="616" y="250" key="run.anything.popup" timestamp="1606338246041">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="616" y="250" key="run.anything.popup/0.0.1920.1080/1920.40.1920.1040@0.0.1920.1080" timestamp="1606338246041" />
+=======
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1604702096859" />
+    <state x="440" y="94" key="SettingsEditor" timestamp="1606336239564">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1606336239564" />
+>>>>>>> Stashed changes
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1602724823333">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -12,6 +12,7 @@ import org.github.nullexceptionarg.model.Util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class YmlService implements IDatabase {
@@ -35,7 +36,7 @@ public class YmlService implements IDatabase {
                 FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
                 fileConfiguration.set("town", "");
                 fileConfiguration.save(file);
-                instance.DB.playerTownMap.put(uuid, null);
+                Kingdom.DB.playerTownMap.put(uuid, null);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -250,6 +251,32 @@ public class YmlService implements IDatabase {
      */
     @Override
     public void addPendingInvite(String displayName, String townName) {
-        /* Bonjour, oui ^^^ */
+        List<String> pendingInvites = new ArrayList<>();
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayName)) {
+            pendingInvites.add(townName);
+        }else{
+            pendingInvites = Kingdom.DB.pendingInvitesMap.get(displayName);
+            pendingInvites.add(townName);
+        }
+        Kingdom.DB.pendingInvitesMap.put(displayName,pendingInvites);
+    }
+
+    @Override
+    public List<String> getPendingInvites(String displayname) {
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayname) || (Kingdom.DB.pendingInvitesMap.containsKey(displayname) && Kingdom.DB.pendingInvitesMap.get(displayname).size() <= 0))
+            return null;
+        return Kingdom.DB.pendingInvitesMap.get(displayname);
+    }
+
+    @Override
+    public void removePendingInvite(String displayName, String townName) {
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayName))
+            return;
+
+        List<String> lstPending = Kingdom.DB.pendingInvitesMap.get(displayName);
+        if(!lstPending.contains(townName))
+            return;
+        lstPending.remove(townName);
+        Kingdom.DB.pendingInvitesMap.put(displayName,lstPending);
     }
 }
