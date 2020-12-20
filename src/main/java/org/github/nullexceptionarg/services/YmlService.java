@@ -221,10 +221,43 @@ public class YmlService implements IDatabase {
         config.set("town", townName);
         try {
             config.save(file);
+            Town town = getTownfromPlayer(uuid);
+            town.getMembers().add(uuid);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void removePlayerTown(String uuid) {
+        File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "players");
+        File file = new File(dataFolder, uuid + ".yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config.set("town", "");
+
+        Town town = getTownfromPlayer(uuid);
+        List<String> lstMembers = town.getMembers();
+        lstMembers.remove(uuid);
+        List<String> lstOfficers = town.getOfficers();
+        lstMembers.remove(uuid);
+
+
+        File townFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "towns");
+        File townFile = new File(townFolder, town.getTownName() + ".yml");
+        FileConfiguration townConfig = YamlConfiguration.loadConfiguration(townFile);
+        townConfig.set("officers",lstOfficers);
+        townConfig.set("members",lstMembers);
+
+        try{
+            config.save(file);
+            townConfig.save(townFile);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * Loads PlayerKD information from Storage engine to RAM.
@@ -248,37 +281,41 @@ public class YmlService implements IDatabase {
     }
 
     /**
-     * @param displayName
+     * @param uuid
      * @param townName
      */
     @Override
-    public void addPendingInvite(String displayName, String townName) {
+    public void addPendingInvite(String uuid, String townName) {
         List<String> pendingInvites = new ArrayList<>();
-        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayName)) {
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(uuid)) {
             pendingInvites.add(townName);
         }else{
-            pendingInvites = Kingdom.DB.pendingInvitesMap.get(displayName);
+            pendingInvites = Kingdom.DB.pendingInvitesMap.get(uuid);
             pendingInvites.add(townName);
         }
-        Kingdom.DB.pendingInvitesMap.put(displayName,pendingInvites);
+        Kingdom.DB.pendingInvitesMap.put(uuid,pendingInvites);
+        System.out.println(Kingdom.DB.pendingInvitesMap.get(uuid).size());
     }
 
     @Override
-    public List<String> getPendingInvites(String displayname) {
-        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayname) || (Kingdom.DB.pendingInvitesMap.containsKey(displayname) && Kingdom.DB.pendingInvitesMap.get(displayname).size() <= 0))
+    public List<String> getPendingInvites(String uuid) {
+        System.out.println("Condition 1: " + !Kingdom.DB.pendingInvitesMap.containsKey(uuid));
+        System.out.println("Condition 2: " + (Kingdom.DB.pendingInvitesMap.containsKey(uuid) && Kingdom.DB.pendingInvitesMap.get(uuid).size() <= 0));
+
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(uuid) || (Kingdom.DB.pendingInvitesMap.containsKey(uuid) && Kingdom.DB.pendingInvitesMap.get(uuid).size() <= 0))
             return null;
-        return Kingdom.DB.pendingInvitesMap.get(displayname);
+        return Kingdom.DB.pendingInvitesMap.get(uuid);
     }
 
     @Override
-    public void removePendingInvite(String displayName, String townName) {
-        if(!Kingdom.DB.pendingInvitesMap.containsKey(displayName))
+    public void removePendingInvite(String uuid, String townName) {
+        if(!Kingdom.DB.pendingInvitesMap.containsKey(uuid))
             return;
 
-        List<String> lstPending = Kingdom.DB.pendingInvitesMap.get(displayName);
+        List<String> lstPending = Kingdom.DB.pendingInvitesMap.get(uuid);
         if(!lstPending.contains(townName))
             return;
         lstPending.remove(townName);
-        Kingdom.DB.pendingInvitesMap.put(displayName,lstPending);
+        Kingdom.DB.pendingInvitesMap.put(uuid,lstPending);
     }
 }

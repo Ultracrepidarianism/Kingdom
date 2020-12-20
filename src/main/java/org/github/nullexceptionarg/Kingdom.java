@@ -21,9 +21,9 @@ public class Kingdom extends JavaPlugin {
             getDataFolder().mkdir();
         }
         saveDefaultConfig();
+        DB = DbManager.getInstance();
         getServer().getPluginManager().registerEvents(new KingdomListener(this),this);
         getServer().getPluginManager().registerEvents(new ClaimListener(this),this);
         getCommand("kingdom").setExecutor(new CommandManager(this));
-        DB = DbManager.getInstance();
     }
 }

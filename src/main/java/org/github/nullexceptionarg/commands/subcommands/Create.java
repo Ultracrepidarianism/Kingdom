@@ -2,9 +2,9 @@ package org.github.nullexceptionarg.commands.subcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.github.nullexceptionarg.Kingdom;
 import org.github.nullexceptionarg.commands.SubCommand;
 import org.github.nullexceptionarg.model.Util;
-import org.github.nullexceptionarg.model.db;
 
 public class Create extends SubCommand {
     @Override
@@ -32,10 +32,10 @@ public class Create extends SubCommand {
         if(args.length != 2){
             ply.sendMessage(getUsage());
         }
-        else if(db.getTownfromPlayer(ply.getUniqueId().toString()) != null){
+        else if(Kingdom.DB.getTownfromPlayer(ply.getUniqueId().toString()) != null){
             ply.sendMessage(Util.getMessage("error.user.createTown"));
         }else{
-            db.createTown(ply,args[1]);
+            Kingdom.DB.createTown(ply,args[1]);
             ply.sendMessage(ChatColor.GREEN + "Town" + args[1] + "successfully created");
         }
     }

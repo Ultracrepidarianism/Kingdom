@@ -65,6 +65,12 @@ public interface IDatabase {
     abstract void setPlayerTown(String uuid, String townName);
 
     /**
+     *
+     * @param uuid UUID of player you want to remove from the town.
+     */
+    abstract void removePlayerTown(String uuid);
+
+    /**
      * Loads PlayerKD information from Storage engine to RAM.
      *
      * @param ply Bukkit player entity.
@@ -80,22 +86,22 @@ public interface IDatabase {
 
     /**
      * Adds a town on the list of pending invites of a player.
-     * @param displayName name of the player
+     * @param uuid uuid of the player
      * @param townName name of the town
      */
-    abstract void addPendingInvite(String displayName, String townName);
+    abstract void addPendingInvite(String uuid, String townName);
 
     /**
      *  Allows you to get the current list of pending invites for a player.
-     * @param displayname name of the player
+     * @param uuid uuid of the player
      * @return returns the list of actual pending invites
      */
-    abstract List<String> getPendingInvites(String displayname);
+    abstract List<String> getPendingInvites(String uuid);
 
     /**
      * Allows you to revoke an invitation to a town for a player.
-     * @param displayName name of the player
+     * @param uuid uuid of the player
      * @param townName name of the town
      */
-    abstract void removePendingInvite(String displayName, String townName);
+    abstract void removePendingInvite(String uuid, String townName);
 }

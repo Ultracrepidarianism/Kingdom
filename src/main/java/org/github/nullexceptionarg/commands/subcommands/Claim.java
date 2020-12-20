@@ -1,10 +1,10 @@
 package org.github.nullexceptionarg.commands.subcommands;
 
 import org.bukkit.entity.Player;
+import org.github.nullexceptionarg.Kingdom;
 import org.github.nullexceptionarg.commands.SubCommand;
 import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Util;
-import org.github.nullexceptionarg.model.db;
 
 import java.io.File;
 
@@ -45,10 +45,10 @@ public class Claim extends SubCommand {
                 e.printStackTrace();
             }
         }else{
-            PlayerKD playerKD = db.getPlayer(ply);
+            PlayerKD playerKD = Kingdom.DB.getPlayer(ply);
             if(playerKD == null) return;
             if(playerKD.getTown() == null) return;
-            db.createClaim(playerKD,claimName);
+            Kingdom.DB.createClaim(playerKD,claimName);
         }
     }
 

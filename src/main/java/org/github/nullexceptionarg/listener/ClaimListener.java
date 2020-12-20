@@ -15,9 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.github.nullexceptionarg.Kingdom;
-import org.github.nullexceptionarg.model.Util;
-import org.github.nullexceptionarg.model.db;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,17 +46,6 @@ public class ClaimListener implements Listener {
         if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) return;
         Player p = e.getPlayer();
         e.setCancelled(checkClaim(p,e.getClickedBlock().getChunk()));
-    }
-
-    public boolean checkClaim(Player p, Chunk c){
-        String worldName = p.getWorld().getName();
-        String chunkName =c.getX() + "_" + c.getZ();
-        File file = new File(dataFolder,worldName + " " + chunkName + ".yml");
-        if(!file.exists()) return false;
-        FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(file);
-        if(db.getTownfromPlayer(p.getUniqueId().toString()) == null) return true;
-
-        return !db.getTownfromPlayer(p.getUniqueId().toString()).getTownName().equalsIgnoreCase(fileConfig.getString("town"));
     }
 
     @EventHandler
@@ -100,4 +86,16 @@ public class ClaimListener implements Listener {
         }
 
     }
+
+    public boolean checkClaim(Player p, Chunk c){
+        String worldName = p.getWorld().getName();
+        String chunkName =c.getX() + "_" + c.getZ();
+        File file = new File(dataFolder,worldName + " " + chunkName + ".yml");
+        if(!file.exists()) return false;
+        FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(file);
+        if(Kingdom.DB.getTownfromPlayer(p.getUniqueId().toString()) == null) return true;
+
+        return !Kingdom.DB.getTownfromPlayer(p.getUniqueId().toString()).getTownName().equalsIgnoreCase(fileConfig.getString("town"));
+    }
+
 }

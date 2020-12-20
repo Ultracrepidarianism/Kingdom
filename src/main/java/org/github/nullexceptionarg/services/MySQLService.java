@@ -8,6 +8,7 @@ import org.github.nullexceptionarg.model.PlayerKD;
 import org.github.nullexceptionarg.model.Town;
 
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Level;
 
 public class MySQLService implements IDatabase {
@@ -91,6 +92,11 @@ public class MySQLService implements IDatabase {
 
     }
 
+    @Override
+    public void removePlayerTown(String uuid) {
+
+    }
+
     /**
      * Loads PlayerKD information from Storage engine to RAM.
      *
@@ -117,6 +123,16 @@ public class MySQLService implements IDatabase {
      */
     @Override
     public void addPendingInvite(String displayName, String townName) {
+
+    }
+
+    @Override
+    public List<String> getPendingInvites(String uuid) {
+        return null;
+    }
+
+    @Override
+    public void removePendingInvite(String uuid, String townName) {
 
     }
 

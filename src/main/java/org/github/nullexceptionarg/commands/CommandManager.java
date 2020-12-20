@@ -6,8 +6,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.github.nullexceptionarg.Kingdom;
-import org.github.nullexceptionarg.commands.subcommands.Claim;
-import org.github.nullexceptionarg.commands.subcommands.Create;
+import org.github.nullexceptionarg.commands.subcommands.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +26,9 @@ public class CommandManager implements TabExecutor {
         lstSubCommands = new ArrayList<>();
         lstSubCommands.add(new Claim());
         lstSubCommands.add(new Create());
+        lstSubCommands.add(new Invite());
+        lstSubCommands.add(new Join());
+        lstSubCommands.add(new Leave());
     }
 
     @Override

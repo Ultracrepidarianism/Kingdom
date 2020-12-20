@@ -123,6 +123,9 @@ public class DbManager implements IDatabase {
         DB.setPlayerTown(uuid, townName);
     }
 
+    @Override
+    public void removePlayerTown(String uuid) { DB.removePlayerTown(uuid);}
+
     /**
      * Loads PlayerKD information from Storage engine to RAM.
      *
@@ -144,17 +147,17 @@ public class DbManager implements IDatabase {
     }
 
     /**
-     * @param displayName
+     * @param uuid
      * @param townName
      */
     @Override
-    public void addPendingInvite(String displayName, String townName) {
-        DB.addPendingInvite(displayName, townName);
+    public void addPendingInvite(String uuid, String townName) {
+        DB.addPendingInvite(uuid, townName);
     }
 
     @Override
-    public List<String> getPendingInvites(String displayname) { return DB.getPendingInvites(displayname); }
+    public List<String> getPendingInvites(String uuid) { return DB.getPendingInvites(uuid); }
 
     @Override
-    public void removePendingInvite(String displayname,String townName) { DB.removePendingInvite(displayname,townName); }
+    public void removePendingInvite(String uuid,String townName) { DB.removePendingInvite(uuid,townName); }
 }
