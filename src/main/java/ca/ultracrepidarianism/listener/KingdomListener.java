@@ -1,27 +1,25 @@
-package org.github.nullexceptionarg.listener;
+package ca.ultracrepidarianism.listener;
 
+import ca.ultracrepidarianism.services.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.github.nullexceptionarg.Kingdom;
 
 public class KingdomListener implements Listener {
-    private Kingdom instance;
+    private final Database database = Database.getInstance();
 
-    public KingdomListener(Kingdom kingdom){
-        instance = kingdom;
-    }
+    public KingdomListener() {}
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         Player p = e.getPlayer();
-        Kingdom.DB.createPlayer(p.getUniqueId().toString());
-        Kingdom.DB.addPlayerToMap(p);
+        database.createPlayer(p.getUniqueId().toString());
+        database.addPlayerToMap(p);
     }
 
     @EventHandler
     public void onLeave(PlayerJoinEvent e){
-        Kingdom.DB.removePlayerfromMap(e.getPlayer());
+        database.removePlayerfromMap(e.getPlayer());
     }
 }

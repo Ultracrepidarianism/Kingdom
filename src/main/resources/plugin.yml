@@ -2,7 +2,7 @@ name: Kingdom
 version: 1.0
 api-version: 1.16
 author: NullExceptionArg
-main: org.github.nullexceptionarg.Kingdom
+main: ca.ultracrepidarianism.Kingdom
 
 commands:
   kingdom:

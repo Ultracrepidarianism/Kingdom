@@ -1,12 +1,10 @@
-package org.github.nullexceptionarg.commands.subcommands;
+package ca.ultracrepidarianism.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.commands.SubCommand;
-import org.github.nullexceptionarg.model.Town;
-import org.github.nullexceptionarg.services.DbManager;
-import org.github.nullexceptionarg.services.IDatabase;
+import ca.ultracrepidarianism.commands.SubCommand;
+import ca.ultracrepidarianism.model.KDTown;
 
-public class Leave extends SubCommand {
+public class LeaveCommand extends SubCommand {
     @Override
     public String getPermission() {
         return "kingdom.leave";
@@ -29,15 +27,14 @@ public class Leave extends SubCommand {
 
     @Override
     public void perform(Player ply, String[] args) {
-        IDatabase db = DbManager.DB;
         String uuid = ply.getUniqueId().toString();
-        Town town = db.getTownfromPlayer(uuid);
+        KDTown town = database.getTownfromPlayer(uuid);
         if(town == null){
             ply.sendMessage("You need to be in a town first.");
         }else if(town.getOwnerUID().equals(uuid)){
             ply.sendMessage("You cannot leave the town if you are the owner. please consider using /kd delete");
         }else{
-            db.removePlayerTown(uuid);
+            database.removePlayerTown(uuid);
         }
     }
 }

@@ -1,30 +1,23 @@
-package org.github.nullexceptionarg.model;
+package ca.ultracrepidarianism.model;
 
-import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Town {
+public class KDTown {
 
     private String townName;
     private String owner;
     private List<String> lstOfficers;
     private List<String> lstMembers;
-    private List<String> lstClaims = new ArrayList<>();
 
-    public Town(String townName, String owner, List<String> lstClaims, List<String> lstOfficers, List<String> lstMembers){
+
+    public KDTown(String townName, String owner, List<String> lstOfficers, List<String> lstMembers){
         this.townName = townName;
         this.owner = owner;
-        this.lstClaims = lstClaims;
         this.lstOfficers = lstOfficers;
         this.lstMembers = lstMembers;
     }
 
-    public void addTownClaim(String claimName){
-        lstClaims.add(claimName);
-    }
+
 
     public String getTownName() {
         return townName;
@@ -34,6 +27,10 @@ public class Town {
         return owner;
     }
 
+    /**
+     * Contains ALL members
+     * @return list of all members
+     */
     public List<String> getMembers(){
         return lstMembers;
     }
@@ -42,8 +39,5 @@ public class Town {
         return lstOfficers;
     }
 
-    public List<String> getClaims(){
-        return lstClaims;
-    }
 
 }

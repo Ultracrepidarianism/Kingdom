@@ -1,9 +1,9 @@
-package org.github.nullexceptionarg.commands.subcommands;
+package ca.ultracrepidarianism.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.commands.SubCommand;
+import ca.ultracrepidarianism.commands.SubCommand;
 
-public class Accept extends SubCommand {
+public class AcceptCommand extends SubCommand {
     @Override
     public String getPermission() {
         return null;

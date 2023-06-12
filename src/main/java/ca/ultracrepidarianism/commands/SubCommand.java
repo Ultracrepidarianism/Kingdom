@@ -1,17 +1,19 @@
-package org.github.nullexceptionarg.commands;
+package ca.ultracrepidarianism.commands;
 
+import ca.ultracrepidarianism.Kingdom;
+import ca.ultracrepidarianism.services.Database;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.github.nullexceptionarg.Kingdom;
 
 import java.io.File;
 
 public abstract class SubCommand {
 
     protected Kingdom kingdom = JavaPlugin.getPlugin(Kingdom.class);
+    protected Database database = Database.getInstance();
 
     public abstract String getPermission();
 

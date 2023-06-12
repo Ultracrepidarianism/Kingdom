@@ -1,12 +1,11 @@
-package org.github.nullexceptionarg.commands.subcommands;
+package ca.ultracrepidarianism.commands.subcommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.Kingdom;
-import org.github.nullexceptionarg.commands.SubCommand;
-import org.github.nullexceptionarg.model.Util;
+import ca.ultracrepidarianism.commands.SubCommand;
+import ca.ultracrepidarianism.model.KDUtil;
 
-public class Create extends SubCommand {
+public class CreateCommand extends SubCommand {
     @Override
     public String getPermission() {
         return "kingdom.create";
@@ -32,10 +31,10 @@ public class Create extends SubCommand {
         if(args.length != 2){
             ply.sendMessage(getUsage());
         }
-        else if(Kingdom.DB.getTownfromPlayer(ply.getUniqueId().toString()) != null){
-            ply.sendMessage(Util.getMessage("error.user.createTown"));
+        else if(database.getTownfromPlayer(ply.getUniqueId().toString()) != null){
+            ply.sendMessage(KDUtil.getMessage("error.user.createTown"));
         }else{
-            Kingdom.DB.createTown(ply,args[1]);
+            database.createTown(ply,args[1]);
             ply.sendMessage(ChatColor.GREEN + "Town" + args[1] + "successfully created");
         }
     }

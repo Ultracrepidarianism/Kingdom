@@ -1,13 +1,12 @@
-package org.github.nullexceptionarg.commands.subcommands;
+package ca.ultracrepidarianism.commands.subcommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.Kingdom;
-import org.github.nullexceptionarg.commands.SubCommand;
-import org.github.nullexceptionarg.model.Town;
+import ca.ultracrepidarianism.commands.SubCommand;
+import ca.ultracrepidarianism.model.KDTown;
 
-public class Invite extends SubCommand {
+public class InviteCommand extends SubCommand {
     @Override
     public String getPermission() {
         return "kd.invite";
@@ -38,7 +37,7 @@ public class Invite extends SubCommand {
             ply.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
             return;
         }
-        if(Kingdom.DB.getTownfromPlayer(ply.getUniqueId().toString()) == null){
+        if(database.getTownfromPlayer(ply.getUniqueId().toString()) == null){
             ply.sendMessage("You cannot invite people if you are not in a town.");
             return;
         }
@@ -47,11 +46,11 @@ public class Invite extends SubCommand {
         if (p == null) {
             ply.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
         } else {
-            if (Kingdom.DB.getTownfromPlayer(p.getUniqueId().toString()) == null) {
+            if (database.getTownfromPlayer(p.getUniqueId().toString()) == null) {
                 ply.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + args[1] + ".");
-                Town town = Kingdom.DB.getTownfromPlayer(ply.getUniqueId().toString());
+                KDTown town = database.getTownfromPlayer(ply.getUniqueId().toString());
                 p.sendMessage(ChatColor.GREEN + "You have been invited to join the town " + town.getTownName() + ". Please do" + ChatColor.YELLOW + " /kd accept" + ChatColor.GREEN + " to join their team.");
-                Kingdom.DB.addPendingInvite(p.getUniqueId().toString(), town.getTownName());
+                database.addPendingInvite(p.getUniqueId().toString(), town.getTownName());
             } else
                 ply.sendMessage("This player is already in a town.");
         }

@@ -1,18 +1,18 @@
-package org.github.nullexceptionarg.model;
+package ca.ultracrepidarianism.model;
 
 import org.bukkit.entity.Player;
 
-public class PlayerKD {
-    private Town town;
+public class KDPlayer {
+    private KDTown town;
     private Player player;
     private String rank;
 
-    public PlayerKD(Player player, Town town){
+    public KDPlayer(Player player, KDTown town){
         this.player = player;
         this.town = town;
     }
 
-    public Town getTown(){
+    public KDTown getTown(){
         return town;
     }
 

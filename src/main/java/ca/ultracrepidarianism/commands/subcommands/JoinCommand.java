@@ -1,13 +1,11 @@
-package org.github.nullexceptionarg.commands.subcommands;
+package ca.ultracrepidarianism.commands.subcommands;
 
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.commands.SubCommand;
-import org.github.nullexceptionarg.services.DbManager;
-import org.github.nullexceptionarg.services.IDatabase;
+import ca.ultracrepidarianism.commands.SubCommand;
 
 import java.util.List;
 
-public class Join extends SubCommand {
+public class JoinCommand extends SubCommand {
     @Override
     public String getPermission() {
         return "kingdom.join";
@@ -30,7 +28,7 @@ public class Join extends SubCommand {
 
     @Override
     public void perform(Player ply, String[] args) {
-        IDatabase database = DbManager.DB;
+        //T
         if(database.getTownfromPlayer(ply.getUniqueId().toString()) != null){
             ply.sendMessage("Please leave your town first.");
             return;

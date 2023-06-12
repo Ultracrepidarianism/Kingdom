@@ -1,12 +1,9 @@
-package org.github.nullexceptionarg.services;
+package ca.ultracrepidarianism.services;
 
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.bukkit.command.CommandSender;
-import org.github.nullexceptionarg.Kingdom;
+import ca.ultracrepidarianism.Kingdom;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MatsTrash {
 

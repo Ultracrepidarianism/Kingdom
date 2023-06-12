@@ -1,15 +1,15 @@
-package org.github.nullexceptionarg.commands;
+package ca.ultracrepidarianism.commands;
 
+import ca.ultracrepidarianism.Kingdom;
+import ca.ultracrepidarianism.commands.subcommands.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.github.nullexceptionarg.Kingdom;
 import org.github.nullexceptionarg.commands.subcommands.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,11 +24,11 @@ public class CommandManager implements TabExecutor {
         instance = kingdom;
         cfg = instance.getConfig();
         lstSubCommands = new ArrayList<>();
-        lstSubCommands.add(new Claim());
-        lstSubCommands.add(new Create());
-        lstSubCommands.add(new Invite());
-        lstSubCommands.add(new Join());
-        lstSubCommands.add(new Leave());
+        lstSubCommands.add(new ClaimCommand());
+        lstSubCommands.add(new CreateCommand());
+        lstSubCommands.add(new InviteCommand());
+        lstSubCommands.add(new JoinCommand());
+        lstSubCommands.add(new LeaveCommand());
     }
 
     @Override
