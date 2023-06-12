@@ -1,9 +1,8 @@
 package ca.ultracrepidarianism.model;
 
-import jakarta.persistence.Entity;
-import org.hibernate.service.spi.InjectService;
+import jakarta.persistence.Embeddable;
 
-@Entity
+@Embeddable
 public class KDChunk {
     private String world;
     private int x;

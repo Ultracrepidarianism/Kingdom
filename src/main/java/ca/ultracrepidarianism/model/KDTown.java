@@ -1,7 +1,10 @@
 package ca.ultracrepidarianism.model;
 
+import jakarta.persistence.Entity;
+
 import java.util.List;
 
+@Entity
 public class KDTown {
 
     private String townName;

@@ -1,7 +1,9 @@
 package ca.ultracrepidarianism.model;
 
+import jakarta.persistence.Entity;
 import org.bukkit.entity.Player;
 
+@Entity
 public class KDPlayer {
     private KDTown town;
     private Player player;

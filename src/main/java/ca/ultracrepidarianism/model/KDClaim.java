@@ -1,7 +1,14 @@
 package ca.ultracrepidarianism.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "claims")
 public class KDClaim {
+    @Embedded
     private final KDChunk chunk;
+    @ManyToOne
+    @JoinColumn(name = "town_id", foreignKey = @ForeignKey(name = "FK_CLAIM_TOWN"))
     private final KDTown town;
 
     public KDClaim(KDChunk chunk, KDTown town){

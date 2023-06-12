@@ -67,7 +67,12 @@ public class MySQLService extends Database {
         query += """
             
         """;
-        connection.prepareStatement(query);
+
+        try {
+            connection.prepareStatement(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

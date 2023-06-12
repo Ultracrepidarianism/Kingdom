@@ -18,6 +18,9 @@ public class SqlInfo {
         password = JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.password");
     }
 
+    public String getUrl() {
+        return "jdbc:mysql://" + getIP() + ":" + getPort() + "/" + getDatabase() + "?verifyServerCertificate=false&useSSL=true&requireSSL=true";
+    }
     public String getIP() {
         return IP;
     }
