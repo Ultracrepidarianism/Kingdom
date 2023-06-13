@@ -27,7 +27,6 @@ public class SqlInfo {
     public int getPort() {
         return Port;
     }
-    public String getTablePrefix() {return "kingdom_";}
     public String getDatabase() {
         return Database;
     }

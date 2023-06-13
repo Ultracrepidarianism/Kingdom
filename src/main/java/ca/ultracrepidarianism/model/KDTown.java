@@ -1,45 +1,57 @@
 package ca.ultracrepidarianism.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name="towns")
 public class KDTown {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String townName;
-    private String owner;
-    private List<String> lstOfficers;
-    private List<String> lstMembers;
 
+    @OneToOne
+    @JoinColumn(name = "ownerUUID")
+    private KDPlayer owner ;
 
-    public KDTown(String townName, String owner, List<String> lstOfficers, List<String> lstMembers){
+    @OneToMany(mappedBy = "town")
+    private List<KDPlayer> lstMembers = new ArrayList<>();
+
+    protected KDTown() {}
+
+    public KDTown(String townName, KDPlayer owner) {
         this.townName = townName;
         this.owner = owner;
-        this.lstOfficers = lstOfficers;
-        this.lstMembers = lstMembers;
+        this.lstMembers.add(owner);
     }
-
 
 
     public String getTownName() {
         return townName;
     }
 
-    public String getOwnerUID(){
+    public KDPlayer getOwner(){
         return owner;
+    }
+
+    public void setOwner(KDPlayer owner) {
+        this.owner = owner;
     }
 
     /**
      * Contains ALL members
      * @return list of all members
      */
-    public List<String> getMembers(){
+    public List<KDPlayer> getMembers(){
         return lstMembers;
     }
 
-    public List<String> getOfficers(){
-        return lstOfficers;
+    public List<KDPlayer> getOfficers(){
+        return lstMembers.stream().filter(x-> x.getPermissionLevel());
     }
 
 

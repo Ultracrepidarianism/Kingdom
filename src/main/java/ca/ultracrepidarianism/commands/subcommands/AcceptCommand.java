@@ -1,7 +1,7 @@
 package ca.ultracrepidarianism.commands.subcommands;
 
-import org.bukkit.entity.Player;
 import ca.ultracrepidarianism.commands.SubCommand;
+import org.bukkit.entity.Player;
 
 public class AcceptCommand extends SubCommand {
     @Override

@@ -31,7 +31,7 @@ public class LeaveCommand extends SubCommand {
         KDTown town = database.getTownfromPlayer(uuid);
         if(town == null){
             ply.sendMessage("You need to be in a town first.");
-        }else if(town.getOwnerUID().equals(uuid)){
+        }else if(town.getOwner().getUUID().equals(uuid)){
             ply.sendMessage("You cannot leave the town if you are the owner. please consider using /kd delete");
         }else{
             database.removePlayerTown(uuid);

@@ -2,15 +2,13 @@ package ca.ultracrepidarianism.services;
 
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 public abstract class Database {
     private static Database instance;
@@ -32,10 +30,6 @@ public abstract class Database {
     public static Database getInstance() {
         if (instance == null) {
             instance = new MySQLService();
-            if (!instance.checkDb()) {
-                Bukkit.getLogger().log(Level.SEVERE, "Failed to initialise MySql database.");
-                Bukkit.getServer().shutdown();
-            }
         }
         return instance;
     }
@@ -59,7 +53,7 @@ public abstract class Database {
      * Create a chunk claim for the player's town.
      *
      * @param plyKD     Kingdom's entity for Players part of a Town.
-     * @param claimName Claim name generated with the Player's world and coordinates.
+     * @param chunk     KDChunk object generated with the Player's world and coordinates.
      */
     public abstract void createClaim(KDPlayer plyKD, KDChunk chunk);
 
@@ -135,16 +129,6 @@ public abstract class Database {
      * @param townName name of the town
      */
     public abstract void removePendingInvite(String uuid, String townName);
-
-    /**
-     * Check for the database.
-     * This will attempt to initialize the database connection
-     * and create all the tables.
-     *
-     * @return Check completed successfully
-     */
-    public abstract boolean checkDb();
-
 
     /**
      * Get the claim associated with the current chunk given

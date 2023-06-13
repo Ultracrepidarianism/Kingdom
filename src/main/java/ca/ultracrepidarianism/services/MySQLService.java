@@ -3,21 +3,26 @@ package ca.ultracrepidarianism.services;
 import ca.ultracrepidarianism.Kingdom;
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
-import ca.ultracrepidarianism.services.sqlutil.SqlTemplate;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
+import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
+import ca.ultracrepidarianism.utils.HibernateUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import org.bukkit.entity.Player;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 
 public class MySQLService extends Database {
     private Connection connection;
     private final SqlInfo sqlInfo = new SqlInfo();
-    private final SqlTemplate sqlTemplate = new SqlTemplate();
 
     protected MySQLService() {
         initializeDatabase();
@@ -50,8 +55,12 @@ public class MySQLService extends Database {
      * @param uuid User UUID
      */
     @Override
+    @Transactional
     public void createPlayer(String uuid) {
-
+        HibernateUtil.doInTransaction(session -> {
+            KDPlayer player = new KDPlayer(uuid,null,null);
+            session.persist(player);
+        });
     }
 
     /**
@@ -62,17 +71,19 @@ public class MySQLService extends Database {
      */
     @Override
     public void createTown(Player ply, String townName) {
-        Connection connection = getConnection();
-        String query = "INSERT INTO "+ sqlInfo.getTablePrefix() + "";
-        query += """
-            
-        """;
+        HibernateUtil.doInTransaction(session -> {
 
-        try {
-            connection.prepareStatement(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            KDPlayer kdP = session.find(KDPlayer.class, ply.getUniqueId().toString());
+            if(kdP == null){
+                kdP = new KDPlayer(ply.getUniqueId().toString(),null, null);
+            }
+
+            KDTown town = new KDTown(townName, kdP);
+            kdP.setTown(town);
+
+            session.persist(kdP);
+        });
+
     }
 
     /**
@@ -94,7 +105,12 @@ public class MySQLService extends Database {
      */
     @Override
     public KDTown getTown(String townName) {
-        return null;
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+
+        TypedQuery<KDTown> typedQuery = entityManager.createQuery("FROM KDTown where townName = :townName", KDTown.class);
+        typedQuery.setParameter("townName", townName);
+
+        return HibernateUtil.getSingleResultOrNull(typedQuery);
     }
 
     /**
@@ -116,21 +132,6 @@ public class MySQLService extends Database {
      */
     @Override
     public KDTown getTownfromPlayer(String uuid) {
-        Connection connection = getConnection();
-
-        StringBuilder query = new StringBuilder("select * from ");
-        query.append(" player ");
-        query.append(" where ");
-
-        try {
-            connection.prepareStatement("""
-                        SELECT * FROM kingdom_town kdt
-                        where kdt.
-                    """);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
@@ -189,77 +190,9 @@ public class MySQLService extends Database {
 
     }
 
-    public boolean checkDb() {
-        JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.FINE, " Performing database checkup.");
-
-        Connection connection = getConnection();
-        for (String table : new SqlTemplate().getTables()) {
-            if (!checkTableExist(table)) {
-                JavaPlugin.getPlugin(Kingdom.class).getLogger().warning("Table " + table + " doesn't exist, attempting to create it.");
-                if (!generateTable(table)) {
-                    JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " could not be created.");
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    public boolean checkTableExist(String table) {
-        try {
-            DatabaseMetaData dbm = getConnection().getMetaData();
-            ResultSet tables = dbm.getTables(null, null, sqlInfo.getTablePrefix() + table, null);
-            if (tables.next()) {
-                tables.close();
-                return true;
-            } else {
-                tables.close();
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean generateTable(String table) {
-        PreparedStatement stmt = null;
-        SqlTemplate temp = new SqlTemplate();
-        final Connection connection = getConnection();
-        try {
-            switch (table.toLowerCase()) {
-                case "claim":
-                    stmt = connection.prepareStatement(temp.getClaim());
-                    break;
-                case "town":
-                    stmt = connection.prepareStatement(temp.getTown());
-                    break;
-                case "player":
-                    stmt = connection.prepareStatement(temp.getPlayer());
-                    break;
-                case "townuser":
-                    stmt = connection.prepareStatement(temp.getTownPlayer());
-                    break;
-                default:
-                    JavaPlugin.getPlugin(Kingdom.class).getLogger().severe(table + " is not a valid table");
-                    return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JavaPlugin.getPlugin(Kingdom.class).getLogger().severe("Table " + table + " failed to prepare for generation.");
-            return false;
-        }
-
-        try {
-            stmt.execute();
-            JavaPlugin.getPlugin(Kingdom.class).getLogger().info("Table "+table+" created sucessfully");
-            return true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " failed to generate.");
-            return false;
-        }
+    @Override
+    public KDClaim getClaimFromChunk(KDChunk c) {
+        return null;
     }
 
     /**
@@ -268,23 +201,8 @@ public class MySQLService extends Database {
      * @return Whether the database properly initialized or not
      */
     private boolean initializeDatabase() {
-        for (String table : sqlTemplate.getTables()) {
-            if (checkTableExist(table)) {
-                continue;
-            }
-
-            JavaPlugin.getPlugin(Kingdom.class).getLogger().warning("Table " + table + " doesn't exist, attempting to create it.");
-            if (!generateTable(table)) {
-                JavaPlugin.getPlugin(Kingdom.class).getLogger().log(Level.SEVERE, "Table " + table + " could not be created.");
-                return false;
-            }
-        }
-
         return true;
     }
 
-    @Override
-    public KDClaim getClaimFromChunk(KDChunk c) {
-        return null;
-    }
+    private <T> T firstOrDefault(Query)
 }
