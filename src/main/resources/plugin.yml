@@ -3,6 +3,9 @@ version: 1.0
 api-version: 1.16
 author: NullExceptionArg
 main: ca.ultracrepidarianism.Kingdom
+libraries:
+  - mysql:mysql-connector-java:8.0.33
+  - org.hibernate.orm:hibernate-core:6.2.4.Final
 
 commands:
   kingdom:
