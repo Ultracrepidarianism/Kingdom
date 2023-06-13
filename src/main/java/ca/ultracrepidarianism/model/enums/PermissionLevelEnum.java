@@ -1,25 +1,30 @@
 package ca.ultracrepidarianism.model.enums;
 
 public enum PermissionLevelEnum {
-    MEMBER(0),
-    OFFICER(50),
-    OWNER(100);
+    MEMBER(1),
+    OFFICER(2),
+    OWNER(3);
 
-    private final int value;
+    private final int level;
 
-    PermissionLevelEnum(int value) {
-        this.value = value;
+    PermissionLevelEnum(int level) {
+        this.level = level;
     }
 
-    public int getValue() {
-        return value;
+    public int getLevel() {
+        return level;
     }
 
-    public PermissionLevelEnum fromValue(int value){
-        for(PermissionLevelEnum e : PermissionLevelEnum.values()){
-            if(e.getValue() == value)
-                return e;
+    public PermissionLevelEnum fromLevel(int level) {
+        for (PermissionLevelEnum permission : PermissionLevelEnum.values()) {
+            if (permission.getLevel() == level) {
+                return permission;
+            }
         }
-        return PermissionLevelEnum.MEMBER;
+        throw new IllegalArgumentException("Invalid level value: " + level);
+    }
+
+    public boolean hasPermission(PermissionLevelEnum permissionLevel) {
+        return this.getLevel() >= permissionLevel.getLevel();
     }
 }

@@ -203,6 +203,4 @@ public class MySQLService extends Database {
     private boolean initializeDatabase() {
         return true;
     }
-
-    private <T> T firstOrDefault(Query)
 }

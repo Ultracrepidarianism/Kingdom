@@ -50,8 +50,11 @@ public class KDTown {
         return lstMembers;
     }
 
-    public List<KDPlayer> getOfficers(){
-        return lstMembers.stream().filter(x-> x.getPermissionLevel());
+    public List<KDPlayer> getOfficers() {
+        return lstMembers
+                .stream()
+                .filter(x -> x.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER))
+                .collect(Collectors.toList());
     }
 
 

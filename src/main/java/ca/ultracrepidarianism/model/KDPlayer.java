@@ -4,27 +4,27 @@ import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="players")
+@Table(name = "players")
 public class KDPlayer {
 
     @Id
     private String UUID;
 
     @Column(name = "permissionLevel", nullable = true)
-    @Enumerated
-    private String permissionLevel;
+    @Enumerated(EnumType.STRING)
+    private PermissionLevelEnum permissionLevel;
 
     @ManyToOne
-    @JoinColumn(name="townId",nullable = true)
+    @JoinColumn(name = "townId", nullable = true)
     private KDTown town;
 
-    public KDPlayer(String UUID, PermissionLevelEnum rank, KDTown town){
+    public KDPlayer(String UUID, PermissionLevelEnum rank, KDTown town) {
         this.town = town;
         this.permissionLevel = rank;
         this.UUID = UUID;
     }
 
-    public KDPlayer(){}
+    public KDPlayer() {}
 
     public String getUUID() {
         return UUID;
@@ -34,12 +34,12 @@ public class KDPlayer {
         this.UUID = UUID;
     }
 
-    public String getPermissionLevel() {
+    public PermissionLevelEnum getPermissionLevel() {
         return permissionLevel;
     }
 
-    public void setPermissionLevel(String rank) {
-        this.permissionLevel = rank;
+    public void setPermissionLevel(PermissionLevelEnum permissionLevel) {
+        this.permissionLevel = permissionLevel;
     }
 
     public KDTown getTown() {
