@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.utils;
 
+import ca.ultracrepidarianism.Kingdom;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
@@ -35,6 +36,7 @@ public class HibernateUtil {
      * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
      */
     public static SessionFactory buildSessionFactory() {
+        Thread.currentThread().setContextClassLoader(Kingdom.class.getClassLoader());
         Configuration configuration = new Configuration();
 
         Properties settings = new Properties();
@@ -48,15 +50,13 @@ public class HibernateUtil {
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
         settings.put(AvailableSettings.AUTOCOMMIT, "true");
 
-        configuration.setProperties(settings);
+        configuration.addProperties(settings);
 //        configuration.addAnnotatedClass(KDClaim.class);
         configuration.addAnnotatedClass(KDPlayer.class);
         configuration.addAnnotatedClass(KDTown.class);
 
-        StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties()).build();
 
-        return configuration.buildSessionFactory(serviceRegistry);
+        return configuration.buildSessionFactory();
     }
 
     /**

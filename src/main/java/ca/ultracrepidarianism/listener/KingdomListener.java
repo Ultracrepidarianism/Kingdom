@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.listener;
 
+import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.services.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,9 +14,9 @@ public class KingdomListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
-        Player p = e.getPlayer();
-        database.createPlayer(p.getUniqueId().toString());
-        database.addPlayerToMap(p);
+        KDPlayer kdp = database.getPlayer(e.getPlayer());
+        if(kdp != null)
+            database.addPlayerToMap(kdp);
     }
 
     @EventHandler

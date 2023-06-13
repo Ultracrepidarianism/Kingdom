@@ -13,8 +13,8 @@ import java.util.Map;
 public abstract class Database {
     private static Database instance;
 
-    /** Player UUID -> Town **/
-    protected Map<String, KDTown> townByPlayerUUID = new HashMap<>();
+    /** player uuid -> KDPlayer **/
+    protected Map<String, KDTown> kdplayerByUUID = new HashMap<>();
     /** Town Name -> Town **/
     protected Map<String, KDTown> townByName = new HashMap<>();
     /** Player UUID -> Town Names **/
@@ -38,8 +38,9 @@ public abstract class Database {
      * Creates user's information if it doesn't exist.
      *
      * @param uuid User UUID
+     * @return KDPlayer just created or found
      */
-    public abstract void createPlayer(String uuid);
+    public abstract KDPlayer createPlayer(String uuid);
 
     /**
      * Creates a new town with an owner if it doesn't already exist.
@@ -100,7 +101,7 @@ public abstract class Database {
      *
      * @param ply Bukkit player entity.
      */
-    public abstract void addPlayerToMap(Player ply);
+    public abstract void addPlayerToMap(KDPlayer ply);
 
     /**
      * Unloads player from RAM to Storage engine.

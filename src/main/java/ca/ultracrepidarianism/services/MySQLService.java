@@ -5,20 +5,20 @@ import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
-import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
 import ca.ultracrepidarianism.utils.HibernateUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.K;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MySQLService extends Database {
     private Connection connection;
@@ -56,11 +56,16 @@ public class MySQLService extends Database {
      */
     @Override
     @Transactional
-    public void createPlayer(String uuid) {
-        HibernateUtil.doInTransaction(session -> {
-            KDPlayer player = new KDPlayer(uuid,null,null);
-            session.persist(player);
-        });
+    public KDPlayer createPlayer(String uuid) {
+//        KDPlayer player = HibernateUtil.getEntityManager().find(KDPlayer.class,uuid);
+//        if(player == null){
+//            player = new KDPlayer(uuid,null,null)
+//            HibernateUtil.doInTransaction(session -> {
+//                session.persist(player);
+//            });
+//        }
+//        return player;
+        return null;
     }
 
     /**
@@ -121,7 +126,7 @@ public class MySQLService extends Database {
      */
     @Override
     public KDPlayer getPlayer(Player ply) {
-        return null;
+        return HibernateUtil.getEntityManager().find(KDPlayer.class,ply.getUniqueId().toString());
     }
 
     /**
@@ -157,7 +162,7 @@ public class MySQLService extends Database {
      * @param ply Bukkit player entity.
      */
     @Override
-    public void addPlayerToMap(Player ply) {
+    public void addPlayerToMap(KDPlayer ply) {
 
     }
 
@@ -201,6 +206,7 @@ public class MySQLService extends Database {
      * @return Whether the database properly initialized or not
      */
     private boolean initializeDatabase() {
+        HibernateUtil.getSessionFactory();
         return true;
     }
 }
