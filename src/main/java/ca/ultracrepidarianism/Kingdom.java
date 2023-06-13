@@ -1,17 +1,13 @@
 package ca.ultracrepidarianism;
 
-import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.utils.HibernateUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import ca.ultracrepidarianism.commands.CommandManager;
 import ca.ultracrepidarianism.listener.ClaimListener;
 import ca.ultracrepidarianism.listener.KingdomListener;
+import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.services.Database;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import ca.ultracrepidarianism.utils.HibernateUtil;
+import jakarta.transaction.Transactional;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Kingdom extends JavaPlugin {
 

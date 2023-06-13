@@ -1,12 +1,14 @@
 package ca.ultracrepidarianism.model;
 
+import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name="towns")
+@Table(name = "towns")
 public class KDTown {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +18,7 @@ public class KDTown {
 
     @OneToOne
     @JoinColumn(name = "ownerUUID")
-    private KDPlayer owner ;
+    private KDPlayer owner;
 
     @OneToMany(mappedBy = "town")
     private List<KDPlayer> lstMembers = new ArrayList<>();
@@ -34,7 +36,7 @@ public class KDTown {
         return townName;
     }
 
-    public KDPlayer getOwner(){
+    public KDPlayer getOwner() {
         return owner;
     }
 
@@ -44,9 +46,10 @@ public class KDTown {
 
     /**
      * Contains ALL members
+     *
      * @return list of all members
      */
-    public List<KDPlayer> getMembers(){
+    public List<KDPlayer> getMembers() {
         return lstMembers;
     }
 

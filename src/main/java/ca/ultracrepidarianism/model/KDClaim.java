@@ -16,18 +16,17 @@ public class KDClaim {
     @JoinColumn(name = "town_id", foreignKey = @ForeignKey(name = "FK_CLAIM_TOWN"))
     private KDTown town;
 
-    public KDClaim(KDChunk chunk, KDTown town){
+    public KDClaim(KDChunk chunk, KDTown town) {
         this.chunk = chunk;
         this.town = town;
     }
 
-    public KDClaim() {
-
-    }
+    protected KDClaim() {}
 
     public KDChunk getChunk() {
         return chunk;
     }
+
     public KDTown getTown() {
         return town;
     }

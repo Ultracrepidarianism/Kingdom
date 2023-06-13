@@ -29,9 +29,9 @@ public class HibernateUtil {
     }
 
     /**
-     * This method is used to build and configure a Hibernate SessionFactory. 
+     * This method is used to build and configure a Hibernate SessionFactory.
      * A SessionFactory in Hibernate is used to create Sessions, which provide an interface between the application and the database.
-     * 
+     *
      * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
      */
     public static SessionFactory buildSessionFactory() {
@@ -61,7 +61,7 @@ public class HibernateUtil {
 
     /**
      * This method is used to get the SessionFactory object. If the SessionFactory object has not been instantiated yet, it will be instantiated.
-     * 
+     *
      * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
      */
     public static SessionFactory getSessionFactory() {
