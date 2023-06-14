@@ -10,7 +10,6 @@ import ca.ultracrepidarianism.model.KDTown;
 import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.services.Database;
 import ca.ultracrepidarianism.utils.HibernateUtil;
-import jakarta.transaction.Transactional;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Kingdom extends JavaPlugin {
@@ -22,9 +21,9 @@ public class Kingdom extends JavaPlugin {
         }
         saveDefaultConfig();
         Database.getInstance(); // Initialize DB to make sure its properly setup
-        getServer().getPluginManager().registerEvents(new KingdomListener(),this);
-        getServer().getPluginManager().registerEvents(new ClaimListener(),this);
-        getCommand("kingdom").setExecutor(new CommandManager(this));
+        getServer().getPluginManager().registerEvents(new KingdomListener(), this);
+        getServer().getPluginManager().registerEvents(new ClaimListener(), this);
+        getCommand("kingdom").setExecutor(new CommandManager());
     }
 
     private void runDbTests() {

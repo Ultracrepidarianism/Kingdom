@@ -1,11 +1,11 @@
 package ca.ultracrepidarianism.commands.subcommands;
 
+import ca.ultracrepidarianism.commands.SubCommand;
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
-import org.bukkit.entity.Player;
-import ca.ultracrepidarianism.commands.SubCommand;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDUtil;
+import org.bukkit.entity.Player;
 
 public class ClaimCommand extends SubCommand {
 
@@ -30,20 +30,20 @@ public class ClaimCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player ply, String[] args){
-        KDChunk chunk = KDChunk.parse(ply.getLocation().getChunk());
-        KDClaim claim = database.getClaimFromChunk(chunk);
-        if(claim != null){
-            try{
+    public void perform(Player ply, String[] args) {
+        KDChunk kdChunk = KDChunk.parse(ply.getLocation().getChunk());
+        KDClaim kdClaim = database.getClaimFromChunk(kdChunk);
+        if (kdClaim != null) {
+            try {
                 ply.sendMessage(KDUtil.getMessage("error.claim.alreadyclaimed"));
-            } catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
-            KDPlayer playerKD = database.getPlayer(ply);
-            if(playerKD == null) return;
-            if(playerKD.getTown() == null) return;
-            database.createClaim(playerKD,chunk);
+        } else {
+            KDPlayer kdPlayer = database.getPlayer(ply);
+            if (kdPlayer == null) return;
+            if (kdPlayer.getTown() == null) return;
+            database.createClaim(kdPlayer, kdChunk);
         }
     }
 
