@@ -4,6 +4,7 @@ import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,16 +22,22 @@ public class KDTown {
     private KDPlayer owner;
 
     @OneToMany(mappedBy = "town")
-    private List<KDPlayer> lstMembers = new ArrayList<>();
+    private List<KDPlayer> lstMembers;
+
+    @OneToMany(mappedBy = "town")
+    private List<KDClaim> kdClaims;
 
     protected KDTown() {}
 
     public KDTown(String townName, KDPlayer owner) {
-        this.townName = townName;
-        this.owner = owner;
-        this.lstMembers.add(owner);
-    }
+        this.kdClaims = new ArrayList<>();
+        this.lstMembers = new ArrayList<>();
 
+        this.townName = townName;
+        this.lstMembers.add(owner);
+
+        this.owner = owner;
+    }
 
     public String getTownName() {
         return townName;
@@ -40,8 +47,12 @@ public class KDTown {
         return owner;
     }
 
-    public void setOwner(KDPlayer owner) {
-        this.owner = owner;
+    public List<KDClaim> getKdClaim() {
+        return kdClaims;
+    }
+
+    public void addClaim(KDClaim claim) {
+        this.kdClaims.add(claim);
     }
 
     /**
@@ -53,12 +64,15 @@ public class KDTown {
         return lstMembers;
     }
 
+    /**
+     * Contains only members with {@link PermissionLevelEnum PermissionLevelEnum.OFFICER} or higher.
+     *
+     * @return list of officers
+     */
     public List<KDPlayer> getOfficers() {
         return lstMembers
                 .stream()
                 .filter(x -> x.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER))
                 .collect(Collectors.toList());
     }
-
-
 }

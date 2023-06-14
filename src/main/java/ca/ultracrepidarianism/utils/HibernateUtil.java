@@ -1,6 +1,7 @@
 package ca.ultracrepidarianism.utils;
 
 import ca.ultracrepidarianism.Kingdom;
+import ca.ultracrepidarianism.model.KDClaim;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
@@ -11,8 +12,6 @@ import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
@@ -51,10 +50,9 @@ public class HibernateUtil {
         settings.put(AvailableSettings.AUTOCOMMIT, "true");
 
         configuration.addProperties(settings);
-//        configuration.addAnnotatedClass(KDClaim.class);
+        configuration.addAnnotatedClass(KDClaim.class);
         configuration.addAnnotatedClass(KDPlayer.class);
         configuration.addAnnotatedClass(KDTown.class);
-
 
         return configuration.buildSessionFactory();
     }

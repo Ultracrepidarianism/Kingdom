@@ -18,13 +18,13 @@ public class KDPlayer {
     @JoinColumn(name = "townId", nullable = true)
     private KDTown town;
 
+    protected KDPlayer() {}
+
     public KDPlayer(String UUID, PermissionLevelEnum rank, KDTown town) {
         this.town = town;
         this.permissionLevel = rank;
         this.UUID = UUID;
     }
-
-    public KDPlayer() {}
 
     public String getUUID() {
         return UUID;
