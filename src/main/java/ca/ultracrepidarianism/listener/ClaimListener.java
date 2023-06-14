@@ -72,22 +72,18 @@ public class ClaimListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (e.getFrom().getChunk() == e.getTo().getChunk()) return;
+        if (e.getTo() == null) {
+            return;
+        }
 
+        if (e.getFrom().getChunk() == e.getTo().getChunk()) {
+            return;
+        }
 
-        //TODO 01 Rendre Database Side pour (Exists)
-
-//        File dataFolder = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "Claims");
-//        File fileFrom = new File(dataFolder, fromChunk + ".yml");
-//        File fileTo = new File(dataFolder, toChunk + ".yml");
-//        if(fileFrom.exists() && !fileTo.exists()){e.getPlayer().sendMessage("Entering wilderness");}
-//        else if(!fileFrom.exists() && fileTo.exists()){
-//
-//            FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(fileTo);
-//            e.getPlayer().sendMessage("Entering " + fileConfiguration.getString("town"));
-//        }
-        // TODO 01 FIN
-
+        KDClaim claim = database.getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
+        if (claim != null) {
+            e.getPlayer().sendMessage("Entering " + claim.getTown().getTownName());
+        }
     }
 
     @EventHandler
