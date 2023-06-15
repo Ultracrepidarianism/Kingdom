@@ -37,6 +37,6 @@ public class UnclaimCommand extends SubCommand {
             ply.sendMessage(KDUtil.getMessage("error.kingdom.nokingdom"));
             return;
         }
-        List<KDClaim> claims = HibernateUtil.getEntityManager().createQuery("SELECT * FROM claims WHERE townId = " )
+//        List<KDClaim> claims = HibernateUtil.getEntityManager().createQuery("SELECT * FROM claims WHERE townId = " )
     }
 }
