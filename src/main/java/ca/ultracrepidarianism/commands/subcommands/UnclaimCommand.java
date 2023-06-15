@@ -1,13 +1,9 @@
 package ca.ultracrepidarianism.commands.subcommands;
 
-import ca.ultracrepidarianism.model.KDClaim;
 import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.model.KDUtil;
-import ca.ultracrepidarianism.utils.HibernateUtil;
+import ca.ultracrepidarianism.utils.KDUtil;
 import org.bukkit.entity.Player;
 import ca.ultracrepidarianism.commands.SubCommand;
-
-import java.util.List;
 
 public class UnclaimCommand extends SubCommand {
     @Override
@@ -17,7 +13,7 @@ public class UnclaimCommand extends SubCommand {
 
     @Override
     public String getLabel() {
-        return null;
+        return "unclaim";
     }
 
     @Override

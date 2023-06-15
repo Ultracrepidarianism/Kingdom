@@ -13,14 +13,14 @@ public class KDClaim {
     private KDChunk chunk;
 
     @ManyToOne
-    @JoinColumn(name = "townId", foreignKey = @ForeignKey(name = "FK_CLAIM_TOWN"))
-    private KDTown town;
+    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_CLAIM_KINGDOM"))
+    private KDKingdom kingdom;
 
     protected KDClaim() {}
 
-    public KDClaim(KDChunk chunk, KDTown town) {
+    public KDClaim(KDChunk chunk, KDKingdom kingdom) {
         this.chunk = chunk;
-        this.town = town;
+        this.kingdom = kingdom;
     }
 
     public Long getId() {
@@ -31,7 +31,7 @@ public class KDClaim {
         return chunk;
     }
 
-    public KDTown getTown() {
-        return town;
+    public KDKingdom getKingdom() {
+        return kingdom;
     }
 }

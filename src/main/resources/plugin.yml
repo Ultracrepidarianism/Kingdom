@@ -6,6 +6,8 @@ main: ca.ultracrepidarianism.Kingdom
 libraries:
   - org.hibernate.orm:hibernate-core:6.2.4.Final
   - mysql:mysql-connector-java:8.0.33
+  - org.apache.commons:commons-lang3:3.12.0
+  - org.apache.commons:commons-collections4:4.4
 
 commands:
   kingdom:

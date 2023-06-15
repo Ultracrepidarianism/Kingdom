@@ -6,41 +6,42 @@ import ca.ultracrepidarianism.model.KDKingdom;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
-public class LeaveCommand extends SubCommand {
+public class DisbandCommand extends SubCommand {
     @Override
     public String getPermission() {
-        return "kingdom.leave";
+        return "kingdom.disband";
     }
 
     @Override
     public String getLabel() {
-        return "leave";
+        return "disband";
     }
 
     @Override
     public String getUsage() {
-        return "/kd leave";
+        return null;
     }
 
     @Override
     public String getDescription() {
-        return "Allows you to leave your kingdom.";
+        return null;
     }
 
     @Override
     public void perform(Player player, String[] args) {
-        final KDPlayer kdPlayer = database.getPlayer(player);
+        KDPlayer kdPlayer = database.getPlayer(player);
         if (kdPlayer == null) {
-            player.sendMessage("You need to be in a town first.");
+            player.sendMessage("You are not in a Kingdom.");
             return;
         }
 
-        final KDKingdom kdKingdom = kdPlayer.getKingdom();
-        if (!StringUtils.equals(kdKingdom.getOwner().getUUID(), player.getUniqueId().toString())) {
-            database.removePlayer(kdPlayer);
+        KDKingdom kdKingdom = kdPlayer.getKingdom();
+        if (!StringUtils.equals(player.getUniqueId().toString(), kdPlayer.getUUID())) {
+            player.sendMessage("Only the Town Owner can perform this action.");
             return;
         }
 
-        player.sendMessage("You cannot leave the town if you are the owner. Please consider using /kd delete");
+        database.removeTown(kdKingdom);
+        player.sendMessage("Kingdom has been disbanded.");
     }
 }

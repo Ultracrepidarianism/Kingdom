@@ -2,21 +2,16 @@ package ca.ultracrepidarianism.utils;
 
 import ca.ultracrepidarianism.Kingdom;
 import ca.ultracrepidarianism.model.KDClaim;
+import ca.ultracrepidarianism.model.KDKingdom;
 import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.model.KDTown;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.FlushModeType;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
 import java.util.Properties;
-import java.util.function.Consumer;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
@@ -44,15 +39,13 @@ public class HibernateUtil {
         settings.put(AvailableSettings.USER, sqlInfo.getUsername());
         settings.put(AvailableSettings.PASS, sqlInfo.getPassword());
         settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        settings.put(AvailableSettings.SHOW_SQL, "false");
-        settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
         settings.put(AvailableSettings.AUTOCOMMIT, "true");
 
         configuration.addProperties(settings);
         configuration.addAnnotatedClass(KDClaim.class);
         configuration.addAnnotatedClass(KDPlayer.class);
-        configuration.addAnnotatedClass(KDTown.class);
+        configuration.addAnnotatedClass(KDKingdom.class);
 
         return configuration.buildSessionFactory();
     }
@@ -63,7 +56,7 @@ public class HibernateUtil {
      * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
      */
     public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
             sessionFactory = buildSessionFactory();
         }
         return sessionFactory;
@@ -72,30 +65,8 @@ public class HibernateUtil {
     public static EntityManager getEntityManager() {
         if (entityManager == null) {
             entityManager = getSessionFactory().createEntityManager();
-            entityManager.setFlushMode(FlushModeType.COMMIT);
         }
         return entityManager;
     }
 
-    public static void doInTransaction(Consumer<Session> action) {
-        Transaction tx = null;
-        try (Session session = getSessionFactory().openSession()) {
-            tx = session.beginTransaction();
-
-            action.accept(session);
-
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null) tx.rollback();
-            throw e;
-        }
-    }
-
-    public static <T> T getSingleResultOrNull(TypedQuery<T> query) {
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
 }

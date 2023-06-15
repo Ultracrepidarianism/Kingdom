@@ -3,14 +3,14 @@ package ca.ultracrepidarianism.services;
 import ca.ultracrepidarianism.Kingdom;
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
+import ca.ultracrepidarianism.model.KDKingdom;
 import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.model.KDTown;
 import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
 import ca.ultracrepidarianism.utils.HibernateUtil;
+import ca.ultracrepidarianism.utils.PersistenceUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -53,7 +53,6 @@ public class MySQLService extends Database {
      * @param uuid User UUID
      */
     @Override
-    @Transactional
     public KDPlayer createPlayer(String uuid) {
 //        KDPlayer player = HibernateUtil.getEntityManager().find(KDPlayer.class,uuid);
 //        if(player == null){
@@ -74,30 +73,40 @@ public class MySQLService extends Database {
      */
     @Override
     public void createTown(Player ply, String townName) {
-        HibernateUtil.doInTransaction(session -> {
-            KDTown town = new KDTown(townName,null);
+        PersistenceUtil.doInTransaction(session -> {
+            KDKingdom town = new KDKingdom(townName, null);
             KDPlayer kdP = session.find(KDPlayer.class, ply.getUniqueId().toString());
-            if(kdP == null){
+            if (kdP == null) {
                 kdP = new KDPlayer(ply.getUniqueId().toString(), PermissionLevelEnum.OWNER, null);
 
             }
             town.setOwner(kdP);
-            kdP.setTown(town);
+            kdP.setKingdom(town);
 
             session.persist(kdP);
         });
     }
 
+    @Override
+    public void removeTown(KDKingdom kdKingdom) {
+//        PersistenceUtil.doInTransaction(session -> {
+////            kdKingdom.getMembers().forEach(session::remove);
+////            kdKingdom.getClaims().forEach(session::remove);
+//            session.remove(kdKingdom);
+//            session.flush();
+//        });
+    }
+
     /**
      * Create a chunk claim for the player's town.
      *
-     * @param kdTown Kingdom's entity for Players part of a Town.
+     * @param kdKingdom Kingdom's entity for Players part of a Town.
      * @param chunk  chunk to be claimed
      */
     @Override
-    public void createClaim(KDTown kdTown, KDChunk chunk) {
-        HibernateUtil.doInTransaction(session -> {
-            KDClaim claim = new KDClaim(chunk,kdTown);
+    public void createClaim(KDKingdom kdKingdom, KDChunk chunk) {
+        PersistenceUtil.doInTransaction(session -> {
+            KDClaim claim = new KDClaim(chunk, kdKingdom);
             session.persist(claim);
         });
     }
@@ -109,35 +118,39 @@ public class MySQLService extends Database {
      * @return Town entity if found in database else null
      */
     @Override
-    public KDTown getTown(String townName) {
+    public KDKingdom getTown(String townName) {
         EntityManager entityManager = HibernateUtil.getEntityManager();
 
-        TypedQuery<KDTown> typedQuery = entityManager.createQuery("FROM KDTown where townName = :townName", KDTown.class);
+        TypedQuery<KDKingdom> typedQuery = entityManager.createQuery("FROM KDKingdom where kingdomName = :townName", KDKingdom.class);
         typedQuery.setParameter("townName", townName);
 
-        return HibernateUtil.getSingleResultOrNull(typedQuery);
+        return PersistenceUtil.getSingleResultOrNull(typedQuery);
     }
 
     /**
      * Find Kingdom's Player entity from Bukkit's
      *
-     * @param ply Bukkit Player entity.
+     * @param player Bukkit Player entity.
      * @return Kingdom's Player entity.
      */
     @Override
-    public KDPlayer getPlayer(Player ply) {
-        return HibernateUtil.getEntityManager().find(KDPlayer.class,ply.getUniqueId().toString());
+    public KDPlayer getPlayer(Player player) {
+        return HibernateUtil.getEntityManager().find(KDPlayer.class, player.getUniqueId().toString());
     }
 
     /**
      * Get the town a player is part of.
      *
-     * @param uuid UUID of player you want to obtain the town from.
+     * @param playerUUID UUID of player you want to obtain the town from.
      * @return Player's Town
      */
     @Override
-    public KDTown getTownfromPlayer(String uuid) {
-        return null;
+    public KDKingdom getTownFromPlayerUUID(String playerUUID) {
+        final EntityManager entityManager = HibernateUtil.getEntityManager();
+        final TypedQuery<KDKingdom> typedQuery = entityManager.createQuery("from KDKingdom where :playerUUID in members", KDKingdom.class);
+        typedQuery.setParameter("playerUUID", playerUUID);
+
+        return PersistenceUtil.getSingleResultOrNull(typedQuery);
     }
 
     /**
@@ -152,8 +165,10 @@ public class MySQLService extends Database {
     }
 
     @Override
-    public void removePlayerTown(String uuid) {
-
+    public void removePlayer(KDPlayer kdPlayer) {
+        PersistenceUtil.doInTransaction(session -> {
+            session.remove(kdPlayer);
+        });
     }
 
     /**
@@ -204,7 +219,7 @@ public class MySQLService extends Database {
         typedQuery.setParameter("x", c.getX());
         typedQuery.setParameter("z", c.getZ());
 
-        return HibernateUtil.getSingleResultOrNull(typedQuery);
+        return PersistenceUtil.getSingleResultOrNull(typedQuery);
     }
 
     /**

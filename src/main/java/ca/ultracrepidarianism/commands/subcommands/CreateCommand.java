@@ -2,7 +2,7 @@ package ca.ultracrepidarianism.commands.subcommands;
 
 import ca.ultracrepidarianism.commands.SubCommand;
 import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.model.KDUtil;
+import ca.ultracrepidarianism.utils.KDUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -32,7 +32,7 @@ public class CreateCommand extends SubCommand {
         KDPlayer kdPlayer = database.getPlayer(ply);
         if (args.length != 2) {
             ply.sendMessage(getUsage());
-        } else if (kdPlayer != null && kdPlayer.getTown() != null) {
+        } else if (kdPlayer != null && kdPlayer.getKingdom() != null) {
             ply.sendMessage(KDUtil.getMessage("error.user.createTown"));
         } else {
             database.createTown(ply, args[1]);

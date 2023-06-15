@@ -1,6 +1,7 @@
 package ca.ultracrepidarianism.commands;
 
 import ca.ultracrepidarianism.commands.subcommands.*;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -8,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandManager implements TabExecutor {
     private final List<SubCommand> subCommands;
@@ -20,6 +20,7 @@ public class CommandManager implements TabExecutor {
         subCommands.add(new InviteCommand());
         subCommands.add(new JoinCommand());
         subCommands.add(new LeaveCommand());
+        subCommands.add(new DisbandCommand());
     }
 
     @Override
@@ -41,10 +42,15 @@ public class CommandManager implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (s.equalsIgnoreCase("kd")) {
-            if (strings.length == 1)
-                return subCommands.stream().map(SubCommand::getLabel).collect(Collectors.toList());
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String prefix, String[] strings) {
+        if (StringUtils.equalsAnyIgnoreCase(prefix, "kd", "kingdom")) {
+            if (strings.length == 1) {
+                return subCommands
+                        .stream()
+                        .map(SubCommand::getLabel)
+                        .filter(c -> StringUtils.startsWithIgnoreCase(c, strings[0]))
+                        .toList();
+            }
         }
 
         return null;

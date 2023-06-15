@@ -2,7 +2,7 @@ package ca.ultracrepidarianism.listener;
 
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
-import ca.ultracrepidarianism.model.KDTown;
+import ca.ultracrepidarianism.model.KDKingdom;
 import ca.ultracrepidarianism.services.Database;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -82,7 +82,7 @@ public class ClaimListener implements Listener {
 
         KDClaim claim = database.getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
-            e.getPlayer().sendMessage("Entering " + claim.getTown().getTownName());
+            e.getPlayer().sendMessage("Entering " + claim.getKingdom().getKingdomName());
         }
     }
 
@@ -97,7 +97,7 @@ public class ClaimListener implements Listener {
             return false;
         }
 
-        KDTown town = this.database.getTownfromPlayer(player.getUniqueId().toString());
+        KDKingdom town = this.database.getTownFromPlayerUUID(player.getUniqueId().toString());
         if (town == null) {
             return true;
         }

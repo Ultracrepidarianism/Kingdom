@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ca.ultracrepidarianism.commands.SubCommand;
-import ca.ultracrepidarianism.model.KDTown;
+import ca.ultracrepidarianism.model.KDKingdom;
 
 public class InviteCommand extends SubCommand {
     @Override
@@ -37,7 +37,7 @@ public class InviteCommand extends SubCommand {
             ply.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
             return;
         }
-        if(database.getTownfromPlayer(ply.getUniqueId().toString()) == null){
+        if(database.getTownFromPlayerUUID(ply.getUniqueId().toString()) == null){
             ply.sendMessage("You cannot invite people if you are not in a town.");
             return;
         }
@@ -46,11 +46,11 @@ public class InviteCommand extends SubCommand {
         if (p == null) {
             ply.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
         } else {
-            if (database.getTownfromPlayer(p.getUniqueId().toString()) == null) {
+            if (database.getTownFromPlayerUUID(p.getUniqueId().toString()) == null) {
                 ply.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + args[1] + ".");
-                KDTown town = database.getTownfromPlayer(ply.getUniqueId().toString());
-                p.sendMessage(ChatColor.GREEN + "You have been invited to join the town " + town.getTownName() + ". Please do" + ChatColor.YELLOW + " /kd accept" + ChatColor.GREEN + " to join their team.");
-                database.addPendingInvite(p.getUniqueId().toString(), town.getTownName());
+                KDKingdom town = database.getTownFromPlayerUUID(ply.getUniqueId().toString());
+                p.sendMessage(ChatColor.GREEN + "You have been invited to join the town " + town.getKingdomName() + ". Please do" + ChatColor.YELLOW + " /kd accept" + ChatColor.GREEN + " to join their team.");
+                database.addPendingInvite(p.getUniqueId().toString(), town.getKingdomName());
             } else
                 ply.sendMessage("This player is already in a town.");
         }

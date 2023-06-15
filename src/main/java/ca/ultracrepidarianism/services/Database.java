@@ -2,8 +2,8 @@ package ca.ultracrepidarianism.services;
 
 import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
+import ca.ultracrepidarianism.model.KDKingdom;
 import ca.ultracrepidarianism.model.KDPlayer;
-import ca.ultracrepidarianism.model.KDTown;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -14,13 +14,13 @@ public abstract class Database {
     private static Database instance;
 
     /** player uuid -> KDPlayer **/
-    protected Map<String, KDTown> kdplayerByUUID = new HashMap<>();
+    protected Map<String, KDKingdom> kdplayerByUUID = new HashMap<>();
     /** Town Name -> Town **/
-    protected Map<String, KDTown> townByName = new HashMap<>();
+    protected Map<String, KDKingdom> townByName = new HashMap<>();
     /** Player UUID -> Town Names **/
     protected Map<String, List<String>> invitesByPlayerUUID = new HashMap<>();
 
-    protected Map<KDChunk, KDTown> ClaimedCache = new HashMap<>();
+    protected Map<KDChunk, KDKingdom> ClaimedCache = new HashMap<>();
 
     /**
      * Get or create the database instance
@@ -51,12 +51,19 @@ public abstract class Database {
     public abstract void createTown(Player ply, String townName);
 
     /**
+     * Remove the town. This will also remove the remaining players from the town.
+     *
+     * @param town The town to remove
+     */
+    public abstract void removeTown(KDKingdom town);
+
+    /**
      * Create a chunk claim for the player's town.
      *
-     * @param kdTown Kingdom's entity for Players part of a Town.
+     * @param kdKingdom Kingdom's entity for Players part of a Town.
      * @param chunk  KDChunk object generated with the Player's world and coordinates.
      */
-    public abstract void createClaim(KDTown kdTown, KDChunk chunk);
+    public abstract void createClaim(KDKingdom kdKingdom, KDChunk chunk);
 
     /**
      * Finds a Town by it's name in the database.
@@ -64,23 +71,23 @@ public abstract class Database {
      * @param townName Name of the town you want to obtain.
      * @return Town entity if found in database else null
      */
-    public abstract KDTown getTown(String townName);
+    public abstract KDKingdom getTown(String townName);
 
     /**
      * Find Kingdom's Player entity from Bukkit's
      *
-     * @param ply Bukkit Player entity.
+     * @param player Bukkit Player entity.
      * @return Kingdom's Player entity.
      */
-    public abstract KDPlayer getPlayer(Player ply);
+    public abstract KDPlayer getPlayer(Player player);
 
     /**
      * Get the town a player is part of.
      *
-     * @param   uuid UUID of player you want to obtain the town from.
+     * @param   playerUUID UUID of player you want to obtain the town from.
      * @return       Player's Town
      */
-    public abstract KDTown getTownfromPlayer(String uuid);
+    public abstract KDKingdom getTownFromPlayerUUID(String playerUUID);
 
     /**
      * Adds a player to the town.
@@ -94,7 +101,7 @@ public abstract class Database {
      *
      * @param uuid UUID of player you want to remove from the town.
      */
-    public abstract void removePlayerTown(String uuid);
+    public abstract void removePlayer(KDPlayer uuid);
 
     /**
      * Loads PlayerKD information from Storage engine to RAM.

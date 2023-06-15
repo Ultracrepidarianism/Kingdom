@@ -2,46 +2,45 @@ package ca.ultracrepidarianism.model;
 
 import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "towns")
+@Table(name = "kingdoms")
 
-public class KDTown {
+public class KDKingdom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String townName;
+    private String kingdomName;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ownerUUID", foreignKey = @ForeignKey(name = "FK_TOWN_OWNER"))
+    @JoinColumn(name = "ownerUUID", foreignKey = @ForeignKey(name = "FK_KINGDOM_OWNER"))
     private KDPlayer owner;
 
-    @OneToMany(mappedBy = "town")
-    private List<KDPlayer> lstMembers;
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<KDPlayer> members;
 
-    @OneToMany(mappedBy = "town")
-    private List<KDClaim> kdClaims;
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<KDClaim> claims;
 
-    protected KDTown() {}
+    protected KDKingdom() {}
 
-    public KDTown(String townName, KDPlayer owner) {
-        this.kdClaims = new ArrayList<>();
-        this.lstMembers = new ArrayList<>();
+    public KDKingdom(String kingdomName, KDPlayer owner) {
+        this.claims = new ArrayList<>();
+        this.members = new ArrayList<>();
 
-        this.townName = townName;
-        this.lstMembers.add(owner);
+        this.kingdomName = kingdomName;
+        this.members.add(owner);
 
         this.owner = owner;
     }
 
-    public String getTownName() {
-        return townName;
+    public String getKingdomName() {
+        return kingdomName;
     }
 
     public KDPlayer getOwner() {
@@ -50,12 +49,12 @@ public class KDTown {
 
     public void setOwner(KDPlayer player){this.owner = player;}
 
-    public List<KDClaim> getKdClaim() {
-        return kdClaims;
+    public List<KDClaim> getClaims() {
+        return claims;
     }
 
     public void addClaim(KDClaim claim) {
-        this.kdClaims.add(claim);
+        this.claims.add(claim);
     }
 
     /**
@@ -64,7 +63,7 @@ public class KDTown {
      * @return list of all members
      */
     public List<KDPlayer> getMembers() {
-        return lstMembers;
+        return members;
     }
 
     /**
@@ -73,7 +72,7 @@ public class KDTown {
      * @return list of officers
      */
     public List<KDPlayer> getOfficers() {
-        return lstMembers
+        return members
                 .stream()
                 .filter(x -> x.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER))
                 .collect(Collectors.toList());

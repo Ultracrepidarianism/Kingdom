@@ -29,7 +29,7 @@ public class JoinCommand extends SubCommand {
     @Override
     public void perform(Player ply, String[] args) {
         //T
-        if(database.getTownfromPlayer(ply.getUniqueId().toString()) != null){
+        if(database.getTownFromPlayerUUID(ply.getUniqueId().toString()) != null){
             ply.sendMessage("Please leave your town first.");
             return;
         }

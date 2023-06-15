@@ -15,13 +15,13 @@ public class KDPlayer {
     private PermissionLevelEnum permissionLevel;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "townId", foreignKey = @ForeignKey(name = "FK_PLAYER_TOWN"))
-    private KDTown town;
+    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_PLAYER_KINGDOM"))
+    private KDKingdom kingdom;
 
     protected KDPlayer() {}
 
-    public KDPlayer(String UUID, PermissionLevelEnum rank, KDTown town) {
-        this.town = town;
+    public KDPlayer(String UUID, PermissionLevelEnum rank, KDKingdom kingdom) {
+        this.kingdom = kingdom;
         this.permissionLevel = rank;
         this.UUID = UUID;
     }
@@ -42,11 +42,11 @@ public class KDPlayer {
         this.permissionLevel = permissionLevel;
     }
 
-    public KDTown getTown() {
-        return town;
+    public KDKingdom getKingdom() {
+        return kingdom;
     }
 
-    public void setTown(KDTown town) {
-        this.town = town;
+    public void setKingdom(KDKingdom town) {
+        this.kingdom = town;
     }
 }
