@@ -76,7 +76,7 @@ public class ClaimListener implements Listener {
             return;
         }
 
-        if (e.getFrom().getChunk() == e.getTo().getChunk()) {
+        if (e.getFrom().getChunk().equals(e.getTo().getChunk())) {
             return;
         }
 

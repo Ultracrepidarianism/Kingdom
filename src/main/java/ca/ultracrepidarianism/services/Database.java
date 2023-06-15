@@ -53,10 +53,10 @@ public abstract class Database {
     /**
      * Create a chunk claim for the player's town.
      *
-     * @param plyKD     Kingdom's entity for Players part of a Town.
-     * @param chunk     KDChunk object generated with the Player's world and coordinates.
+     * @param kdTown Kingdom's entity for Players part of a Town.
+     * @param chunk  KDChunk object generated with the Player's world and coordinates.
      */
-    public abstract void createClaim(KDPlayer plyKD, KDChunk chunk);
+    public abstract void createClaim(KDTown kdTown, KDChunk chunk);
 
     /**
      * Finds a Town by it's name in the database.

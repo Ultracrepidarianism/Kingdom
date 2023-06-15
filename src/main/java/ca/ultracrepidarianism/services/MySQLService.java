@@ -5,20 +5,18 @@ import ca.ultracrepidarianism.model.KDChunk;
 import ca.ultracrepidarianism.model.KDClaim;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDTown;
+import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
 import ca.ultracrepidarianism.utils.HibernateUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.K;
-import org.hibernate.Session;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MySQLService extends Database {
     private Connection connection;
@@ -77,29 +75,31 @@ public class MySQLService extends Database {
     @Override
     public void createTown(Player ply, String townName) {
         HibernateUtil.doInTransaction(session -> {
-
+            KDTown town = new KDTown(townName,null);
             KDPlayer kdP = session.find(KDPlayer.class, ply.getUniqueId().toString());
             if(kdP == null){
-                kdP = new KDPlayer(ply.getUniqueId().toString(),null, null);
-            }
+                kdP = new KDPlayer(ply.getUniqueId().toString(), PermissionLevelEnum.OWNER, null);
 
-            KDTown town = new KDTown(townName, kdP);
+            }
+            town.setOwner(kdP);
             kdP.setTown(town);
 
             session.persist(kdP);
         });
-
     }
 
     /**
      * Create a chunk claim for the player's town.
      *
-     * @param plyKD     Kingdom's entity for Players part of a Town.
-     * @param chunk     chunk to be claimed
+     * @param kdTown Kingdom's entity for Players part of a Town.
+     * @param chunk  chunk to be claimed
      */
     @Override
-    public void createClaim(KDPlayer plyKD, KDChunk chunk) {
-
+    public void createClaim(KDTown kdTown, KDChunk chunk) {
+        HibernateUtil.doInTransaction(session -> {
+            KDClaim claim = new KDClaim(chunk,kdTown);
+            session.persist(claim);
+        });
     }
 
     /**
@@ -197,7 +197,14 @@ public class MySQLService extends Database {
 
     @Override
     public KDClaim getClaimFromChunk(KDChunk c) {
-        return null;
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+
+        TypedQuery<KDClaim> typedQuery = entityManager.createQuery("FROM KDClaim where chunk.world = :world AND chunk.x = :x AND chunk.z = :z", KDClaim.class);
+        typedQuery.setParameter("world", c.getWorld());
+        typedQuery.setParameter("x", c.getX());
+        typedQuery.setParameter("z", c.getZ());
+
+        return HibernateUtil.getSingleResultOrNull(typedQuery);
     }
 
     /**

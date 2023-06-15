@@ -17,11 +17,11 @@ public abstract class SubCommand {
 
     public abstract String getPermission();
 
-    public String getPermissionError() {
-        File file = new File(kingdom.getDataFolder().getAbsolutePath() + File.separator + "strings.yml");
-        FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
-        return ChatColor.DARK_RED + "[" + ChatColor.RED + "Kingdom" + ChatColor.DARK_RED + "] " + fileConfiguration.getString("error.permission") + ChatColor.YELLOW + ChatColor.BOLD + getLabel();
-    }
+//    public String getPermissionError() {
+//        File file = new File(kingdom.getDataFolder().getAbsolutePath() + File.separator + "strings.yml");
+//        FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
+//        return ChatColor.DARK_RED + "[" + ChatColor.RED + "Kingdom" + ChatColor.DARK_RED + "] " + fileConfiguration.getString("error.permission") + ChatColor.YELLOW + ChatColor.BOLD + getLabel();
+//    }
 
     public abstract String getLabel();
 

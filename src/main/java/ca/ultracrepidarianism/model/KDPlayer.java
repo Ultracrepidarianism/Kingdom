@@ -14,8 +14,8 @@ public class KDPlayer {
     @Enumerated(EnumType.STRING)
     private PermissionLevelEnum permissionLevel;
 
-    @ManyToOne
-    @JoinColumn(name = "townId", nullable = true)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "townId", foreignKey = @ForeignKey(name = "FK_PLAYER_TOWN"))
     private KDTown town;
 
     protected KDPlayer() {}

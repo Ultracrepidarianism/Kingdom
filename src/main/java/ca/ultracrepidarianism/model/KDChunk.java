@@ -20,12 +20,24 @@ public class KDChunk {
         return world;
     }
 
+    public void setWorld(String world) {
+        this.world = world;
+    }
+
     public int getX() {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getZ() {
         return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 
     public static KDChunk parse(org.bukkit.Chunk chunk) {

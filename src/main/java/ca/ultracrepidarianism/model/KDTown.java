@@ -2,6 +2,7 @@ package ca.ultracrepidarianism.model;
 
 import ca.ultracrepidarianism.model.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "towns")
+
 public class KDTown {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +18,8 @@ public class KDTown {
 
     private String townName;
 
-    @OneToOne
-    @JoinColumn(name = "ownerUUID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ownerUUID", foreignKey = @ForeignKey(name = "FK_TOWN_OWNER"))
     private KDPlayer owner;
 
     @OneToMany(mappedBy = "town")
@@ -45,6 +47,8 @@ public class KDTown {
     public KDPlayer getOwner() {
         return owner;
     }
+
+    public void setOwner(KDPlayer player){this.owner = player;}
 
     public List<KDClaim> getKdClaim() {
         return kdClaims;

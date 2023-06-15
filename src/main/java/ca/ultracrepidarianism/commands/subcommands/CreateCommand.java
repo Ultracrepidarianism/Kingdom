@@ -36,7 +36,7 @@ public class CreateCommand extends SubCommand {
             ply.sendMessage(KDUtil.getMessage("error.user.createTown"));
         } else {
             database.createTown(ply, args[1]);
-            ply.sendMessage(ChatColor.GREEN + "Town" + args[1] + "successfully created");
+            ply.sendMessage(ChatColor.GREEN + "Town " + args[1] + " successfully created");
         }
     }
 }
