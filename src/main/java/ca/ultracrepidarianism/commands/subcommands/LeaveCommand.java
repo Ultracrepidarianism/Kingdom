@@ -43,6 +43,6 @@ public class LeaveCommand extends SubCommand {
             return;
         }
         player.sendMessage(KDUtil.getMessage("error.leave.owner"));
-        player.sendMessage("You cannot leave the town if you are the owner. Please consider using /kd delete");
+        player.sendMessage("You cannot leave the town if you are the owner. Please consider using /kd disband");
     }
 }

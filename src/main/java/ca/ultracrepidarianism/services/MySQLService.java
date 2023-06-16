@@ -10,8 +10,11 @@ import ca.ultracrepidarianism.services.sqlutil.SqlInfo;
 import ca.ultracrepidarianism.utils.HibernateUtil;
 import ca.ultracrepidarianism.utils.PersistenceUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.bukkit.entity.Player;
+import org.hibernate.SessionFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -89,11 +92,21 @@ public class MySQLService extends Database {
 
     @Override
     public void removeTown(KDKingdom kdKingdom) {
+//        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//        if (sessionFactory.getCurrentSession() == null) {
+//            sessionFactory.openSession();
+//        }
+
+        Query query = HibernateUtil.getEntityManager().createQuery("DELETE FROM KDKingdom where id = :id");
+        query.setParameter("id", kdKingdom.getId());
+
 //        PersistenceUtil.doInTransaction(session -> {
 ////            kdKingdom.getMembers().forEach(session::remove);
 ////            kdKingdom.getClaims().forEach(session::remove);
+////            kdKingdom.getMembers().remove(kdKingdom.getOwner());
+//            kdKingdom.getMembers().clear();
+//            kdKingdom.getClaims().clear();
 //            session.remove(kdKingdom);
-//            session.flush();
 //        });
     }
 
@@ -147,7 +160,7 @@ public class MySQLService extends Database {
     @Override
     public KDKingdom getTownFromPlayerUUID(String playerUUID) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
-        final TypedQuery<KDKingdom> typedQuery = entityManager.createQuery("from KDKingdom where :playerUUID in members", KDKingdom.class);
+        final TypedQuery<KDKingdom> typedQuery = entityManager.createQuery("from KDKingdom where :playerUUID in (members)", KDKingdom.class);
         typedQuery.setParameter("playerUUID", playerUUID);
 
         return PersistenceUtil.getSingleResultOrNull(typedQuery);

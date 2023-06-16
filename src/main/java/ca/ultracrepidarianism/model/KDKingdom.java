@@ -17,14 +17,14 @@ public class KDKingdom {
 
     private String kingdomName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ownerUUID", foreignKey = @ForeignKey(name = "FK_KINGDOM_OWNER"))
     private KDPlayer owner;
 
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KDPlayer> members;
 
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KDClaim> claims;
 
     protected KDKingdom() {}

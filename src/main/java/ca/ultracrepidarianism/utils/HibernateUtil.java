@@ -39,6 +39,7 @@ public class HibernateUtil {
         settings.put(AvailableSettings.USER, sqlInfo.getUsername());
         settings.put(AvailableSettings.PASS, sqlInfo.getPassword());
         settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
+        settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
         settings.put(AvailableSettings.AUTOCOMMIT, "true");
 

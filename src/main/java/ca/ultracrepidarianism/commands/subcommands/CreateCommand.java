@@ -6,6 +6,8 @@ import ca.ultracrepidarianism.utils.KDUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class CreateCommand extends SubCommand {
     @Override
     public String getPermission() {
@@ -38,7 +40,7 @@ public class CreateCommand extends SubCommand {
             database.createTown(ply, args[1]);
 
 
-            String message = KDUtil.getMessage("success.create").replace("%town%",args[1]);
+            String message = KDUtil.getMessage("success.create", Map.entry("town", args[1]));
             ply.sendMessage(message);
         }
     }
