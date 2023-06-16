@@ -33,10 +33,13 @@ public class CreateCommand extends SubCommand {
         if (args.length != 2) {
             ply.sendMessage(getUsage());
         } else if (kdPlayer != null && kdPlayer.getKingdom() != null) {
-            ply.sendMessage(KDUtil.getMessage("error.user.createTown"));
+            ply.sendMessage(KDUtil.getMessage("error.create.alreadyInKingdom"));
         } else {
             database.createTown(ply, args[1]);
-            ply.sendMessage(ChatColor.GREEN + "Town " + args[1] + " successfully created");
+
+
+            String message = KDUtil.getMessage("success.create").replace("%town%",args[1]);
+            ply.sendMessage(message);
         }
     }
 }

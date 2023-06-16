@@ -31,6 +31,7 @@ public class DisbandCommand extends SubCommand {
     public void perform(Player player, String[] args) {
         KDPlayer kdPlayer = database.getPlayer(player);
         if (kdPlayer == null) {
+
             player.sendMessage("You are not in a Kingdom.");
             return;
         }

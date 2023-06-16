@@ -3,6 +3,7 @@ package ca.ultracrepidarianism.commands.subcommands;
 import ca.ultracrepidarianism.commands.SubCommand;
 import ca.ultracrepidarianism.model.KDPlayer;
 import ca.ultracrepidarianism.model.KDKingdom;
+import ca.ultracrepidarianism.utils.KDUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,8 @@ public class LeaveCommand extends SubCommand {
     public void perform(Player player, String[] args) {
         final KDPlayer kdPlayer = database.getPlayer(player);
         if (kdPlayer == null) {
-            player.sendMessage("You need to be in a town first.");
+            player.sendMessage(KDUtil.getMessage("error.global.nokingdom"));
+            //player.sendMessage("You need to be in a town first.");
             return;
         }
 
@@ -40,7 +42,7 @@ public class LeaveCommand extends SubCommand {
             database.removePlayer(kdPlayer);
             return;
         }
-
+        player.sendMessage(KDUtil.getMessage("error.leave.owner"));
         player.sendMessage("You cannot leave the town if you are the owner. Please consider using /kd delete");
     }
 }

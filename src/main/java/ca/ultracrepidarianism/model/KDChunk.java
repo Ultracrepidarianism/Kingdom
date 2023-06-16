@@ -1,6 +1,9 @@
 package ca.ultracrepidarianism.model;
 
 import jakarta.persistence.Embeddable;
+import org.bukkit.Chunk;
+
+import java.util.Objects;
 
 @Embeddable
 public class KDChunk {
@@ -45,21 +48,52 @@ public class KDChunk {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj.getClass().isInstance(this.getClass())) {
-            KDChunk chunk = (KDChunk) obj;
-
-            return chunk.getWorld().equals(this.getWorld()) &
-                    chunk.getX() == this.getX() &&
-                    chunk.getZ() == this.getZ();
-        }
-
-        if (obj instanceof org.bukkit.Chunk chunk) {
-            return chunk.getWorld().getName().equals(this.getWorld()) &
-                    chunk.getX() == this.getX() &&
-                    chunk.getZ() == this.getZ();
-        }
-
-        return false;
+    public int hashCode() {
+        return Objects.hash(world, x, z);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if(o instanceof KDClaim kdClaim){
+            return x == kdClaim.getChunk().getX() && z == kdClaim.getChunk().getZ() && world == kdClaim.getChunk().getWorld();
+        }
+
+        KDChunk kdChunk = null;
+        if(o instanceof KDChunk kdc){
+            kdChunk = kdc;
+        } else if (o instanceof Chunk c) {
+            kdChunk = KDChunk.parse(c);
+        }else{
+            return false;
+        }
+
+        return x == kdChunk.x && z == kdChunk.z && Objects.equals(world, kdChunk.world);
+    }
+
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(world, x, z);
+//    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj.getClass().isInstance(this.getClass())) {
+//            KDChunk chunk = (KDChunk) obj;
+//
+//            return chunk.getWorld().equals(this.getWorld()) &
+//                    chunk.getX() == this.getX() &&
+//                    chunk.getZ() == this.getZ();
+//        }
+//
+//        if (obj instanceof org.bukkit.Chunk chunk) {
+//            return chunk.getWorld().getName().equals(this.getWorld()) &
+//                    chunk.getX() == this.getX() &&
+//                    chunk.getZ() == this.getZ();
+//        }
+//
+//        return false;
+//    }
 }

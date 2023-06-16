@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.commands.subcommands;
 
+import ca.ultracrepidarianism.utils.KDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,11 +35,12 @@ public class InviteCommand extends SubCommand {
             return;
         }
         if(!ply.hasPermission(getPermission())){
-            ply.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
+            ply.sendMessage(ChatColor.RED + KDUtil.getMessage("error.global.permissionlevel"));
+//          ply.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
             return;
         }
         if(database.getTownFromPlayerUUID(ply.getUniqueId().toString()) == null){
-            ply.sendMessage("You cannot invite people if you are not in a town.");
+            ply.sendMessage(KDUtil.getMessage("error.global.noKingdom"));
             return;
         }
 

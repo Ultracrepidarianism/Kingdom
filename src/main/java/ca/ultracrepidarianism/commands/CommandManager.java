@@ -16,6 +16,7 @@ public class CommandManager implements TabExecutor {
     public CommandManager() {
         subCommands = new ArrayList<>();
         subCommands.add(new ClaimCommand());
+        subCommands.add(new UnclaimCommand());
         subCommands.add(new CreateCommand());
         subCommands.add(new InviteCommand());
         subCommands.add(new JoinCommand());

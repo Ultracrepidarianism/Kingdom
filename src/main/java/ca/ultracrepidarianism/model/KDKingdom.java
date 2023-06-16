@@ -39,6 +39,10 @@ public class KDKingdom {
         this.owner = owner;
     }
 
+    public long getId(){
+        return id;
+    }
+
     public String getKingdomName() {
         return kingdomName;
     }
