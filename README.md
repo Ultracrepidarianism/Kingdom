@@ -7,12 +7,13 @@ yes
 
 - Complete the Kingdom group system
   - [x] Create
-  - [x] Claim
   - [ ] Leave
   - [ ] Disband
   - [ ] Invite
   - [ ] Join
 - Complete the claim system (Claim/Unclaim)
+  - [x] Claim
+  - [ ] Unclaim
 - Anti-Grief measures on claims
 - Get information about the state of the kingdom(info)
 - Outposts
