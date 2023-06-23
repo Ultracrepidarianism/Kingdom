@@ -30,8 +30,8 @@ public class SQLDAL extends AbstractHikariDAL implements DAL {
     @Override
     public <T> void update(String table, Map<String, String> properties, String where) throws SQLException {
         StringBuilder query = new StringBuilder("UPDATE `" + table).append("` SET ");
-        for (String key : properties.keySet()) {
-            query.append(key).append(" = ").append(properties.get(key)).append(", ");
+        for (Map.Entry<String,String> entry : properties.entrySet()) {
+            query.append(entry.getKey()).append(" = ").append(entry.getValue()).append(", ");
         }
         if (!where.isEmpty() && !where.isBlank())
             query.append("WHERE ").append(where);
