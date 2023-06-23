@@ -9,8 +9,11 @@ import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.services.Database;
 import ca.ultracrepidarianism.kingdom.listener.ClaimListener;
 import ca.ultracrepidarianism.kingdom.listener.KingdomListener;
-import ca.ultracrepidarianism.kingdom.utils.PersistenceUtil;
+import ca.ultracrepidarianism.kingdom.utils.DataSource;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Kingdom extends JavaPlugin {
 
@@ -32,12 +35,18 @@ public class Kingdom extends JavaPlugin {
         player.setKingdom(town);
         player.setPermissionLevel(PermissionLevelEnum.OWNER);
         KDClaim claim = new KDClaim(new KDChunk("world", 1, 1), town);
-        PersistenceUtil.doInTransaction(session -> {
-            session.persist(player);
-            session.persist(town);
-            town.addClaim(claim);
-            session.persist(claim);
-        });
+    }
+
+
+    private void createTablesIfNotExist(){
+        try{
+            Connection c = DataSource.getConnection();
+            c.prepareStatement("CREATE ")
+        }catch (SQLException e){
+
+        }
+
+
     }
 
 }

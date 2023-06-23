@@ -36,4 +36,5 @@ public class SqlInfo {
     public String getPassword() {
         return password;
     }
+
 }

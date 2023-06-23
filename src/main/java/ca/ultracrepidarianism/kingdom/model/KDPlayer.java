@@ -1,21 +1,16 @@
 package ca.ultracrepidarianism.kingdom.model;
 
 import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
+import com.j256.ormlite.table.DatabaseTable;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "players")
+
 public class KDPlayer {
 
-    @Id
     private String UUID;
 
-    @Column(name = "permissionLevel", nullable = true)
-    @Enumerated(EnumType.STRING)
     private PermissionLevelEnum permissionLevel;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_PLAYER_KINGDOM"))
     private KDKingdom kingdom;
 
     protected KDPlayer() {}

@@ -2,8 +2,7 @@ package ca.ultracrepidarianism.kingdom.model;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "claims")
+
 public class KDClaim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

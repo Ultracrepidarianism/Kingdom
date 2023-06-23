@@ -5,7 +5,6 @@ import org.bukkit.Chunk;
 
 import java.util.Objects;
 
-@Embeddable
 public class KDChunk {
     private String world;
     private int x;

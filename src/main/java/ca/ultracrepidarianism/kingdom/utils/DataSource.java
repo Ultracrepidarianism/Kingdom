@@ -1,32 +1,32 @@
 package ca.ultracrepidarianism.kingdom.utils;
 
+import ca.ultracrepidarianism.kingdom.services.sqlutil.SqlInfo;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DataSource {
 
     private static HikariConfig config = new HikariConfig();
     private static HikariDataSource ds;
 
-    private static DSLContext context;
 
     static {
-        config.setJdbcUrl( "jdbc_url" );
-        config.setUsername( "database_username" );
-        config.setPassword( "database_password" );
+        SqlInfo info = new SqlInfo();
+        config.setJdbcUrl( info.getUrl() );
+        config.setUsername(info.getUsername() );
+        config.setPassword( info.getPassword() );
         config.addDataSourceProperty( "cachePrepStmts" , "true" );
         config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
         config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
         ds = new HikariDataSource( config );
-        context = DSL.using(ds, SQLDialect.MYSQL);
     }
 
     private DataSource() {}
 
-    public static DSLContext getContext() {
-        return context;
+    public static Connection getConnection() throws SQLException{
+        return ds.getConnection();
     }
 }

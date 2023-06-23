@@ -7,8 +7,6 @@ import ca.ultracrepidarianism.kingdom.model.KDPlayer;
 import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.services.sqlutil.SqlInfo;
-import ca.ultracrepidarianism.kingdom.utils.HibernateUtil;
-import ca.ultracrepidarianism.kingdom.utils.PersistenceUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;

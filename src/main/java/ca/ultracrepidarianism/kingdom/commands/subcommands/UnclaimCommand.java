@@ -4,7 +4,6 @@ import ca.ultracrepidarianism.kingdom.model.KDChunk;
 import ca.ultracrepidarianism.kingdom.model.KDClaim;
 import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.model.KDPlayer;
-import ca.ultracrepidarianism.kingdom.utils.HibernateUtil;
 import ca.ultracrepidarianism.kingdom.utils.KDUtil;
 import jakarta.persistence.TypedQuery;
 import org.bukkit.entity.Player;
