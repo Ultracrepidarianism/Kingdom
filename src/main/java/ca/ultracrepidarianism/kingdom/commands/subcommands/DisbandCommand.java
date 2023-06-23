@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.model.KDKingdom;
 import ca.ultracrepidarianism.kingdom.model.KDPlayer;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
@@ -29,7 +30,7 @@ public class DisbandCommand extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        KDPlayer kdPlayer = database.getPlayer(player);
+        KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(player, true);
         if (kdPlayer == null) {
 
             player.sendMessage("You are not in a Kingdom.");
@@ -42,7 +43,7 @@ public class DisbandCommand extends SubCommand {
             return;
         }
 
-        database.removeTown(kdKingdom);
+        DataFacade.getInstance().Kingdoms().removeKingdom(kdKingdom);
         player.sendMessage("Kingdom has been disbanded.");
     }
 }

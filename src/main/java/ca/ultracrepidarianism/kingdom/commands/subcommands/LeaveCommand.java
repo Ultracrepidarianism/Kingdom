@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.model.KDKingdom;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.model.KDPlayer;
@@ -30,7 +31,7 @@ public class LeaveCommand extends SubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        final KDPlayer kdPlayer = database.getPlayer(player);
+        final KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(player, true);
         if (kdPlayer == null) {
             player.sendMessage(KDUtil.getMessage("error.global.nokingdom"));
             //player.sendMessage("You need to be in a town first.");
@@ -39,7 +40,7 @@ public class LeaveCommand extends SubCommand {
 
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
         if (!StringUtils.equals(kdKingdom.getOwner().getUUID(), player.getUniqueId().toString())) {
-            database.removePlayer(kdPlayer);
+            DataFacade.getInstance().Players().removePlayer(kdPlayer);
             return;
         }
         player.sendMessage(KDUtil.getMessage("error.leave.owner"));

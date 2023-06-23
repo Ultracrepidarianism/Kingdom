@@ -1,11 +1,9 @@
 package ca.ultracrepidarianism.kingdom.database.repositories;
 
-import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.dal.DAL;
 import ca.ultracrepidarianism.kingdom.model.KDKingdom;
 import ca.ultracrepidarianism.kingdom.model.KDPlayer;
-import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.Player;
 
@@ -47,7 +45,7 @@ public class KingdomRepository extends Repository {
      * @param playerUUID UUID of player you want to obtain the town from.
      * @return Player's Town
      */
-    public KDKingdom getPlayerTown(String playerUUID) {
+    public KDKingdom getPlayerKingdom(String playerUUID) {
         throw new NotImplementedException();
     }
 
@@ -57,6 +55,10 @@ public class KingdomRepository extends Repository {
     }
 
     public void removeKingdom(KDKingdom kdKingdom) {
+        throw new NotImplementedException();
+    }
+
+    public void setPlayerKingdom() {
         throw new NotImplementedException();
     }
 }

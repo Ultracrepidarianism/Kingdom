@@ -1,6 +1,7 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.model.KDChunk;
 import ca.ultracrepidarianism.kingdom.model.KDClaim;
 import ca.ultracrepidarianism.kingdom.model.KDPlayer;
@@ -32,7 +33,7 @@ public class ClaimCommand extends SubCommand {
 
     @Override
     public void perform(Player ply, String[] args) {
-        final KDPlayer kdPlayer = database.getPlayer(ply);
+        final KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(ply, true);
         if (kdPlayer == null) {
             ply.sendMessage(KDUtil.getMessage("error.global.noKingdom"));
             return;
@@ -42,12 +43,12 @@ public class ClaimCommand extends SubCommand {
             return;
         }
         final KDChunk kdChunk = KDChunk.parse(ply.getLocation().getChunk());
-        final KDClaim kdClaim = database.getClaimFromChunk(kdChunk);
+        final KDClaim kdClaim = DataFacade.getInstance().Claims().getClaimFromChunk(kdChunk);
         if (kdClaim != null) {
             ply.sendMessage(KDUtil.getMessage("error.claim.alreadyClaimed"));
             return;
         }
-        database.createClaim(kdPlayer.getKingdom(), kdChunk);
+        DataFacade.getInstance().Claims().createClaim(kdPlayer.getKingdom(), kdChunk);
         ply.sendMessage(KDUtil.getMessage("success.claim"));
     }
 

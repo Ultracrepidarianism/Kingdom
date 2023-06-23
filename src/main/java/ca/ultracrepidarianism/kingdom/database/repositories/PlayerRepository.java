@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class PlayerRepository extends Repository {
 
@@ -60,6 +61,15 @@ public class PlayerRepository extends Repository {
     }
 
     public KDPlayer createPlayer(String uuid) {
+        throw new NotImplementedException();
+    }
+
+    public List<String> getPendingInvites(String playerId) {
+        throw new NotImplementedException();
+    }
+
+    public void removePendingInvite(String playerId,String townName){
+        // TODO please change this to ids
         throw new NotImplementedException();
     }
 

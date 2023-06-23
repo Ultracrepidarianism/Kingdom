@@ -1,9 +1,9 @@
 package ca.ultracrepidarianism.kingdom.listener;
 
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.model.KDChunk;
 import ca.ultracrepidarianism.kingdom.model.KDClaim;
 import ca.ultracrepidarianism.kingdom.model.KDKingdom;
-import ca.ultracrepidarianism.kingdom.services.Database;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class ClaimListener implements Listener {
-    private final Database database = Database.getInstance();
+
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -39,8 +39,8 @@ public class ClaimListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if(e.getHand() == EquipmentSlot.OFF_HAND) return;
-        if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) return;
+        if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) return;
         Player p = e.getPlayer();
         e.setCancelled(checkClaim(p, KDChunk.parse(e.getClickedBlock().getChunk())));
     }
@@ -50,7 +50,7 @@ public class ClaimListener implements Listener {
         File file;
         String worldName;
         String chunkName;
-        for(Block b  : new ArrayList<>(e.blockList())){
+        for (Block b : new ArrayList<>(e.blockList())) {
             //TODO 02 Mettre dans Database Aussi (Une méthode qu'on appel pour le check (Exists))
 //            worldName = b.getWorld().getName();
 //            chunkName = b.getChunk().getX() + "_" + b.getChunk().getZ();
@@ -80,7 +80,7 @@ public class ClaimListener implements Listener {
             return;
         }
 
-        KDClaim claim = database.getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
+        KDClaim claim = DataFacade.getInstance().Claims().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
             e.getPlayer().sendMessage("Entering " + claim.getKingdom().getKingdomName());
         }
@@ -92,12 +92,12 @@ public class ClaimListener implements Listener {
     }
 
     public boolean checkClaim(Player player, KDChunk chunk) {
-        KDClaim claim = database.getClaimFromChunk(chunk);
+        KDClaim claim = DataFacade.getInstance().Claims().getClaimFromChunk(chunk);
         if (claim == null) {
             return false;
         }
 
-        KDKingdom town = this.database.getTownFromPlayerUUID(player.getUniqueId().toString());
+        KDKingdom town = DataFacade.getInstance().Kingdoms().getPlayerKingdom(player.getUniqueId().toString());
         if (town == null) {
             return true;
         }

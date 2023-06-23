@@ -1,14 +1,12 @@
 package ca.ultracrepidarianism.kingdom.commands;
 
 import ca.ultracrepidarianism.kingdom.Kingdom;
-import ca.ultracrepidarianism.kingdom.services.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class SubCommand {
 
     protected Kingdom kingdom = JavaPlugin.getPlugin(Kingdom.class);
-    protected Database database = Database.getInstance();
 
     public abstract String getPermission();
 
