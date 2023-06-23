@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public abstract class Database {
     private static Database instance;
 
@@ -26,7 +27,9 @@ public abstract class Database {
      * Get or create the database instance
      *
      * @return Database instance
+     * @deprecated
      */
+    @Deprecated
     public static Database getInstance() {
         if (instance == null) {
             instance = new MySQLService();
@@ -40,6 +43,7 @@ public abstract class Database {
      * @param uuid User UUID
      * @return KDPlayer just created or found
      */
+    @Deprecated
     public abstract KDPlayer createPlayer(String uuid);
 
     /**
@@ -48,6 +52,7 @@ public abstract class Database {
      * @param ply      Bukkit Player entity.
      * @param townName Name of town to create.
      */
+    @Deprecated
     public abstract void createTown(Player ply, String townName);
 
     /**

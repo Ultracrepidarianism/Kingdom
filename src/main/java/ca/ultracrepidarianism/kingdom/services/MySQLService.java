@@ -1,5 +1,8 @@
 package ca.ultracrepidarianism.kingdom.services;
 
+import ca.ultracrepidarianism.kingdom.database.repositories.ClaimRepository;
+import ca.ultracrepidarianism.kingdom.database.repositories.KingdomRepository;
+import ca.ultracrepidarianism.kingdom.database.repositories.PlayerRepository;
 import ca.ultracrepidarianism.kingdom.model.KDChunk;
 import ca.ultracrepidarianism.kingdom.model.KDClaim;
 import ca.ultracrepidarianism.kingdom.model.KDKingdom;
@@ -17,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+@Deprecated
 public class MySQLService extends Database {
     private Connection connection;
     private final SqlInfo sqlInfo = new SqlInfo();
@@ -50,6 +54,7 @@ public class MySQLService extends Database {
      * Creates user's information if it doesn't exist.
      *
      * @param uuid User UUID
+     * @deprecated use {@link PlayerRepository#createPlayer} from new DB system instead.
      */
     @Override
     public KDPlayer createPlayer(String uuid) {
@@ -69,6 +74,7 @@ public class MySQLService extends Database {
      *
      * @param ply      Bukkit Player entity.
      * @param townName Name of town to create.
+     * @deprecated use {@link KingdomRepository#createKingdom} from new DB system instead.
      */
     @Override
     public void createTown(Player ply, String townName) {
@@ -86,6 +92,10 @@ public class MySQLService extends Database {
         });
     }
 
+    /**
+     * @param kdKingdom The town to remove
+     * @deprecated use {@link KingdomRepository#removeKingdom} from new DB system instead.
+     */
     @Override
     public void removeTown(KDKingdom kdKingdom) {
 //        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -110,7 +120,9 @@ public class MySQLService extends Database {
      * Create a chunk claim for the player's town.
      *
      * @param kdKingdom Kingdom's entity for Players part of a Town.
-     * @param chunk  chunk to be claimed
+     * @param chunk     chunk to be claimed
+     * @see ClaimRepository#createClaim
+     * @deprecated use {@link ClaimRepository#createClaim} from new DB system instead.
      */
     @Override
     public void createClaim(KDKingdom kdKingdom, KDChunk chunk) {
@@ -125,6 +137,7 @@ public class MySQLService extends Database {
      *
      * @param townName Name of the town you want to obtain.
      * @return Town entity if found in database else null
+     * @deprecated use {@link KingdomRepository#getKindom(Long)} from new DB system instead.
      */
     @Override
     public KDKingdom getTown(String townName) {
@@ -141,6 +154,7 @@ public class MySQLService extends Database {
      *
      * @param player Bukkit Player entity.
      * @return Kingdom's Player entity.
+     * @deprecated use {@link PlayerRepository#getPlayer} from new DB system instead.
      */
     @Override
     public KDPlayer getPlayer(Player player) {
@@ -152,6 +166,7 @@ public class MySQLService extends Database {
      *
      * @param playerUUID UUID of player you want to obtain the town from.
      * @return Player's Town
+     * @deprecated use {@link KingdomRepository#getPlayerTown} from new DB system instead.
      */
     @Override
     public KDKingdom getTownFromPlayerUUID(String playerUUID) {
@@ -167,12 +182,17 @@ public class MySQLService extends Database {
      *
      * @param uuid     UUID of player you want to add to the town.
      * @param townName Name of down you want to add the Player to.
+     * @deprecated use {@link PlayerRepository#setPlayerTown} from new DB system instead.
      */
     @Override
     public void setPlayerTown(String uuid, String townName) {
 
     }
 
+    /**
+     * @param kdPlayer UUID of player you want to remove from the town.
+     * @deprecated use {@link PlayerRepository#removePlayer(Player)} from new DB system instead.
+     */
     @Override
     public void removePlayer(KDPlayer kdPlayer) {
         PersistenceUtil.doInTransaction(session -> {
@@ -219,6 +239,11 @@ public class MySQLService extends Database {
 
     }
 
+    /**
+     * @param c current chunk
+     * @return
+     * @deprecated use {@link ClaimRepository#getClaimFromChunk} from new DB system instead.
+     */
     @Override
     public KDClaim getClaimFromChunk(KDChunk c) {
         EntityManager entityManager = HibernateUtil.getEntityManager();

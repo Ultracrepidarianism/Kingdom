@@ -3,6 +3,7 @@ package ca.ultracrepidarianism.kingdom.services.sqlutil;
 import ca.ultracrepidarianism.kingdom.Kingdom;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Deprecated
 public class SqlInfo {
     private final String IP;
     private final int Port;
