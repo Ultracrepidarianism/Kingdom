@@ -37,16 +37,4 @@ public class Kingdom extends JavaPlugin {
         KDClaim claim = new KDClaim(new KDChunk("world", 1, 1), town);
     }
 
-
-    private void createTablesIfNotExist(){
-        try{
-            Connection c = DataSource.getConnection();
-            c.prepareStatement("CREATE ")
-        }catch (SQLException e){
-
-        }
-
-
-    }
-
 }
