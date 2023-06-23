@@ -1,10 +1,19 @@
 package ca.ultracrepidarianism.kingdom.database.dal;
 
-public interface DAL {
-    <T> void insert(T obj);
-    <T> void update(T obj);
-    <T> void delete(T obj);
-    <T> void get(T obj);
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
 
+public interface DAL {
+
+    void insert(String table, Map<String, String> properties) throws SQLException;
+
+    <T> void update(String table, Map<String, String> properties, String where) throws SQLException;
+
+    <T> void delete(String table, String id) throws SQLException;
+
+    ResultSet get(String table, String column, String value) throws SQLException;
+
+    ResultSet filteredGet(String table, String where) throws SQLException;
 
 }
