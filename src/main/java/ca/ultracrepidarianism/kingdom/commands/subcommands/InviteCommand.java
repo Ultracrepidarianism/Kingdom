@@ -1,7 +1,7 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
-import ca.ultracrepidarianism.kingdom.model.KDKingdom;
+import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.utils.KDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

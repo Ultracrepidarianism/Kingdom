@@ -1,7 +1,4 @@
-package ca.ultracrepidarianism.kingdom.model;
-
-import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
-import jakarta.persistence.*;
+package ca.ultracrepidarianism.kingdom.database.models;
 
 import java.util.ArrayList;
 import java.util.List;

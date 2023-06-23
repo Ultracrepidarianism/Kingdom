@@ -1,9 +1,9 @@
 package ca.ultracrepidarianism.kingdom.listener;
 
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
-import ca.ultracrepidarianism.kingdom.model.KDChunk;
-import ca.ultracrepidarianism.kingdom.model.KDClaim;
-import ca.ultracrepidarianism.kingdom.model.KDKingdom;
+import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
+import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
+import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;

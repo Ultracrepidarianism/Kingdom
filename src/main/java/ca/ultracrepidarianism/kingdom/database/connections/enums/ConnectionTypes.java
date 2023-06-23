@@ -1,4 +1,4 @@
-package ca.ultracrepidarianism.kingdom.database.enums;
+package ca.ultracrepidarianism.kingdom.database.connections.enums;
 
 public enum ConnectionTypes {
     MYSQL,

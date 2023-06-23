@@ -1,4 +1,4 @@
-package ca.ultracrepidarianism.kingdom.model.enums;
+package ca.ultracrepidarianism.kingdom.database.models;
 
 public enum PermissionLevelEnum {
     MEMBER(1),

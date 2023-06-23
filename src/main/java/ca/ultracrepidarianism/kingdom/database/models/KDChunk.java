@@ -1,6 +1,5 @@
-package ca.ultracrepidarianism.kingdom.model;
+package ca.ultracrepidarianism.kingdom.database.models;
 
-import jakarta.persistence.Embeddable;
 import org.bukkit.Chunk;
 
 import java.util.Objects;

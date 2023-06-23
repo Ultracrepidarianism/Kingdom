@@ -1,7 +1,4 @@
-package ca.ultracrepidarianism.kingdom.model;
-
-import jakarta.persistence.*;
-
+package ca.ultracrepidarianism.kingdom.database.models;
 
 public class KDClaim {
 

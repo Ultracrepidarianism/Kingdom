@@ -1,8 +1,4 @@
-package ca.ultracrepidarianism.kingdom.model;
-
-import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
-import com.j256.ormlite.table.DatabaseTable;
-import jakarta.persistence.*;
+package ca.ultracrepidarianism.kingdom.database.models;
 
 
 public class KDPlayer {

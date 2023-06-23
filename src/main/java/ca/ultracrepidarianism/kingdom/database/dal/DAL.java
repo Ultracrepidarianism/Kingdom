@@ -6,7 +6,8 @@ import java.util.Map;
 
 public interface DAL {
 
-    void insert(String table, Map<String, String> properties) throws SQLException;
+    //Returns Id of newlyCreated Object as string
+    String insert(String table, Map<String, String> properties) throws SQLException;
 
     void update(String table, Map<String, String> properties, String where) throws SQLException;
 

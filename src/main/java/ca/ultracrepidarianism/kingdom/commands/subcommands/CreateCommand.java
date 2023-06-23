@@ -2,7 +2,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
-import ca.ultracrepidarianism.kingdom.model.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.utils.KDUtil;
 import org.bukkit.entity.Player;
 

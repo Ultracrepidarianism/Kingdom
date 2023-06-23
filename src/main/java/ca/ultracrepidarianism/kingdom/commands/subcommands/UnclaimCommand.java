@@ -1,17 +1,15 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
-import ca.ultracrepidarianism.kingdom.database.DataFacade;
-import ca.ultracrepidarianism.kingdom.model.KDChunk;
-import ca.ultracrepidarianism.kingdom.model.KDClaim;
-import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
-import ca.ultracrepidarianism.kingdom.model.KDPlayer;
-import ca.ultracrepidarianism.kingdom.utils.KDUtil;
-import jakarta.persistence.TypedQuery;
-import org.bukkit.entity.Player;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
+import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
+import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
+import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.PermissionLevelEnum;
+import ca.ultracrepidarianism.kingdom.utils.KDUtil;
+import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UnclaimCommand extends SubCommand {
     @Override

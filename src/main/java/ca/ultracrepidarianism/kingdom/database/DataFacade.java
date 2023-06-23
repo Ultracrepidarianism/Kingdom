@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.kingdom.database;
 
+import ca.ultracrepidarianism.kingdom.database.connections.ConnectionInfo;
 import ca.ultracrepidarianism.kingdom.database.dal.DALFactory;
 import ca.ultracrepidarianism.kingdom.database.repositories.ClaimRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.KingdomRepository;

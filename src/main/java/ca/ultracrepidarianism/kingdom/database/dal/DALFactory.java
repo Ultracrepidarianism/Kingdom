@@ -1,8 +1,9 @@
 package ca.ultracrepidarianism.kingdom.database.dal;
 
 import ca.ultracrepidarianism.kingdom.database.dal.sql.SQLDAL;
-import ca.ultracrepidarianism.kingdom.database.ConnectionInfo;
+import ca.ultracrepidarianism.kingdom.database.connections.ConnectionInfo;
 import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
 
 import java.util.Properties;
@@ -14,14 +15,15 @@ public class DALFactory {
         return _dal;
     }
 
-    private HikariPool connectionPool;
+    private HikariDataSource dataSource;
 
     public DALFactory(final ConnectionInfo connectionInfo) {
         final HikariConfig config = new HikariConfig();
 
         switch (connectionInfo.connectionType) {
             case MYSQL: {
-                config.setJdbcUrl("jdbc:mysql://" + connectionInfo.address + ":" + connectionInfo.port + "/" + connectionInfo.database + "?user=" + connectionInfo.username + "&password=" + connectionInfo.password);
+                config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+                config.setJdbcUrl("jdbc:mysql://" + connectionInfo.address + ":" + connectionInfo.port + "/" + connectionInfo.database);
                 config.setUsername(connectionInfo.username);
                 config.setPassword(connectionInfo.password);
                 Properties props = new Properties();
@@ -59,7 +61,7 @@ public class DALFactory {
     }
 
     private DAL setDalFromHikari(HikariConfig config) {
-        connectionPool = new HikariPool(config);
-        return new SQLDAL(connectionPool);
+        dataSource = new HikariDataSource(config);
+        return new SQLDAL(dataSource);
     }
 }

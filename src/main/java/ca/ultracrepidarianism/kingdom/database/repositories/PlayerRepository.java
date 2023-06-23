@@ -2,19 +2,16 @@ package ca.ultracrepidarianism.kingdom.database.repositories;
 
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.dal.DAL;
-import ca.ultracrepidarianism.kingdom.model.KDKingdom;
-import ca.ultracrepidarianism.kingdom.model.KDPlayer;
-import ca.ultracrepidarianism.kingdom.model.enums.PermissionLevelEnum;
+import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
+import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.PermissionLevelEnum;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PlayerRepository extends Repository {
 
@@ -89,8 +86,16 @@ public class PlayerRepository extends Repository {
         }
     }
 
-    public KDPlayer createPlayer(String uuid) {
-        throw new NotImplementedException();
+    public KDPlayer createPlayer(String uuid,PermissionLevelEnum permissionLevel,String townId) {
+        try{
+            String id = dal.insert("players", new HashMap<>());
+            KDPlayer ply = getPlayer(id,false);
+            return ply;
+        }catch (SQLException e){
+            // TODO:ERRORS log and filter errors
+            return null;
+        }
+
     }
 
 //    public List<String> getPendingInvites(String playerId) {

@@ -1,21 +1,21 @@
 package ca.ultracrepidarianism.kingdom.database.dal.sql;
 
-import com.zaxxer.hikari.pool.HikariPool;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class AbstractHikariDAL {
 
-    private HikariPool pool;
+    private HikariDataSource dataSource;
 
     protected Connection getConnection() throws SQLException {
-        return pool.getConnection();
+        return dataSource.getConnection();
     }
 
-    protected AbstractHikariDAL(HikariPool pool) {
+    protected AbstractHikariDAL(HikariDataSource dataSource) {
 
-        this.pool = pool;
+        this.dataSource = dataSource;
         createTablesIfNotExist();
         updateTables();
     }

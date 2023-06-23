@@ -1,7 +1,7 @@
 package ca.ultracrepidarianism.kingdom.listener;
 
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
-import ca.ultracrepidarianism.kingdom.model.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

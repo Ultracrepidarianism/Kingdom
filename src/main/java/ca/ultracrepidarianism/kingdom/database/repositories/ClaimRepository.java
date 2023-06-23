@@ -2,10 +2,10 @@ package ca.ultracrepidarianism.kingdom.database.repositories;
 
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.dal.DAL;
-import ca.ultracrepidarianism.kingdom.model.KDChunk;
-import ca.ultracrepidarianism.kingdom.model.KDClaim;
-import ca.ultracrepidarianism.kingdom.model.KDKingdom;
-import ca.ultracrepidarianism.kingdom.model.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
+import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
+import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
+import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.sql.ResultSet;
