@@ -1,4 +1,4 @@
-package ca.ultracrepidarianism.kingdom.database.models;
+package ca.ultracrepidarianism.kingdom.database;
 
 import ca.ultracrepidarianism.kingdom.database.enums.ConnectionTypes;
 
@@ -10,7 +10,7 @@ public abstract class ConnectionInfo {
     public final String username;
     public final String password;
 
-    ConnectionInfo(ConnectionTypes connectionType, String address, String port, String database, String username, String password) {
+    public ConnectionInfo(ConnectionTypes connectionType, String address, String port, String database, String username, String password) {
         this.connectionType = connectionType;
         this.address = address;
         this.port = port;

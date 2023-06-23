@@ -14,6 +14,12 @@ public abstract class AbstractHikariDAL {
     }
 
     protected AbstractHikariDAL(HikariPool pool) {
+
         this.pool = pool;
+        createTablesIfNotExist();
+        updateTables();
     }
+
+    protected abstract void createTablesIfNotExist();
+    protected abstract void updateTables();
 }

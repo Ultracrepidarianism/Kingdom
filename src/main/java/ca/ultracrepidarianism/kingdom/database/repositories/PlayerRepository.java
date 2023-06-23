@@ -11,9 +11,14 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PlayerRepository extends Repository {
+
+    private final String table = "Players";
 
     public PlayerRepository(DAL dal) {
         super(dal);
@@ -25,7 +30,7 @@ public class PlayerRepository extends Repository {
 
     public KDPlayer getPlayer(String playerId, boolean loadKingdom) {
         try {
-            ResultSet results = dal.get("Players", "uuid", playerId);
+            ResultSet results = dal.get(table, "uuid", playerId);
             results.next();
             KDKingdom kingdom = null;
             if (loadKingdom) {
@@ -36,6 +41,26 @@ public class PlayerRepository extends Repository {
             // TODO:ERRORS log and filter errors
             return null;
         }
+    }
+
+    public Set<KDPlayer> getPlayersFromKingdom(KDKingdom kingdom){
+        return getPlayersFromKingdom(kingdom.getId());
+    }
+
+    public Set<KDPlayer> getPlayersFromKingdom(long kingdomId){
+        try{
+            Set<KDPlayer> players = new HashSet<>();
+            ResultSet set = dal.get(table,"kingdomId",Long.toString(kingdomId));
+            while(set.next()){
+                KDPlayer ply = new KDPlayer(set.getString("UUID"),PermissionLevelEnum.valueOf(set.getString("permissionLevel")),set.getLong("kingdomId"));
+                players.add(ply);
+            }
+            return players;
+        }catch (SQLException exception){
+            // TODO:ERRORS log and filter errors
+            return null;
+        }
+
     }
 
 
@@ -57,20 +82,23 @@ public class PlayerRepository extends Repository {
     }
 
     public void removePlayer(String id) {
-        throw new NotImplementedException();
+        try{
+            dal.delete(table,id);
+        }catch (SQLException exception){
+            // TODO:ERRORS log and filter errors
+        }
     }
 
     public KDPlayer createPlayer(String uuid) {
         throw new NotImplementedException();
     }
 
-    public List<String> getPendingInvites(String playerId) {
-        throw new NotImplementedException();
-    }
-
-    public void removePendingInvite(String playerId,String townName){
-        // TODO please change this to ids
-        throw new NotImplementedException();
-    }
+//    public List<String> getPendingInvites(String playerId) {
+//        throw new NotImplementedException();
+//    }
+//
+//    public void removePendingInvite(String playerId,String townName){
+//        throw new NotImplementedException();
+//    }
 
 }

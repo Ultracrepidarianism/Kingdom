@@ -47,7 +47,9 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        KDClaim claim = DataFacade.getInstance().Claims().getClaimFromChunk(KDChunk.parse(ply.getLocation().getChunk()));
+        KDChunk c = KDChunk.parse(ply.getLocation().getChunk());
+        KDClaim claim = DataFacade.getInstance().Claims().getClaimFromChunk(c);
+
         if (claim == null) {
             ply.sendMessage(KDUtil.getMessage("error.kingdom.notclaimed"));
             return;
@@ -57,19 +59,12 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        // TODO why is there an sql call in a bukkit command handler 🤔
-//        TypedQuery<KDChunk> query = HibernateUtil.getEntityManager().createQuery("SELECT chunk FROM KDClaim WHERE kingdom.id = :kingdomId", KDChunk.class);
-//        Typed
-//        query.setParameter("kingdomId", kdPlayer.getKingdom().getId());
-//        Set<KDChunk> chunks = query.getResultStream().collect(Collectors.toSet());
-
-        // TODO IDK this code feels strange.
         Set<KDChunk> chunks = DataFacade.getInstance().Claims().getKingdomChunks(kdPlayer.getKingdom());
 
-        if (chunks.size() > 1) {
+        if (chunks.size() == 1) {
+            // If it's the only chunk, it can be removed.
 
         }
-        KDChunk c = claim.getChunk();
         Set<KDChunk> chunksToReach = new HashSet<>();
 
         KDChunk temp = new KDChunk(c.getWorld(), c.getX() - 1, c.getZ());

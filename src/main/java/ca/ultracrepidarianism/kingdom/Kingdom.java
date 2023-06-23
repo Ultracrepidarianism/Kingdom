@@ -1,6 +1,7 @@
 package ca.ultracrepidarianism.kingdom;
 
 import ca.ultracrepidarianism.kingdom.commands.CommandManager;
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.listener.ClaimListener;
 import ca.ultracrepidarianism.kingdom.listener.KingdomListener;
 import ca.ultracrepidarianism.kingdom.model.KDChunk;

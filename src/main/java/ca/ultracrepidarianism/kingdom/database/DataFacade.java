@@ -1,12 +1,9 @@
 package ca.ultracrepidarianism.kingdom.database;
 
 import ca.ultracrepidarianism.kingdom.database.dal.DALFactory;
-import ca.ultracrepidarianism.kingdom.database.models.ConnectionInfo;
 import ca.ultracrepidarianism.kingdom.database.repositories.ClaimRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.KingdomRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.PlayerRepository;
-
-import javax.xml.crypto.Data;
 
 public class DataFacade {
 

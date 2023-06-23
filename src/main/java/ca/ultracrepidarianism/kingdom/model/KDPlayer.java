@@ -11,6 +11,8 @@ public class KDPlayer {
 
     private PermissionLevelEnum permissionLevel;
 
+
+    private long kingdomId;
     private KDKingdom kingdom;
 
     protected KDPlayer() {}
@@ -19,6 +21,12 @@ public class KDPlayer {
         this.kingdom = kingdom;
         this.permissionLevel = rank;
         this.UUID = UUID;
+    }
+
+    public KDPlayer(String UUID,PermissionLevelEnum rank,long kingdomId){
+        this.UUID = UUID;
+        this.permissionLevel = rank;
+        this.kingdomId = kingdomId;
     }
 
     public String getUUID() {
@@ -36,6 +44,8 @@ public class KDPlayer {
     public void setPermissionLevel(PermissionLevelEnum permissionLevel) {
         this.permissionLevel = permissionLevel;
     }
+
+    public long getKingdomId(){return kingdomId;}
 
     public KDKingdom getKingdom() {
         return kingdom;

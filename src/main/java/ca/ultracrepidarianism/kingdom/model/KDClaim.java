@@ -4,20 +4,22 @@ import jakarta.persistence.*;
 
 
 public class KDClaim {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    @Embedded
     private KDChunk chunk;
 
-    @ManyToOne
-    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_CLAIM_KINGDOM"))
+    private int kingdomId;
     private KDKingdom kingdom;
 
     protected KDClaim() {}
 
     public KDClaim(KDChunk chunk, KDKingdom kingdom) {
+        this.chunk = chunk;
+        this.kingdom = kingdom;
+    }
+
+    public KDClaim(long id,KDChunk c, long kingdomId) {
         this.chunk = chunk;
         this.kingdom = kingdom;
     }

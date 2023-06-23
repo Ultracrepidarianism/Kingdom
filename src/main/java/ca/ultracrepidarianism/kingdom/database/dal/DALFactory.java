@@ -1,7 +1,7 @@
 package ca.ultracrepidarianism.kingdom.database.dal;
 
 import ca.ultracrepidarianism.kingdom.database.dal.sql.SQLDAL;
-import ca.ultracrepidarianism.kingdom.database.models.ConnectionInfo;
+import ca.ultracrepidarianism.kingdom.database.ConnectionInfo;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.pool.HikariPool;
 

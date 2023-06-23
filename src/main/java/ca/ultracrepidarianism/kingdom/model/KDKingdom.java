@@ -9,25 +9,31 @@ import java.util.stream.Collectors;
 
 
 public class KDKingdom {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     private String kingdomName;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ownerUUID", foreignKey = @ForeignKey(name = "FK_KINGDOM_OWNER"))
     private KDPlayer owner;
 
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KDPlayer> members;
 
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KDClaim> claims;
 
     protected KDKingdom() {}
 
     public KDKingdom(String kingdomName, KDPlayer owner) {
+        this.claims = new ArrayList<>();
+        this.members = new ArrayList<>();
+
+        this.kingdomName = kingdomName;
+        this.members.add(owner);
+
+        this.owner = owner;
+    }
+
+    public KDKingdom(long id,String kingdomName,KDPlayer owner){
+        this.id = id;
         this.claims = new ArrayList<>();
         this.members = new ArrayList<>();
 
