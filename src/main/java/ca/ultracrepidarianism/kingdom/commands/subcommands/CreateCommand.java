@@ -31,7 +31,7 @@ public class CreateCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player, true);
+        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player);
         if (args.length != 2) {
             player.sendMessage(getUsage());
         } else if (kdPlayer != null && kdPlayer.getKingdom() != null) {

@@ -15,4 +15,9 @@ public class SqlInfo extends ConnectionInfo {
                 JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.password")
         );
     }
+
+    @Override
+    public String getUrl() {
+        return "jdbc:mysql://" + address + ":" + port + "/" + database;
+    }
 }

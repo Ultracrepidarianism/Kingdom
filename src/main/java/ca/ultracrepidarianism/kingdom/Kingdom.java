@@ -21,9 +21,8 @@ public class Kingdom extends JavaPlugin {
             getDataFolder().mkdir();
             saveDefaultConfig();
         }
-        ConnectionTypes type = ConnectionTypes.valueOf(getConfig().getString("DBserver.type"));
-        new DataFacade(ConnectionFactory.get(type));
 
+        DataFacade.getInstance();
         getServer().getPluginManager().registerEvents(new KingdomListener(), this);
         getServer().getPluginManager().registerEvents(new ClaimListener(), this);
         getCommand("kingdom").setExecutor(new CommandManager());

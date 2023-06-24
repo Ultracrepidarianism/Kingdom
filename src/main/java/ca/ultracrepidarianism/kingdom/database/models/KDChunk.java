@@ -1,9 +1,12 @@
 package ca.ultracrepidarianism.kingdom.database.models;
 
+import jakarta.persistence.Embeddable;
 import org.bukkit.Chunk;
 
 import java.util.Objects;
 
+
+@Embeddable
 public class KDChunk {
     private String world;
     private int x;
@@ -13,6 +16,10 @@ public class KDChunk {
         this.world = world;
         this.x = x;
         this.z = z;
+    }
+
+    public KDChunk() {
+
     }
 
     public String getWorld() {

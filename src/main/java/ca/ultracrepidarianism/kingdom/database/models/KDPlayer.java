@@ -1,26 +1,29 @@
 package ca.ultracrepidarianism.kingdom.database.models;
 
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="players")
 public class KDPlayer {
 
+    @Id
     private String id;
 
+    @Column(name="permissionLevel",nullable = true)
+    @Enumerated(EnumType.STRING)
     private PermissionLevelEnum permissionLevel;
 
-    private Long kingdomId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="kingdomId",foreignKey = @ForeignKey(name="FK_KINGDOM_PLAYER"))
     private KDKingdom kingdom;
 
-    public KDPlayer(String id,PermissionLevelEnum rank, Long kingdomId) {
-        this.id = id;
-        this.permissionLevel = rank;
-        this.kingdomId = kingdomId;
-    }
 
+    public KDPlayer(){}
     public KDPlayer(String UUID,PermissionLevelEnum rank, KDKingdom kingdom) {
         this.id = UUID;
         this.permissionLevel = rank;
         this.kingdom = kingdom;
-        this.kingdomId = kingdom.getId();
     }
 
     public String getUUID() {
@@ -37,14 +40,6 @@ public class KDPlayer {
 
     public void setPermissionLevel(PermissionLevelEnum permissionLevel) {
         this.permissionLevel = permissionLevel;
-    }
-
-    public Long getKingdomId() {
-        return kingdomId;
-    }
-
-    public void setKingdomId(Long kingdomId){
-        this.kingdomId = kingdomId;
     }
 
 

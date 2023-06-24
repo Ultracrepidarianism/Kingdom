@@ -31,7 +31,7 @@ public class LeaveCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player, true);
+        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player);
         if (kdPlayer == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.nokingdom"));
             //player.sendMessage("You need to be in a town first.");

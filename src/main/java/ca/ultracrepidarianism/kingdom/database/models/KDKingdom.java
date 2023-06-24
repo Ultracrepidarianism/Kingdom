@@ -1,13 +1,18 @@
 package ca.ultracrepidarianism.kingdom.database.models;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import jakarta.persistence.*;
 
 
+@Entity
+@Table(name="kingdoms")
 public class KDKingdom {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "ownerId",foreignKey = @ForeignKey(name="FK_PLAYER_KINGDOM"))
     private KDPlayer owner;
 
     public KDKingdom(final String name, final KDPlayer owner) {
@@ -19,6 +24,8 @@ public class KDKingdom {
         this(name, owner);
         this.id = id;
     }
+
+    public KDKingdom(){}
 
     public long getId(){
         return id;

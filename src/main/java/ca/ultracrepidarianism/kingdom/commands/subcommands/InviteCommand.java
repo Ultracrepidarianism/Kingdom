@@ -36,7 +36,7 @@ public class InviteCommand extends SubCommand {
             return;
         }
 
-        final KDPlayer inviter = database.players().getPlayer(player, true);
+        final KDPlayer inviter = database.players().getPlayer(player);
         if (inviter == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;

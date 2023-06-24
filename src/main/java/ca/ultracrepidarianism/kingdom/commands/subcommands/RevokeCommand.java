@@ -39,7 +39,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        final KDPlayer kdPlayer = database.players().getPlayer(player, true);
+        final KDPlayer kdPlayer = database.players().getPlayer(player);
         if (kdPlayer == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;
@@ -68,7 +68,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        database.players().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdomId());
+        database.players().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom().getId());
         player.sendMessage("success.revoke");
     }
 }

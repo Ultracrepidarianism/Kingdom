@@ -84,7 +84,7 @@ public class ClaimListener implements Listener {
         }
 
         System.out.println("TEST");
-        final KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()), true);
+        final KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
             e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
         }
@@ -96,7 +96,7 @@ public class ClaimListener implements Listener {
     }
 
     public boolean checkClaim(final Player player, final KDChunk kdChunk) {
-        final KDClaim kdClaim = DataFacade.getInstance().claims().getClaimFromChunk(kdChunk, false);
+        final KDClaim kdClaim = DataFacade.getInstance().claims().getClaimFromChunk(kdChunk);
         if (kdClaim == null) {
             return false;
         }
@@ -106,7 +106,7 @@ public class ClaimListener implements Listener {
             return true;
         }
 
-        return !(kdKingdom.getId() == kdClaim.getKingdomId());
+        return !(kdKingdom.getId() == kdClaim.getKingdom().getId());
     }
 
 }

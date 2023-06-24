@@ -1,21 +1,23 @@
 package ca.ultracrepidarianism.kingdom.database;
 
 import ca.ultracrepidarianism.kingdom.database.connections.ConnectionInfo;
-import ca.ultracrepidarianism.kingdom.database.dal.DALFactory;
 import ca.ultracrepidarianism.kingdom.database.repositories.ClaimRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.KingdomRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.PlayerRepository;
+import ca.ultracrepidarianism.kingdom.utils.HibernateUtil;
 
 public class DataFacade {
 
 
     public static DataFacade getInstance() {
-        return DataFacade.instance;
+        if(instance == null){
+            instance = new DataFacade();
+        }
+        return instance;
     }
 
     private static DataFacade instance;
 
-    private final DALFactory dalFactory;
 
     public ClaimRepository claims() {
         return claimRepository;
@@ -35,12 +37,12 @@ public class DataFacade {
 
     private final PlayerRepository playerRepository;
 
-    public DataFacade(ConnectionInfo config) {
+    private DataFacade() {
+        HibernateUtil.buildSessionFactory();
         DataFacade.instance = this;
-        dalFactory = new DALFactory(config);
-        claimRepository = new ClaimRepository(dalFactory.getDal());
-        kingdomRepository = new KingdomRepository(dalFactory.getDal());
-        playerRepository = new PlayerRepository(dalFactory.getDal());
+        claimRepository = new ClaimRepository();
+        kingdomRepository = new KingdomRepository();
+        playerRepository = new PlayerRepository();
 
     }
 

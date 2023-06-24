@@ -34,7 +34,7 @@ public class UnclaimCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        KDPlayer kdPlayer = database.players().getPlayer(player, true);
+        KDPlayer kdPlayer = database.players().getPlayer(player);
         if (kdPlayer == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.kingdom.nokingdom"));
             return;
@@ -46,7 +46,7 @@ public class UnclaimCommand extends SubCommand {
         }
 
         KDChunk c = KDChunk.parse(player.getLocation().getChunk());
-        KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(c,false);
+        KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(c);
 
         if (claim == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.kingdom.notclaimed"));

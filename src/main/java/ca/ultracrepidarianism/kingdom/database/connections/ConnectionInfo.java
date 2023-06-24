@@ -18,4 +18,6 @@ public abstract class ConnectionInfo {
         this.username = username;
         this.password = password;
     }
+
+    public abstract String getUrl();
 }

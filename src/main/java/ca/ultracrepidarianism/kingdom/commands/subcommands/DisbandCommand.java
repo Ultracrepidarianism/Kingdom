@@ -29,7 +29,7 @@ public class DisbandCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = database.players().getPlayer(player, true);
+        final KDPlayer kdPlayer = database.players().getPlayer(player);
         if (kdPlayer == null) {
             player.sendMessage("You are not in a Kingdom.");
             return;
