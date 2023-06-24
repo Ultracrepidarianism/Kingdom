@@ -3,34 +3,32 @@ package ca.ultracrepidarianism.kingdom.database.models;
 
 public class KDPlayer {
 
-    private String UUID;
+    private String id;
 
     private PermissionLevelEnum permissionLevel;
 
-
-    private long kingdomId;
+    private Long kingdomId;
     private KDKingdom kingdom;
 
-    protected KDPlayer() {}
-
-    public KDPlayer(String UUID, PermissionLevelEnum rank, KDKingdom kingdom) {
-        this.kingdom = kingdom;
-        this.permissionLevel = rank;
-        this.UUID = UUID;
-    }
-
-    public KDPlayer(String UUID,PermissionLevelEnum rank,long kingdomId){
-        this.UUID = UUID;
+    public KDPlayer(String id,PermissionLevelEnum rank, Long kingdomId) {
+        this.id = id;
         this.permissionLevel = rank;
         this.kingdomId = kingdomId;
     }
 
+    public KDPlayer(String UUID,PermissionLevelEnum rank, KDKingdom kingdom) {
+        this.id = UUID;
+        this.permissionLevel = rank;
+        this.kingdom = kingdom;
+        this.kingdomId = kingdom.getId();
+    }
+
     public String getUUID() {
-        return UUID;
+        return id;
     }
 
     public void setUUID(String UUID) {
-        this.UUID = UUID;
+        this.id = UUID;
     }
 
     public PermissionLevelEnum getPermissionLevel() {
@@ -41,7 +39,14 @@ public class KDPlayer {
         this.permissionLevel = permissionLevel;
     }
 
-    public long getKingdomId(){return kingdomId;}
+    public Long getKingdomId() {
+        return kingdomId;
+    }
+
+    public void setKingdomId(Long kingdomId){
+        this.kingdomId = kingdomId;
+    }
+
 
     public KDKingdom getKingdom() {
         return kingdom;

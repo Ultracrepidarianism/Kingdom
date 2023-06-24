@@ -9,9 +9,7 @@ public class KDChunk {
     private int x;
     private int z;
 
-    protected KDChunk() {}
-
-    public KDChunk(String world, Integer x, Integer z) {
+    public KDChunk(final String world, final int x, final int z) {
         this.world = world;
         this.x = x;
         this.z = z;
@@ -21,27 +19,15 @@ public class KDChunk {
         return world;
     }
 
-    public void setWorld(String world) {
-        this.world = world;
-    }
-
     public int getX() {
         return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
     }
 
     public int getZ() {
         return z;
     }
 
-    public void setZ(int z) {
-        this.z = z;
-    }
-
-    public static KDChunk parse(org.bukkit.Chunk chunk) {
+    public static KDChunk parse(final org.bukkit.Chunk chunk) {
         return new KDChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
@@ -51,21 +37,21 @@ public class KDChunk {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
 
-        if(o instanceof KDClaim kdClaim){
-            return x == kdClaim.getChunk().getX() && z == kdClaim.getChunk().getZ() && world == kdClaim.getChunk().getWorld();
+        if (o instanceof final KDClaim kdClaim) {
+            return x == kdClaim.getChunk().getX() && z == kdClaim.getChunk().getZ() && Objects.equals(world, kdClaim.getChunk().getWorld());
         }
 
         KDChunk kdChunk = null;
-        if(o instanceof KDChunk kdc){
+        if (o instanceof final KDChunk kdc) {
             kdChunk = kdc;
-        } else if (o instanceof Chunk c) {
+        } else if (o instanceof final Chunk c) {
             kdChunk = KDChunk.parse(c);
-        }else{
+        } else {
             return false;
         }
 

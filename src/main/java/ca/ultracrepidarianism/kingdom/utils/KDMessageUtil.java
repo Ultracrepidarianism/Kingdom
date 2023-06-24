@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Map;
 
 
-public class KDUtil {
+public class KDMessageUtil {
     public static String getMessage(final String section) {
         final String message = getTranslation(section);
         if (message != null) {

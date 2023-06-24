@@ -6,7 +6,7 @@ import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.PermissionLevelEnum;
-import ca.ultracrepidarianism.kingdom.utils.KDUtil;
+import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -33,31 +33,31 @@ public class UnclaimCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player ply, String[] args) {
-        KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(ply, true);
+    public void perform(final Player player,final String[] args) {
+        KDPlayer kdPlayer = database.players().getPlayer(player, true);
         if (kdPlayer == null) {
-            ply.sendMessage(KDUtil.getMessage("error.kingdom.nokingdom"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.nokingdom"));
             return;
         }
 
         if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER)) {
-            ply.sendMessage(KDUtil.getMessage("error.kingdom.permissionLevel"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.permissionLevel"));
             return;
         }
 
-        KDChunk c = KDChunk.parse(ply.getLocation().getChunk());
-        KDClaim claim = DataFacade.getInstance().Claims().getClaimFromChunk(c);
+        KDChunk c = KDChunk.parse(player.getLocation().getChunk());
+        KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(c,false);
 
         if (claim == null) {
-            ply.sendMessage(KDUtil.getMessage("error.kingdom.notclaimed"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.notclaimed"));
             return;
         }
         if (claim.getKingdom().getId() != kdPlayer.getKingdom().getId()) {
-            ply.sendMessage(KDUtil.getMessage("error.kingdom.donotown"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.donotown"));
             return;
         }
 
-        Set<KDChunk> chunks = DataFacade.getInstance().Claims().getKingdomChunks(kdPlayer.getKingdom());
+        Set<KDChunk> chunks = database.claims().getKingdomChunks(kdPlayer.getKingdom());
 
         if (chunks.size() == 1) {
             // If it's the only chunk, it can be removed.

@@ -2,9 +2,8 @@ package ca.ultracrepidarianism.kingdom.database.dal.sql;
 
 import ca.ultracrepidarianism.kingdom.database.dal.DAL;
 import com.zaxxer.hikari.HikariDataSource;
-import com.zaxxer.hikari.pool.HikariPool;
 
-import java.sql.PreparedStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,25 +15,73 @@ public class SQLDAL extends AbstractHikariDAL implements DAL {
     }
 
     @Override
-    public String insert(String table, Map<String, String> properties) throws SQLException {
-        StringBuilder query = new StringBuilder("INSERT INTO `").append(table).append("` ");
-        StringBuilder columns = new StringBuilder("(");
-        StringBuilder values = new StringBuilder("VALUES (");
-        for (Map.Entry<String,String> entry : properties.entrySet()) {
+    public Connection getConnection() throws SQLException {
+        if(getContext())
+            return cntx;
+
+        return null;
+    }
+
+    public boolean getContext() {
+
+        try {
+            if (cntx == null || cntx.isClosed() || !cntx.isValid(1)) {
+
+                if (cntx != null && !cntx.isClosed()) {
+
+                    try {
+
+                        cntx.close();
+
+                    } catch (SQLException e) {
+                        /*
+                         * We're disposing of an old stale connection just be nice to the GC as well as
+                         * mysql, so ignore the error as there's nothing we can do if it fails
+                         */
+                    }
+                    cntx = null;
+                }
+
+                cntx = dataSource.getConnection();
+
+                return cntx != null && !cntx.isClosed();
+            }
+
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public String insert(final String table, final Map<String, String> properties) throws SQLException {
+        final StringBuilder query = new StringBuilder("INSERT INTO `").append(table).append("` ");
+        final StringBuilder columns = new StringBuilder("(");
+        final StringBuilder values = new StringBuilder("VALUES (");
+
+        for (final Map.Entry<String, String> entry : properties.entrySet()) {
             columns.append("`").append(entry.getKey()).append("`").append(",");
             values.append("'").append(entry.getValue()).append("'").append(",");
         }
+
         columns.replace(columns.length() - 1, columns.length(), ")");
         values.replace(values.length() - 1, values.length(), ")");
+
         query.append(columns).append(values);
-        Statement s = getConnection().createStatement();
-        s.executeUpdate(query.toString(),Statement.RETURN_GENERATED_KEYS);
-        ResultSet result = s.getGeneratedKeys();
-        String test = null;
-        if(result.next())
-            test = result.getString(1);
-        s.close();
-        return test;
+
+        try (final Statement statement = getConnection().createStatement()) {
+            statement.executeUpdate(query.toString(), Statement.RETURN_GENERATED_KEYS);
+
+            final ResultSet result = statement.getGeneratedKeys();
+            if (result.next()) {
+                return result.getString(1);
+            }
+
+            return null;
+        }
     }
 
     @Override
@@ -43,32 +90,32 @@ public class SQLDAL extends AbstractHikariDAL implements DAL {
         for (Map.Entry<String,String> entry : properties.entrySet()) {
             query.append(entry.getKey()).append(" = ").append(entry.getValue()).append(", ");
         }
-        if (!where.isEmpty() && !where.isBlank())
+        if (!where.isEmpty() && !where.isBlank()) {
             query.append("WHERE ").append(where);
+        }
 
         getConnection().prepareStatement(query.toString()).executeQuery();
     }
 
     @Override
     public void delete(String table, String id) throws SQLException {
-        getConnection().prepareStatement("DELETE FROM `" + table + "` WHERE id=`" + id + "`").executeQuery();
+        getConnection().prepareStatement("DELETE FROM " + table + " WHERE id='" + id + "'").executeQuery();
     }
 
     @Override
     public ResultSet get(String table, String column, String value) throws SQLException {
-        return getConnection().prepareStatement("SELECT * FROM `" + table + "` WHERE " + column + "='" + value + "'").executeQuery();
+            return getConnection().prepareStatement("SELECT * FROM " + table + " WHERE " + column + "='" + value + "'").executeQuery();
 
     }
 
     @Override
     public ResultSet filteredGet(String table, String where) throws SQLException {
-        return getConnection().prepareStatement("SELECT * FROM `" + table + "` WHERE " + where).executeQuery();
+            return getConnection().prepareStatement("SELECT * FROM " + table + " WHERE " + where).executeQuery();
     }
 
     @Override
     public void createTablesIfNotExist() {
-        try{
-            Statement statement = getConnection().createStatement();
+        try (final Statement statement = getConnection().createStatement()) {
             statement.execute("SET FOREIGN_KEY_CHECKS = 0");
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS claims (
@@ -105,10 +152,9 @@ public class SQLDAL extends AbstractHikariDAL implements DAL {
             """);
             statement.execute("SET FOREIGN_KEY_CHECKS = 0");
 
-        }catch (SQLException e){
-            //auugh
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override

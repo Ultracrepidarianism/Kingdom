@@ -6,7 +6,7 @@ public abstract class Repository {
 
     protected final DAL dal;
 
-    protected Repository(DAL dal) {
+    protected Repository(final DAL dal) {
         this.dal = dal;
     }
 }

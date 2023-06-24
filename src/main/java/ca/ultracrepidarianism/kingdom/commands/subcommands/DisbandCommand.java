@@ -1,6 +1,5 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
-import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
@@ -29,21 +28,20 @@ public class DisbandCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player player, String[] args) {
-        KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(player, true);
+    public void perform(final Player player,final String[] args) {
+        final KDPlayer kdPlayer = database.players().getPlayer(player, true);
         if (kdPlayer == null) {
-
             player.sendMessage("You are not in a Kingdom.");
             return;
         }
 
-        KDKingdom kdKingdom = kdPlayer.getKingdom();
+        final KDKingdom kdKingdom = kdPlayer.getKingdom();
         if (!StringUtils.equals(player.getUniqueId().toString(), kdPlayer.getUUID())) {
             player.sendMessage("Only the Town Owner can perform this action.");
             return;
         }
 
-        DataFacade.getInstance().Kingdoms().removeKingdom(kdKingdom);
+        database.kingdoms().removeKingdom(kdKingdom);
         player.sendMessage("Kingdom has been disbanded.");
     }
 }

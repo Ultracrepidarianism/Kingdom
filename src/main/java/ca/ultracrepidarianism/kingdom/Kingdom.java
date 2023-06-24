@@ -30,11 +30,6 @@ public class Kingdom extends JavaPlugin {
     }
 
     private void runDbTests() {
-        KDPlayer player = new KDPlayer("TEST", null, null);
-        KDKingdom town = new KDKingdom("TEST", player);
-        player.setKingdom(town);
-        player.setPermissionLevel(PermissionLevelEnum.OWNER);
-        KDClaim claim = new KDClaim(new KDChunk("world", 1, 1), town);
     }
 
 }

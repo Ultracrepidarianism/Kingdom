@@ -6,6 +6,7 @@ main: ca.ultracrepidarianism.kingdom.Kingdom
 libraries:
   - org.apache.commons:commons-lang3:3.12.0
   - org.apache.commons:commons-collections4:4.4
+folia-supported: true
 
 commands:
   kingdom:
@@ -13,6 +14,7 @@ commands:
     usage: /kd <command>
     permission: kingdom.use
     aliases: [kd]
+
 
 permissions:
   

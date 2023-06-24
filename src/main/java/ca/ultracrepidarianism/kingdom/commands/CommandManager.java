@@ -1,16 +1,22 @@
 package ca.ultracrepidarianism.kingdom.commands;
 
 import ca.ultracrepidarianism.kingdom.commands.subcommands.*;
+import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
+import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandManager implements TabExecutor {
+
     private final List<SubCommand> subCommands;
 
     public CommandManager() {
@@ -26,14 +32,19 @@ public class CommandManager implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (commandSender instanceof Player p) {
+        if (commandSender instanceof Player player) {
             if (command.getLabel().equalsIgnoreCase("kingdom")) {
                 if (args.length > 0) {
-                    SubCommand subCommand = subCommands.stream().filter(x -> x.getLabel().equalsIgnoreCase(args[0])).findFirst().orElse(null);
+                    final SubCommand subCommand = subCommands.stream().filter(x -> x.getLabel().equalsIgnoreCase(args[0])).findFirst().orElse(null);
                     if (subCommand != null) {
-                        subCommand.perform(p, args);
+//                        if (player.hasPermission(subCommand.getPermission())) {
+                            subCommand.perform(player, args);
+//                        } else {
+//                            player.sendMessage(ChatColor.RED + KDMessageUtil.getMessage("error.global.permissionLevel"));
+////                            player.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
+//                        }
                     } else {
-                        p.sendMessage("This command does not exist");
+                        player.sendMessage("This command does not exist");
                     }
                     return true;
                 }

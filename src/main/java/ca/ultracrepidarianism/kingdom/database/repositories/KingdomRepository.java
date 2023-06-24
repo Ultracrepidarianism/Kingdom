@@ -14,31 +14,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KingdomRepository extends Repository {
+    private final static String TABLE = "kingdoms";
 
-    private final String table = "kingdoms";
-    public KingdomRepository(DAL dal) {
+    public KingdomRepository(final DAL dal) {
         super(dal);
     }
 
-    public KDKingdom getKindom(Long id) {
+    public KDKingdom getKindom(final Long id) {
         return getKindom(id, true);
     }
 
-    public KDKingdom getKindom(Long id, boolean loadOwner) {
+    public KDKingdom getKindom(final Long id, final boolean loadOwner) {
         try {
-            ResultSet results = dal.get("Players", "uuid", Long.toString(id));
-            results.next();
+            final ResultSet results = dal.get(TABLE, "id", Long.toString(id));
+            if (!results.next()) {
+                return null;
+            }
+
             KDPlayer owner = null;
             if (loadOwner) {
-                owner = DataFacade.getInstance().Players().getPlayer(results.getString("playerId"), false);
+                owner = DataFacade.getInstance().players().getPlayer(results.getString("ownerId"), false);
             }
-            KDKingdom kingdom = new KDKingdom(results.getString("kingdomName"), owner);
+
+            final KDKingdom kingdom = new KDKingdom(results.getLong("id"), results.getString("name"), owner);
             if (owner != null) {
                 owner.setKingdom(kingdom);
             }
+
             return kingdom;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             // TODO:ERRORS log and filter errors
             return null;
         }
@@ -50,26 +56,25 @@ public class KingdomRepository extends Repository {
      * @param playerUUID UUID of player you want to obtain the town from.
      * @return Player's Town
      */
-    public KDKingdom getPlayerKingdom(String playerUUID) {
+    public KDKingdom getPlayerKingdom(final String playerUUID) {
         throw new NotImplementedException();
     }
 
 
-    public void createKingdom(Player ply, String townName) {
+    public void createKingdom(final Player player, final String kingdomName) {
         try{
-            Map<String,String> properties = new HashMap<>();
-            properties.put("name",townName);
-            properties.put("ownerid", ply.getUniqueId().toString());
-            properties.put("kek","12345");
-            String id = dal.insert(table,properties);
-            DataFacade.getInstance().Players().createPlayer(ply.getUniqueId().toString(), PermissionLevelEnum.OWNER,id);
+            final Map<String,String> properties = new HashMap<>();
+            properties.put("name", kingdomName);
+            properties.put("ownerid", player.getUniqueId().toString());
+            final String id = dal.insert(TABLE,properties);
+            DataFacade.getInstance().players().createPlayer(player.getUniqueId().toString(), PermissionLevelEnum.OWNER,id);
         }catch (SQLException e){
             e.printStackTrace();
         }
 
     }
 
-    public void removeKingdom(KDKingdom kdKingdom) {
+    public void removeKingdom(final KDKingdom kdKingdom) {
         throw new NotImplementedException();
     }
 

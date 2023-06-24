@@ -17,19 +17,19 @@ public class DataFacade {
 
     private final DALFactory dalFactory;
 
-    public ClaimRepository Claims() {
+    public ClaimRepository claims() {
         return claimRepository;
     }
 
     private final ClaimRepository claimRepository;
 
-    public KingdomRepository Kingdoms() {
+    public KingdomRepository kingdoms() {
         return kingdomRepository;
     }
 
     private final KingdomRepository kingdomRepository;
 
-    public PlayerRepository Players() {
+    public PlayerRepository players() {
         return playerRepository;
     }
 

@@ -28,8 +28,7 @@ public class JoinCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player ply, String[] args) {
-//        //T
+    public void perform(final Player player,final String[] args) {
 //        if (DataFacade.getInstance().Kingdoms().getPlayerKingdom(ply.getUniqueId().toString()) != null) {
 //            ply.sendMessage("Please leave your town first.");
 //            return;

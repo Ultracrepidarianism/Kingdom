@@ -7,7 +7,7 @@ public enum PermissionLevelEnum {
 
     private final int level;
 
-    PermissionLevelEnum(int level) {
+    PermissionLevelEnum(final int level) {
         this.level = level;
     }
 
@@ -15,8 +15,8 @@ public enum PermissionLevelEnum {
         return level;
     }
 
-    public PermissionLevelEnum fromLevel(int level) {
-        for (PermissionLevelEnum permission : PermissionLevelEnum.values()) {
+    public static PermissionLevelEnum fromLevel(final int level) {
+        for (final PermissionLevelEnum permission : PermissionLevelEnum.values()) {
             if (permission.getLevel() == level) {
                 return permission;
             }
@@ -24,7 +24,7 @@ public enum PermissionLevelEnum {
         throw new IllegalArgumentException("Invalid level value: " + level);
     }
 
-    public boolean hasPermission(PermissionLevelEnum permissionLevel) {
+    public boolean hasPermission(final PermissionLevelEnum permissionLevel) {
         return this.getLevel() >= permissionLevel.getLevel();
     }
 }

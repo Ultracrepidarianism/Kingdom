@@ -1,20 +1,16 @@
 package ca.ultracrepidarianism.kingdom.commands;
 
 import ca.ultracrepidarianism.kingdom.Kingdom;
+import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class SubCommand {
 
     protected Kingdom kingdom = JavaPlugin.getPlugin(Kingdom.class);
+    protected DataFacade database = DataFacade.getInstance();
 
     public abstract String getPermission();
-
-//    public String getPermissionError() {
-//        File file = new File(kingdom.getDataFolder().getAbsolutePath() + File.separator + "strings.yml");
-//        FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
-//        return ChatColor.DARK_RED + "[" + ChatColor.RED + "Kingdom" + ChatColor.DARK_RED + "] " + fileConfiguration.getString("error.permission") + ChatColor.YELLOW + ChatColor.BOLD + getLabel();
-//    }
 
     public abstract String getLabel();
 
@@ -22,5 +18,5 @@ public abstract class SubCommand {
 
     public abstract String getDescription();
 
-    public abstract void perform(Player ply, String[] args);
+    public abstract void perform(Player player, String[] args);
 }

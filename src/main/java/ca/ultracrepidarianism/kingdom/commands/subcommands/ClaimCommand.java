@@ -6,7 +6,8 @@ import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.PermissionLevelEnum;
-import ca.ultracrepidarianism.kingdom.utils.KDUtil;
+import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class ClaimCommand extends SubCommand {
@@ -32,24 +33,25 @@ public class ClaimCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player ply, String[] args) {
-        final KDPlayer kdPlayer = DataFacade.getInstance().Players().getPlayer(ply, true);
+    public void perform(final Player player,final String[] args) {
+
+        final KDPlayer kdPlayer = database.players().getPlayer(player, true);
         if (kdPlayer == null) {
-            ply.sendMessage(KDUtil.getMessage("error.global.noKingdom"));
+            player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;
         }
         if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER)) {
-            ply.sendMessage(KDUtil.getMessage("error.global.permissionLevel"));
+            player.sendMessage(KDMessageUtil.getMessage("error.global.permissionLevel"));
             return;
         }
-        final KDChunk kdChunk = KDChunk.parse(ply.getLocation().getChunk());
-        final KDClaim kdClaim = DataFacade.getInstance().Claims().getClaimFromChunk(kdChunk);
+        final KDChunk kdChunk = KDChunk.parse(player.getLocation().getChunk());
+        final KDClaim kdClaim = DataFacade.getInstance().claims().getClaimFromChunk(kdChunk,false);
         if (kdClaim != null) {
-            ply.sendMessage(KDUtil.getMessage("error.claim.alreadyClaimed"));
+            player.sendMessage(KDMessageUtil.getMessage("error.claim.alreadyClaimed"));
             return;
         }
-        DataFacade.getInstance().Claims().createClaim(kdPlayer.getKingdom(), kdChunk);
-        ply.sendMessage(KDUtil.getMessage("success.claim"));
+        database.claims().createClaim(kdPlayer.getKingdom(), kdChunk);
+        player.sendMessage(KDMessageUtil.getMessage("success.claim"));
     }
 
 }

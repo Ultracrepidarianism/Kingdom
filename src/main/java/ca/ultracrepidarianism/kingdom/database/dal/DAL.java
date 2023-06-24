@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.kingdom.database.dal;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -7,6 +8,9 @@ import java.util.Map;
 public interface DAL {
 
     //Returns Id of newlyCreated Object as string
+
+    boolean getContext();
+    Connection getConnection() throws SQLException;
     String insert(String table, Map<String, String> properties) throws SQLException;
 
     void update(String table, Map<String, String> properties, String where) throws SQLException;

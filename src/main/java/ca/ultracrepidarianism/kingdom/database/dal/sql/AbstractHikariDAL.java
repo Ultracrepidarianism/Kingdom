@@ -7,14 +7,11 @@ import java.sql.SQLException;
 
 public abstract class AbstractHikariDAL {
 
-    private HikariDataSource dataSource;
+    protected HikariDataSource dataSource;
 
-    protected Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
-    }
+    protected Connection cntx = null;
 
-    protected AbstractHikariDAL(HikariDataSource dataSource) {
-
+    protected AbstractHikariDAL(final HikariDataSource dataSource) {
         this.dataSource = dataSource;
         createTablesIfNotExist();
         updateTables();

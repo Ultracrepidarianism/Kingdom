@@ -6,80 +6,29 @@ import java.util.stream.Collectors;
 
 
 public class KDKingdom {
-
     private Long id;
-
-    private String kingdomName;
-
+    private String name;
     private KDPlayer owner;
 
-    private List<KDPlayer> members;
-
-    private List<KDClaim> claims;
-
-    protected KDKingdom() {}
-
-    public KDKingdom(String kingdomName, KDPlayer owner) {
-        this.claims = new ArrayList<>();
-        this.members = new ArrayList<>();
-
-        this.kingdomName = kingdomName;
-        this.members.add(owner);
-
+    public KDKingdom(final String name, final KDPlayer owner) {
+        this.name = name;
         this.owner = owner;
     }
 
-    public KDKingdom(long id,String kingdomName,KDPlayer owner){
+    public KDKingdom(final Long id, final String name, final KDPlayer owner) {
+        this(name, owner);
         this.id = id;
-        this.claims = new ArrayList<>();
-        this.members = new ArrayList<>();
-
-        this.kingdomName = kingdomName;
-        this.members.add(owner);
-
-        this.owner = owner;
     }
 
     public long getId(){
         return id;
     }
 
-    public String getKingdomName() {
-        return kingdomName;
+    public String getName() {
+        return name;
     }
 
     public KDPlayer getOwner() {
         return owner;
-    }
-
-    public void setOwner(KDPlayer player){this.owner = player;}
-
-    public List<KDClaim> getClaims() {
-        return claims;
-    }
-
-    public void addClaim(KDClaim claim) {
-        this.claims.add(claim);
-    }
-
-    /**
-     * Contains ALL members
-     *
-     * @return list of all members
-     */
-    public List<KDPlayer> getMembers() {
-        return members;
-    }
-
-    /**
-     * Contains only members with {@link PermissionLevelEnum PermissionLevelEnum.OFFICER} or higher.
-     *
-     * @return list of officers
-     */
-    public List<KDPlayer> getOfficers() {
-        return members
-                .stream()
-                .filter(x -> x.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER))
-                .collect(Collectors.toList());
     }
 }
