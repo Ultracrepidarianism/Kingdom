@@ -1,8 +1,8 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
+import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
-import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
@@ -28,7 +28,7 @@ public class DisbandCommand extends SubCommand {
     }
 
     @Override
-    public void perform(final Player player,final String[] args) {
+    public void perform(final Player player, final String[] args) {
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer == null || kdPlayer.getKingdom() == null) {
             player.sendMessage("You are not in a Kingdom.");
@@ -41,7 +41,7 @@ public class DisbandCommand extends SubCommand {
             return;
         }
 
-        database.getKingdomRepository().removeKingdom(kdKingdom);
+        database.getKingdomRepository().disbandKingdom(kdKingdom);
         player.sendMessage("Kingdom has been disbanded.");
     }
 }

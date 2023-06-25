@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name="kingdoms",indexes = @Index(columnList = "name"))
+@Table(name = "kingdoms", indexes = @Index(columnList = "name"))
 public class KDKingdom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,9 +13,12 @@ public class KDKingdom {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "ownerId",foreignKey = @ForeignKey(name="FK_PLAYER_KINGDOM"))
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ownerId", foreignKey = @ForeignKey(name = "FK_PLAYER_KINGDOM"))
     private KDPlayer owner;
+
+    protected KDKingdom() {
+    }
 
     public KDKingdom(final String name, final KDPlayer owner) {
         this.name = name;
@@ -27,9 +30,7 @@ public class KDKingdom {
         this.id = id;
     }
 
-    public KDKingdom(){}
-
-    public long getId(){
+    public long getId() {
         return id;
     }
 

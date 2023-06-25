@@ -18,8 +18,7 @@ import java.util.Properties;
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
     private static EntityManager entityManager;
-
-    private static final ConnectionInfo sqlInfo = ConnectionFactory.get(ConnectionType.valueOf(JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.type")));
+    private static final ConnectionInfo sqlInfo = ConnectionFactory.get(ConnectionType.valueOf(JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.type").toUpperCase()));
 
     private HibernateUtil() {
         // This is a utility class, so it should not be instantiated.

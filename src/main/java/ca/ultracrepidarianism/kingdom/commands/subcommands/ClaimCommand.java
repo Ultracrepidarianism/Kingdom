@@ -31,23 +31,25 @@ public class ClaimCommand extends SubCommand {
     }
 
     @Override
-    public void perform(final Player player,final String[] args) {
-
+    public void perform(final Player player, final String[] args) {
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer == null || kdPlayer.getKingdom() == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;
         }
+
         if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER)) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.permissionLevel"));
             return;
         }
+
         final KDChunk kdChunk = KDChunk.parse(player.getLocation().getChunk());
         final KDClaim kdClaim = database.getClaimRepository().getClaimFromChunk(kdChunk);
         if (kdClaim != null) {
             player.sendMessage(KDMessageUtil.getMessage("error.claim.alreadyClaimed"));
             return;
         }
+
         database.getClaimRepository().createClaim(kdPlayer.getKingdom(), kdChunk);
         player.sendMessage(KDMessageUtil.getMessage("success.claim"));
     }

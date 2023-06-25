@@ -1,7 +1,5 @@
 package ca.ultracrepidarianism.kingdom.database.models;
 
-import org.bukkit.entity.Player;
-
 public class KDInvite {
     private final KDPlayer inviter;
     private final KDPlayer invitee;

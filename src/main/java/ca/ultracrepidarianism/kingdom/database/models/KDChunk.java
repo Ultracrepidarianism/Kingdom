@@ -12,14 +12,13 @@ public class KDChunk {
     private int x;
     private int z;
 
+    protected KDChunk() {
+    }
+
     public KDChunk(final String world, final int x, final int z) {
         this.world = world;
         this.x = x;
         this.z = z;
-    }
-
-    public KDChunk() {
-
     }
 
     public String getWorld() {

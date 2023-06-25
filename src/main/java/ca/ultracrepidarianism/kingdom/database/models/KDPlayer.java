@@ -5,9 +5,8 @@ import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="players")
+@Table(name = "players")
 public class KDPlayer {
-
     @Id
     private String id;
 
@@ -19,10 +18,11 @@ public class KDPlayer {
     private PermissionLevelEnum permissionLevel;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="kingdomId", foreignKey = @ForeignKey(name="FK_KINGDOM_PLAYER"))
+    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_KINGDOM_PLAYER"))
     private KDKingdom kingdom;
 
-    protected KDPlayer() {}
+    protected KDPlayer() {
+    }
 
     public KDPlayer(final String UUID, final String name, final PermissionLevelEnum rank, final KDKingdom kingdom) {
         this.id = UUID;
@@ -54,7 +54,6 @@ public class KDPlayer {
     public void setPermissionLevel(final PermissionLevelEnum permissionLevel) {
         this.permissionLevel = permissionLevel;
     }
-
 
     public KDKingdom getKingdom() {
         return kingdom;

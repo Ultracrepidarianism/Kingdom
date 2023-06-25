@@ -3,7 +3,7 @@ package ca.ultracrepidarianism.kingdom.database.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="claims")
+@Table(name = "claims")
 public class KDClaim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,10 +13,11 @@ public class KDClaim {
     private KDChunk chunk;
 
     @ManyToOne
-    @JoinColumn(name="kingdomId", foreignKey = @ForeignKey(name="FK_KINGDOM_CLAIM"))
+    @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_KINGDOM_CLAIM"))
     private KDKingdom kingdom;
 
-    protected KDClaim() {}
+    protected KDClaim() {
+    }
 
     public KDClaim(final KDChunk chunk, final KDKingdom kingdom) {
         this.chunk = chunk;
@@ -26,7 +27,6 @@ public class KDClaim {
     public Long getId() {
         return id;
     }
-
 
     public KDChunk getChunk() {
         return chunk;

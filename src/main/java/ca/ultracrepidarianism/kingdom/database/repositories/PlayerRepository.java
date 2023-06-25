@@ -1,5 +1,6 @@
 package ca.ultracrepidarianism.kingdom.database.repositories;
 
+import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlayerRepository extends Repository {
     private final static String TABLE = "players";
@@ -91,12 +93,13 @@ public class PlayerRepository extends Repository {
         kdInvitesByPlayerUUID.put(inviteeUniqueId, invites);
     }
 
-    public void removePendingInvite(final String playerId, final Long kingdomId) {
-        if (kingdomId == null) {
-            kdInvitesByPlayerUUID.remove(playerId);
-        } else {
-            kdInvitesByPlayerUUID.get(playerId);
-        }
+    public void removePendingInvite(final String playerId, final KDKingdom kingdom) {
+        final List<KDInvite> filteredInvites = kdInvitesByPlayerUUID
+                .get(playerId)
+                .stream()
+                .filter(invite -> invite.getKingdom() != kingdom)
+                .toList();
+        kdInvitesByPlayerUUID.replace(playerId, filteredInvites);
     }
 
     public List<KDPlayer>getPlayersForKingdom(KDKingdom kingdom){

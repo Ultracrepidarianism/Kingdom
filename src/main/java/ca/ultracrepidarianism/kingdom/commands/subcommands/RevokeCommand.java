@@ -68,7 +68,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        database.getPlayerRepository().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom().getId());
+        database.getPlayerRepository().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom());
         player.sendMessage("success.revoke");
     }
 }

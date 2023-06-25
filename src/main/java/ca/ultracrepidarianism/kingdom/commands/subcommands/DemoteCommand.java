@@ -3,6 +3,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
+import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,19 +31,19 @@ public class DemoteCommand extends SubCommand {
     }
 
     @Override
-    public void perform(Player player, String[] args) {
+    public void perform(final Player player, final String[] args) {
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
-        if(kdPlayer.getKingdom() == null){
+        if (kdPlayer.getKingdom() == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.nokingdom"));
             return;
         }
 
-        if(!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OWNER)){
+        if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OWNER)) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.permissionLevel"));
             return;
         }
 
-        if(args.length != 2){
+        if (args.length != 2) {
             player.sendMessage(KDMessageUtil.getMessage(getUsage()));
             return;
         }
@@ -51,11 +52,11 @@ public class DemoteCommand extends SubCommand {
         final KDPlayer targetKdPlayer;
         if (targetPlayer == null) {
             targetKdPlayer = database.getPlayerRepository().getPlayerByName(args[1]);
-        }else{
-            targetKdPlayer= database.getPlayerRepository().getPlayerFromBukkitPlayer(targetPlayer);
+        } else {
+            targetKdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(targetPlayer);
         }
 
-        if(targetKdPlayer == null){
+        if (targetKdPlayer == null) {
             player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
             return;
         }
@@ -64,16 +65,17 @@ public class DemoteCommand extends SubCommand {
             player.sendMessage(KDMessageUtil.getMessage("error.promote.notInKingdom"));
             return;
         }
-        PermissionLevelEnum currentPermissionLevel = targetKdPlayer.getPermissionLevel();
-        if (currentPermissionLevel.hasPermission(kdPlayer.getPermissionLevel()) || currentPermissionLevel.getLowerPermissionLevel() == null) {
+
+        final PermissionLevelEnum currentPermissionLevel = targetKdPlayer.getPermissionLevel();
+        if (currentPermissionLevel.getLowerPermissionLevel() == null || currentPermissionLevel.hasPermission(kdPlayer.getPermissionLevel())) {
             player.sendMessage(KDMessageUtil.getMessage("error.promote.cantDemote"));
             return;
         }
 
         database.getPlayerRepository().updatePermissionLevelForPlayer(targetKdPlayer, currentPermissionLevel.getLowerPermissionLevel());
-        if(targetPlayer != null){
-            targetPlayer.sendMessage(KDMessageUtil.getMessage("success.demote.target"));
+        if (targetPlayer != null) {
+            targetPlayer.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_DEMOTE_TARGET));
         }
-        player.sendMessage(KDMessageUtil.getMessage("success.demote.sender"));
+        player.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_DEMOTE_SENDER));
     }
 }
