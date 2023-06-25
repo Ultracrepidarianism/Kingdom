@@ -5,7 +5,7 @@ import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
-import ca.ultracrepidarianism.kingdom.database.models.PermissionLevelEnum;
+import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.entity.Player;
 
@@ -34,9 +34,9 @@ public class UnclaimCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        KDPlayer kdPlayer = database.players().getPlayer(player);
+        KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.nokingdom"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.noKingdom"));
             return;
         }
 
@@ -46,23 +46,18 @@ public class UnclaimCommand extends SubCommand {
         }
 
         KDChunk c = KDChunk.parse(player.getLocation().getChunk());
-        KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(c);
-
+        KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(c);
         if (claim == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.notclaimed"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.notClaimed"));
             return;
         }
         if (claim.getKingdom().getId() != kdPlayer.getKingdom().getId()) {
-            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.donotown"));
+            player.sendMessage(KDMessageUtil.getMessage("error.kingdom.doNotOwn"));
             return;
         }
 
-        Set<KDChunk> chunks = database.claims().getKingdomChunks(kdPlayer.getKingdom());
+        Set<KDChunk> chunks = database.getClaimRepository().getChunksForKingdom(kdPlayer.getKingdom());
 
-        if (chunks.size() == 1) {
-            // If it's the only chunk, it can be removed.
-
-        }
         Set<KDChunk> chunksToReach = new HashSet<>();
 
         KDChunk temp = new KDChunk(c.getWorld(), c.getX() - 1, c.getZ());
@@ -83,13 +78,13 @@ public class UnclaimCommand extends SubCommand {
 
 
         chunks.remove(claim.getChunk());
-        System.out.println(chunksToReach.size());
-        Optional<KDChunk> firstChunk = chunksToReach.stream().findFirst();
-        if (firstChunk.isPresent()) {
-
-            System.out.println(canUnclaim(firstChunk.get(), chunks, chunksToReach, new HashSet<>()));
+        KDChunk firstChunk = chunksToReach.stream().findFirst().orElse(null);
+        if(firstChunk == null || canUnclaim(firstChunk,chunks,chunksToReach,new HashSet<>())){
+            database.getClaimRepository().removeClaim(claim);
+            player.sendMessage(KDMessageUtil.getMessage("success.unclaim"));
+            return;
         }
-
+        player.sendMessage(KDMessageUtil.getMessage("error.kingdom.cannotUnclaim"));
     }
 
     Queue<KDChunk> queuedChunk = new LinkedList<>();

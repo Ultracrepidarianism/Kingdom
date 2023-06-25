@@ -1,6 +1,6 @@
 package ca.ultracrepidarianism.kingdom.database.connections.enums;
 
-public enum ConnectionTypes {
+public enum ConnectionType {
     MYSQL,
     MARIADB,
     POSTGRESQL,

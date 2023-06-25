@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name="kingdoms")
+@Table(name="kingdoms",indexes = @Index(columnList = "name"))
 public class KDKingdom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String name;
+
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "ownerId",foreignKey = @ForeignKey(name="FK_PLAYER_KINGDOM"))
     private KDPlayer owner;

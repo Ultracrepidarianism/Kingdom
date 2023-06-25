@@ -1,4 +1,4 @@
-package ca.ultracrepidarianism.kingdom.database.models;
+package ca.ultracrepidarianism.kingdom.database.models.enums;
 
 public enum PermissionLevelEnum {
     MEMBER(1),
@@ -11,6 +11,14 @@ public enum PermissionLevelEnum {
         this.level = level;
     }
 
+    public PermissionLevelEnum getHigherPermissionLevel() {
+        return fromLevel(this.level + 1);
+    }
+
+    public PermissionLevelEnum getLowerPermissionLevel() {
+        return fromLevel(this.level - 1);
+    }
+
     public int getLevel() {
         return level;
     }
@@ -21,7 +29,7 @@ public enum PermissionLevelEnum {
                 return permission;
             }
         }
-        throw new IllegalArgumentException("Invalid level value: " + level);
+        return null;
     }
 
     public boolean hasPermission(final PermissionLevelEnum permissionLevel) {

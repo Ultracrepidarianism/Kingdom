@@ -3,7 +3,7 @@ package ca.ultracrepidarianism.kingdom.utils;
 import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.database.connections.ConnectionFactory;
 import ca.ultracrepidarianism.kingdom.database.connections.ConnectionInfo;
-import ca.ultracrepidarianism.kingdom.database.connections.enums.ConnectionTypes;
+import ca.ultracrepidarianism.kingdom.database.connections.enums.ConnectionType;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
@@ -19,7 +19,7 @@ public class HibernateUtil {
     private static SessionFactory sessionFactory;
     private static EntityManager entityManager;
 
-    private static final ConnectionInfo sqlInfo = ConnectionFactory.get(ConnectionTypes.valueOf(JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.type")));
+    private static final ConnectionInfo sqlInfo = ConnectionFactory.get(ConnectionType.valueOf(JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.type")));
 
     private HibernateUtil() {
         // This is a utility class, so it should not be instantiated.
@@ -38,8 +38,8 @@ public class HibernateUtil {
         Properties settings = new Properties();
         settings.put(AvailableSettings.DRIVER, "com.mysql.cj.jdbc.Driver");
         settings.put(AvailableSettings.URL, sqlInfo.getUrl());
-        settings.put(AvailableSettings.USER, sqlInfo.username);
-        settings.put(AvailableSettings.PASS, sqlInfo.password);
+        settings.put(AvailableSettings.USER, sqlInfo.getUsername());
+        settings.put(AvailableSettings.PASS, sqlInfo.getPassword());
         settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
         settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");

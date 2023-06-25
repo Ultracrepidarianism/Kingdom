@@ -39,7 +39,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        final KDPlayer kdPlayer = database.players().getPlayer(player);
+        final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;
@@ -51,7 +51,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        final List<KDInvite> kdInvites = database.players().getPendingInvites(targetPlayer.getUniqueId().toString());
+        final List<KDInvite> kdInvites = database.getPlayerRepository().getPendingInvites(targetPlayer.getUniqueId().toString());
         if (CollectionUtils.isEmpty(kdInvites)) {
             player.sendMessage("error.revoke.notInvited");
             return;
@@ -60,7 +60,7 @@ public class RevokeCommand extends SubCommand {
         final KDInvite kdInvite = kdInvites
                 .stream()
                 .filter(i -> i.getKingdom().equals(kdPlayer.getKingdom()) &&
-                        i.getInvitee().getUniqueId().equals(targetPlayer.getUniqueId()))
+                        i.getInvitee().getId().equals(targetPlayer.getUniqueId().toString()))
                 .findFirst()
                 .orElse(null);
         if (kdInvite == null) {
@@ -68,7 +68,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        database.players().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom().getId());
+        database.getPlayerRepository().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom().getId());
         player.sendMessage("success.revoke");
     }
 }

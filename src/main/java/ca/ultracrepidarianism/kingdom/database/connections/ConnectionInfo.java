@@ -1,22 +1,41 @@
 package ca.ultracrepidarianism.kingdom.database.connections;
 
-import ca.ultracrepidarianism.kingdom.database.connections.enums.ConnectionTypes;
+import ca.ultracrepidarianism.kingdom.database.connections.enums.ConnectionType;
 
 public abstract class ConnectionInfo {
-    public ConnectionTypes connectionType;
-    public String address;
-    public String port;
-    public String database;
-    public String username;
-    public String password;
+    private final ConnectionType connectionType;
+    protected final String address;
+    protected final String port;
+    protected final String database;
+    private final String username;
+    private final String password;
 
-    ConnectionInfo(ConnectionTypes connectionType, String address, String port, String database, String username, String password) {
+    ConnectionInfo(
+        final ConnectionType connectionType,
+        final String address,
+        final String port,
+        final String database,
+        final String username,
+        final String password
+    ) {
         this.connectionType = connectionType;
         this.address = address;
         this.port = port;
         this.database = database;
         this.username = username;
         this.password = password;
+    }
+
+    public ConnectionType getConnectionType() {
+        return connectionType;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public String getPassword(){
+        return this.password;
     }
 
     public abstract String getUrl();

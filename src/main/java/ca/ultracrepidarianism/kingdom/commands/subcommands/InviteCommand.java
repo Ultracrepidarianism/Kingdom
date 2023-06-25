@@ -36,27 +36,27 @@ public class InviteCommand extends SubCommand {
             return;
         }
 
-        final KDPlayer inviter = database.players().getPlayer(player);
-        if (inviter == null) {
+        final KDPlayer inviter = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
+        if (inviter == null ||  inviter.getKingdom() == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
             return;
         }
 
         final Player invitee = Bukkit.getPlayer(args[1]);
         if (invitee == null) {
-            player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
+            player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist or isn't connected");
             return;
         }
 
-        final KDKingdom inviteeKingdom = database.kingdoms().getPlayerKingdom(invitee.getUniqueId().toString());
-        if (inviteeKingdom != null) {
-            player.sendMessage("This player is already in a town.");
+        final KDPlayer inviteePlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(invitee);
+        if (inviteePlayer.getKingdom() != null && inviteePlayer.getKingdom().getId() == inviteePlayer.getKingdom().getId()) {
+            player.sendMessage("This player is already in your kingdom.");
             return;
         }
 
-        database.players().addPendingInvite(inviter, invitee);
+        database.getPlayerRepository().addPendingInvite(inviter, inviteePlayer);
         final KDKingdom kdKingdom = inviter.getKingdom();
-        invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the town " + kdKingdom.getName() + ". Please do" + ChatColor.YELLOW + " /kd accept" + ChatColor.GREEN + " to join their team.");
+        invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the kingdom " + kdKingdom.getName() + ". Please do" + ChatColor.YELLOW + " /kd join" + ChatColor.GREEN + " to join their team.");
         player.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + invitee.getDisplayName() + ".");
     }
 }

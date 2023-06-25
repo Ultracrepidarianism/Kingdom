@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 
 public class KDInvite {
     private final KDPlayer inviter;
-    private final Player invitee;
+    private final KDPlayer invitee;
     private final KDKingdom kingdom;
 
-    public KDInvite(final KDPlayer inviter, final Player invitee, final KDKingdom kingdom) {
+    public KDInvite(final KDPlayer inviter, final KDPlayer invitee, final KDKingdom kingdom) {
         this.inviter = inviter;
         this.invitee = invitee;
         this.kingdom = kingdom;
@@ -17,7 +17,7 @@ public class KDInvite {
         return inviter;
     }
 
-    public Player getInvitee() {
+    public KDPlayer getInvitee() {
         return invitee;
     }
 

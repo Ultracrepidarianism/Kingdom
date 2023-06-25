@@ -1,11 +1,9 @@
 package ca.ultracrepidarianism.kingdom.listener;
 
-import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wither;
@@ -20,13 +18,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class ClaimListener implements Listener {
 
+    private Map<UUID,String> currentPlayerLocationKingdomName= new HashMap<>();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
@@ -83,10 +84,18 @@ public class ClaimListener implements Listener {
             return;
         }
 
-        System.out.println("TEST");
-        final KDClaim claim = DataFacade.getInstance().claims().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
+        final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
-            e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
+            String kingdomName = currentPlayerLocationKingdomName.getOrDefault(e.getPlayer().getUniqueId(),null);
+
+            if(kingdomName == null || kingdomName != claim.getKingdom().getName()){
+                currentPlayerLocationKingdomName.put(e.getPlayer().getUniqueId(), claim.getKingdom().getName());
+                e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
+            }
+        }else{
+            if(currentPlayerLocationKingdomName.containsKey(e.getPlayer().getUniqueId())){
+                currentPlayerLocationKingdomName.remove(e.getPlayer().getUniqueId());
+            }
         }
     }
 
@@ -96,12 +105,12 @@ public class ClaimListener implements Listener {
     }
 
     public boolean checkClaim(final Player player, final KDChunk kdChunk) {
-        final KDClaim kdClaim = DataFacade.getInstance().claims().getClaimFromChunk(kdChunk);
+        final KDClaim kdClaim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(kdChunk);
         if (kdClaim == null) {
             return false;
         }
 
-        final KDKingdom kdKingdom = DataFacade.getInstance().kingdoms().getPlayerKingdom(player.getUniqueId().toString());
+        final KDKingdom kdKingdom = DataFacade.getInstance().getKingdomRepository().getKingdomByPlayerId(player.getUniqueId().toString());
         if (kdKingdom == null) {
             return true;
         }

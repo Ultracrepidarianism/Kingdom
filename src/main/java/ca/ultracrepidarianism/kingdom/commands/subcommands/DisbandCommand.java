@@ -29,19 +29,19 @@ public class DisbandCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = database.players().getPlayer(player);
-        if (kdPlayer == null) {
+        final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
+        if (kdPlayer == null || kdPlayer.getKingdom() == null) {
             player.sendMessage("You are not in a Kingdom.");
             return;
         }
 
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
-        if (!StringUtils.equals(player.getUniqueId().toString(), kdPlayer.getUUID())) {
-            player.sendMessage("Only the Town Owner can perform this action.");
+        if (!StringUtils.equals(player.getUniqueId().toString(), kdPlayer.getId())) {
+            player.sendMessage("Only the Kingdom's ruler can perform this action.");
             return;
         }
 
-        database.kingdoms().removeKingdom(kdKingdom);
+        database.getKingdomRepository().removeKingdom(kdKingdom);
         player.sendMessage("Kingdom has been disbanded.");
     }
 }

@@ -13,11 +13,11 @@ public class KingdomListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        final KDPlayer kdp = DataFacade.getInstance().players().getPlayer(e.getPlayer());
-        if (kdp != null) {
-            // TODO
-//            database.addPlayerToMap(kdp);
+        KDPlayer kdPlayer = DataFacade.getInstance().getPlayerRepository().getPlayerFromBukkitPlayer(e.getPlayer());
+        if (kdPlayer == null) {
+            kdPlayer = DataFacade.getInstance().getPlayerRepository().createPlayer(e.getPlayer());
         }
+        DataFacade.getInstance().getPlayerRepository().updatePlayerName(kdPlayer, e.getPlayer().getName());
     }
 
     @EventHandler

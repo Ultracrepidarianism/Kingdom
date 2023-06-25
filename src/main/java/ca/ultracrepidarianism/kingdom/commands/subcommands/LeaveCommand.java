@@ -31,16 +31,16 @@ public class LeaveCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player);
-        if (kdPlayer == null) {
+        final KDPlayer kdPlayer = DataFacade.getInstance().getPlayerRepository().getPlayerFromBukkitPlayer(player);
+        if (kdPlayer.getKingdom() == null) {
             player.sendMessage(KDMessageUtil.getMessage("error.global.nokingdom"));
-            //player.sendMessage("You need to be in a town first.");
             return;
         }
 
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
-        if (!StringUtils.equals(kdKingdom.getOwner().getUUID(), player.getUniqueId().toString())) {
-            DataFacade.getInstance().players().removePlayer(kdPlayer);
+        if (!StringUtils.equals(kdKingdom.getOwner().getId(), player.getUniqueId().toString())) {
+            DataFacade.getInstance().getPlayerRepository().kickPlayer(kdPlayer);
+            player.sendMessage(KDMessageUtil.getMessage("success.leave"));
             return;
         }
         player.sendMessage(KDMessageUtil.getMessage("error.leave.owner"));

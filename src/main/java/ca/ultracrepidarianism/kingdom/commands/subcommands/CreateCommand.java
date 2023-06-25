@@ -31,13 +31,13 @@ public class CreateCommand extends SubCommand {
 
     @Override
     public void perform(final Player player,final String[] args) {
-        final KDPlayer kdPlayer = DataFacade.getInstance().players().getPlayer(player);
+        final KDPlayer kdPlayer = DataFacade.getInstance().getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (args.length != 2) {
             player.sendMessage(getUsage());
         } else if (kdPlayer != null && kdPlayer.getKingdom() != null) {
             player.sendMessage(KDMessageUtil.getMessage("error.create.alreadyInKingdom"));
         } else {
-            database.kingdoms().createKingdom(player, args[1]);
+            database.getKingdomRepository().createKingdom(kdPlayer, args[1]);
             player.sendMessage(KDMessageUtil.getMessage("success.create", Map.entry("kingdom", args[1])));
         }
     }
