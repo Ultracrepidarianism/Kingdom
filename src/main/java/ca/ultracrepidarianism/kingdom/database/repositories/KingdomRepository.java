@@ -4,8 +4,11 @@ import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.utils.HibernateUtil;
+import ca.ultracrepidarianism.kingdom.utils.PersistenceUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.NotImplementedException;
+import org.hibernate.Hibernate;
 
 public class KingdomRepository extends Repository {
     private final static String TABLE = "kingdoms";
@@ -16,7 +19,10 @@ public class KingdomRepository extends Repository {
     }
 
     public KDKingdom getKingdomByPlayerId(final String playerUUID) {
-        throw new NotImplementedException();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        TypedQuery<KDKingdom> query = entityManager.createQuery("SELECT k FROM KDPlayer p inner join KDKingdom k on k.id = p.kingdom.id WHERE p.id = :userId",KDKingdom.class);
+        query.setParameter("userId",playerUUID);
+        return PersistenceUtil.getSingleResultOrNull(query);
     }
 
     public void createKingdom(final KDPlayer player, final String kingdomName) {

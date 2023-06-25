@@ -19,11 +19,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ClaimListener implements Listener {
 
@@ -32,13 +28,13 @@ public class ClaimListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        e.setCancelled(checkClaim(p, KDChunk.parse(e.getBlock().getChunk())));
+        e.setCancelled(!canInteract(p, KDChunk.parse(e.getBlock().getChunk())));
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        e.setCancelled(checkClaim(p, KDChunk.parse(e.getBlockPlaced().getChunk())));
+        e.setCancelled(!canInteract(p, KDChunk.parse(e.getBlockPlaced().getChunk())));
     }
 
     @EventHandler
@@ -46,23 +42,27 @@ public class ClaimListener implements Listener {
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) return;
         final Player player = e.getPlayer();
-        e.setCancelled(checkClaim(player, KDChunk.parse(e.getClickedBlock().getChunk())));
+        e.setCancelled(!canInteract(player, KDChunk.parse(e.getClickedBlock().getChunk())));
     }
 
     @EventHandler
     public void onEntityExplosion(EntityExplodeEvent e) {
-        File file;
-        String worldName;
-        String chunkName;
-        for (Block b : new ArrayList<>(e.blockList())) {
-            //TODO 02 Mettre dans Database Aussi (Une méthode qu'on appel pour le check (Exists))
-//            worldName = b.getWorld().getName();
-//            chunkName = b.getChunk().getX() + "_" + b.getChunk().getZ();
-//            file = new File(dataFolder,worldName + " " + chunkName + ".yml");
-//            if(file.exists()){
-//                e.blockList().remove(b);
-//            }
-            //TODO 02 FIN
+        final Map<KDChunk, Boolean> claims = new HashMap<>();
+        for (final Block b : new ArrayList<>(e.blockList())) {
+            KDChunk currentChunk = KDChunk.parse(b.getChunk());
+            boolean isClaimed;
+            if(claims.containsKey(currentChunk))
+            {
+                isClaimed = claims.get(currentChunk);
+            } else {
+                KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(currentChunk);
+                isClaimed = claim != null;
+                claims.put(currentChunk,claim != null);
+            }
+
+            if(isClaimed){
+                e.blockList().remove(b);
+            }
         }
 
     }
@@ -87,8 +87,7 @@ public class ClaimListener implements Listener {
         final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
             String kingdomName = currentPlayerLocationKingdomName.getOrDefault(e.getPlayer().getUniqueId(),null);
-
-            if(kingdomName == null || kingdomName != claim.getKingdom().getName()){
+            if(kingdomName == null || !kingdomName.equals(claim.getKingdom().getName())){
                 currentPlayerLocationKingdomName.put(e.getPlayer().getUniqueId(), claim.getKingdom().getName());
                 e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
             }
@@ -104,18 +103,18 @@ public class ClaimListener implements Listener {
 
     }
 
-    public boolean checkClaim(final Player player, final KDChunk kdChunk) {
+    public boolean canInteract(final Player player, final KDChunk kdChunk) {
         final KDClaim kdClaim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(kdChunk);
         if (kdClaim == null) {
-            return false;
+            return true;
         }
 
         final KDKingdom kdKingdom = DataFacade.getInstance().getKingdomRepository().getKingdomByPlayerId(player.getUniqueId().toString());
         if (kdKingdom == null) {
-            return true;
+            return false;
         }
 
-        return !(kdKingdom.getId() == kdClaim.getKingdom().getId());
+        return kdKingdom.getId() == kdClaim.getKingdom().getId();
     }
 
 }

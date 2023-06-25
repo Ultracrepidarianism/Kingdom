@@ -5,7 +5,7 @@ yes
  ***
 ### Roadmap (In order of priority)
 
-- Complete the Kingdom group system
+- ~~Complete the Kingdom group system~~
   - [x] Create
   - [x] Leave
   - [x] Disband
@@ -13,7 +13,7 @@ yes
   - [x] Join
   - [x] Promote
   - [x] Demote
-- Complete the claim system (Claim/Unclaim)
+- ~~Complete the claim system (Claim/Unclaim)~~
   - [x] Claim
   - [x] Unclaim
 - Anti-Grief measures on claims
