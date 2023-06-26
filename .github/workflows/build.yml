@@ -39,6 +39,12 @@ jobs:
           Release notes go here.
           You can provide more details about the release.
 
-#     - name: Get Release ID
-#       id: get_release
-#       run: echo "Release ID: ${{ steps.create_release.outputs.id }}"
+    - name: Attach Maven Package
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/*.jar  # Specify the path to the Maven package you want to attach
+        tag_name: v1.0.0  # Specify the same tag name used for the release
+
+    - name: Get Release ID
+      id: get_release
+      run: echo "Release ID: ${{ steps.create_release.outputs.id }}"
