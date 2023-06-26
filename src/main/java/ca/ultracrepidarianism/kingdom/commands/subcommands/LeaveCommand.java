@@ -3,9 +3,13 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
 
 public class LeaveCommand extends SubCommand {
     @Override
@@ -39,9 +43,11 @@ public class LeaveCommand extends SubCommand {
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
         if (!StringUtils.equals(kdKingdom.getOwner().getId(), player.getUniqueId().toString())) {
             database.getPlayerRepository().kickPlayer(kdPlayer);
-            player.sendMessage(KDMessageUtil.getMessage("success.leave"));
+            player.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_LEAVE));
             return;
         }
+        YamlConfiguration test = YamlConfiguration.loadConfiguration(new File(""));
+        
 
         player.sendMessage(KDMessageUtil.getMessage("error.leave.owner"));
         player.sendMessage("You cannot leave the town if you are the owner. Please consider using /kd disband");

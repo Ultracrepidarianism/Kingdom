@@ -91,10 +91,8 @@ public class ClaimListener implements Listener {
                 currentPlayerLocationKingdomName.put(e.getPlayer().getUniqueId(), claim.getKingdom().getName());
                 e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
             }
-        }else{
-            if(currentPlayerLocationKingdomName.containsKey(e.getPlayer().getUniqueId())){
+        }else if(currentPlayerLocationKingdomName.containsKey(e.getPlayer().getUniqueId())){
                 currentPlayerLocationKingdomName.remove(e.getPlayer().getUniqueId());
-            }
         }
     }
 

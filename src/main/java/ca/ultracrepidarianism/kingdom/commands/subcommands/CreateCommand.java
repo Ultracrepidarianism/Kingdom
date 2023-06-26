@@ -3,6 +3,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.DataFacade;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.entity.Player;
 
@@ -41,7 +42,7 @@ public class CreateCommand extends SubCommand {
             player.sendMessage(KDMessageUtil.getMessage("error.create.alreadyInKingdom"));
         } else {
             database.getKingdomRepository().createKingdom(kdPlayer, args[1]);
-            player.sendMessage(KDMessageUtil.getMessage("success.create", Map.entry("kingdom", args[1])));
+            player.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_CREATE, Map.entry("kingdom", args[1])));
         }
     }
 }

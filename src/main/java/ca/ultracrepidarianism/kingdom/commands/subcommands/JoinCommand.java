@@ -65,7 +65,7 @@ public class JoinCommand extends SubCommand {
         }
 
         database.getKingdomRepository().setKingdomForPlayer(invite.getKingdom(), invite.getInvitee());
-        playerRepository.removePendingInvite(player.getUniqueId().toString(), invite.getKingdom());
+        playerRepository.removeAllPendingInvites(player.getUniqueId().toString());
         final List<KDPlayer> kdPlayers = playerRepository.getPlayersForKingdom(invite.getKingdom());
         for (final KDPlayer kdP : kdPlayers) {
             final Player member = Bukkit.getPlayer(UUID.fromString(kdP.getId()));

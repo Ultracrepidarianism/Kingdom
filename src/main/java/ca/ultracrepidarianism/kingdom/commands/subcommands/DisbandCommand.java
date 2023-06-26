@@ -3,6 +3,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 
@@ -42,6 +43,6 @@ public class DisbandCommand extends SubCommand {
         }
 
         database.getKingdomRepository().disbandKingdom(kdKingdom);
-        player.sendMessage("Kingdom has been disbanded.");
+        player.sendMessage(SuccessMessageEnum.KINGDOM_DISBAND);
     }
 }

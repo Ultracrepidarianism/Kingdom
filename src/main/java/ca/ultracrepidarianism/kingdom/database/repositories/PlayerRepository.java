@@ -93,6 +93,10 @@ public class PlayerRepository extends Repository {
         kdInvitesByPlayerUUID.put(inviteeUniqueId, invites);
     }
 
+    public void removeAllPendingInvites(final String playerId) {
+        kdInvitesByPlayerUUID.remove(playerId);
+    }
+
     public void removePendingInvite(final String playerId, final KDKingdom kingdom) {
         final List<KDInvite> filteredInvites = kdInvitesByPlayerUUID
                 .get(playerId)
@@ -102,9 +106,9 @@ public class PlayerRepository extends Repository {
         kdInvitesByPlayerUUID.replace(playerId, filteredInvites);
     }
 
-    public List<KDPlayer>getPlayersForKingdom(KDKingdom kingdom){
-        EntityManager entityManager = HibernateUtil.getEntityManager();
-        TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer WHERE kingdom.id = :kingdomId",KDPlayer.class);
+    public List<KDPlayer>getPlayersForKingdom(final KDKingdom kingdom){
+        final EntityManager entityManager = HibernateUtil.getEntityManager();
+        final TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer WHERE kingdom.id = :kingdomId",KDPlayer.class);
         query.setParameter("kingdomId",kingdom.getId());
 
         return query.getResultList();

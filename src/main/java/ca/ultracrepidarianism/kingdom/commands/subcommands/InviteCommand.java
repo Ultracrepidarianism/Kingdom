@@ -2,6 +2,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
+import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,7 +55,9 @@ public class InviteCommand extends SubCommand {
         }
 
         database.getPlayerRepository().addPendingInvite(inviter, inviteePlayer);
-        invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the kingdom " + inviter.getKingdom().getName() + ". Please do" + ChatColor.YELLOW + " /kd join" + ChatColor.GREEN + " to join their team.");
-        player.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + invitee.getDisplayName() + ".");
+        player.sendMessage(SuccessMessageEnum.KINGDOM_INVITE_SENDER);
+        invitee.sendMessage(SuccessMessageEnum.KINGDOM_INVITE_TARGET);
+        //invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the kingdom " + inviter.getKingdom().getName() + ". Please do" + ChatColor.YELLOW + " /kd join" + ChatColor.GREEN + " to join their team.");
+        //player.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + invitee.getDisplayName() + ".");
     }
 }
