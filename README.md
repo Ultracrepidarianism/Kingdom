@@ -18,9 +18,15 @@ yes
   - [x] Unclaim
 - Anti-Grief measures on claims
 - Get information about the state of the kingdom(info)
+- ## [Beta Launch]
 - Outposts
-- Economy system(Quests/Tasks)
+- Quest system (Quests/Tasks)
+- Economy system 
+- ## [V1 Launch]
+- Ingame UI
 - Random Events
-- ...
+- Web interface
+...
+- ## [V2 0.0]
 
 ![UwU](image.png)
