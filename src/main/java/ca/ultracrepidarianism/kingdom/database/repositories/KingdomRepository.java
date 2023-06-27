@@ -9,7 +9,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.NotImplementedException;
 
+import java.util.List;
+
 public class KingdomRepository extends Repository {
+
     private final static String TABLE = "kingdoms";
 
     public KDKingdom getKingdomByPlayerId(final String playerUUID) {
@@ -51,5 +54,36 @@ public class KingdomRepository extends Repository {
         entityManager.persist(player);
 
         entityManager.getTransaction().commit();
+    }
+
+    public void kickPlayer(final KDPlayer kdPlayer) {
+        final EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+
+        kdPlayer.setKingdom(null);
+        kdPlayer.setPermissionLevel(null);
+        entityManager.merge(kdPlayer);
+
+        entityManager.getTransaction().commit();
+    }
+
+    public List<KDPlayer> findOfficersForKingdom(KDKingdom kdKingdom) {
+        final EntityManager entityManager = HibernateUtil.getEntityManager();
+
+        final TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer where kingdom.id = :kingdomId and permissionLevel = :permissionLevel", KDPlayer.class);
+        query.setParameter("kingdomId", kdKingdom.getId());
+        query.setParameter("permissionLevel", PermissionLevelEnum.OFFICER);
+
+        return query.getResultList();
+    }
+
+    public List<KDPlayer> findMembersForKingdom(KDKingdom kdKingdom) {
+        final EntityManager entityManager = HibernateUtil.getEntityManager();
+
+        final TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer where kingdom.id = :kingdomId and permissionLevel = :permissionLevel", KDPlayer.class);
+        query.setParameter("kingdomId", kdKingdom.getId());
+        query.setParameter("permissionLevel", PermissionLevelEnum.MEMBER);
+
+        return query.getResultList();
     }
 }

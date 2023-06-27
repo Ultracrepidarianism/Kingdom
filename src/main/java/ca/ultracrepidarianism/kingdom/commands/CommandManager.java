@@ -31,6 +31,8 @@ public class CommandManager implements TabExecutor {
         subCommands.add(new RevokeCommand());
         subCommands.add(new PromoteCommand());
         subCommands.add(new DemoteCommand());
+        subCommands.add(new KickCommand());
+        subCommands.add(new InfoCommand());
     }
 
     @Override

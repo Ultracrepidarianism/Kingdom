@@ -1,7 +1,6 @@
 package ca.ultracrepidarianism.kingdom.utils;
 
 import ca.ultracrepidarianism.kingdom.Kingdom;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -10,31 +9,35 @@ import java.util.Map;
 
 
 public class KDMessageUtil {
+    public static final String PREFIX = JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("prefix");
+
     public static String getMessage(final String section) {
-        final String message = getTranslation(section);
+        final String message = getMessageFromSection(section);
         if (message != null) {
-            return message;
+            return PREFIX + " " + message;
         }
-        return section;
+        return PREFIX + " " + section;
     }
 
     @SafeVarargs
     public static String getMessage(final String section, final Map.Entry<String, String>... args) {
-        String translation = getTranslation(section);
-        if (translation == null) {
-            return section;
+        String message = getMessageFromSection(section);
+        if (message == null) {
+            return PREFIX + " " + section;
         }
+
+        message = PREFIX + " " + message;
 
         for (Map.Entry<String, String> entry : args) {
-            translation = translation.replace("%" + entry.getKey(), entry.getValue());
+            message = message.replace("%" + entry.getKey() + "%", entry.getValue());
         }
 
-        return translation;
+        return message;
     }
 
-    private static String getTranslation(final String section) {
+    private static String getMessageFromSection(final String section) {
         final File file = new File(JavaPlugin.getPlugin(Kingdom.class).getDataFolder() + File.separator + "messages.yml");
-        final FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        final YamlConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(file);
 
         return fileConfiguration.getString(section);
     }

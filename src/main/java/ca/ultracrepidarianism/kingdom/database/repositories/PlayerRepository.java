@@ -1,6 +1,5 @@
 package ca.ultracrepidarianism.kingdom.database.repositories;
 
-import ca.ultracrepidarianism.kingdom.Kingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
@@ -15,18 +14,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PlayerRepository extends Repository {
+
     private final static String TABLE = "players";
 
-    private final Map<String,List<KDInvite>> kdInvitesByPlayerUUID = new HashMap<>();
+    private final Map<String, List<KDInvite>> kdInvitesByPlayerUUID = new HashMap<>();
 
     public KDPlayer getPlayerByName(final String name) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
 
         final TypedQuery<KDPlayer> typedQuery = entityManager.createQuery("from KDPlayer WHERE UPPER(name) LIKE :name", KDPlayer.class);
-        typedQuery.setParameter("name", "%"+name+"%");
+        typedQuery.setParameter("name", "%" + name + "%");
 
         return PersistenceUtil.getSingleResultOrNull(typedQuery);
     }
@@ -61,25 +60,6 @@ public class PlayerRepository extends Repository {
         return kdPlayer;
     }
 
-    public void kickPlayer(final KDPlayer kdPlayer) {
-        final EntityManager entityManager = HibernateUtil.getEntityManager();
-        entityManager.getTransaction().begin();
-
-        kdPlayer.setKingdom(null);
-        kdPlayer.setPermissionLevel(null);
-        entityManager.merge(kdPlayer);
-
-        entityManager.getTransaction().commit();
-    }
-
-    public void kickPlayer(final String id) {
-        final KDPlayer player = HibernateUtil.getEntityManager().find(KDPlayer.class, id);
-        if(player != null){
-            kickPlayer(player);
-        }
-    }
-
-
     public List<KDInvite> getPendingInvites(final String playerId) {
         return kdInvitesByPlayerUUID.get(playerId);
     }
@@ -106,10 +86,10 @@ public class PlayerRepository extends Repository {
         kdInvitesByPlayerUUID.replace(playerId, filteredInvites);
     }
 
-    public List<KDPlayer>getPlayersForKingdom(final KDKingdom kingdom){
+    public List<KDPlayer> getPlayersForKingdom(final KDKingdom kingdom) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
-        final TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer WHERE kingdom.id = :kingdomId",KDPlayer.class);
-        query.setParameter("kingdomId",kingdom.getId());
+        final TypedQuery<KDPlayer> query = entityManager.createQuery("FROM KDPlayer WHERE kingdom.id = :kingdomId", KDPlayer.class);
+        query.setParameter("kingdomId", kingdom.getId());
 
         return query.getResultList();
     }

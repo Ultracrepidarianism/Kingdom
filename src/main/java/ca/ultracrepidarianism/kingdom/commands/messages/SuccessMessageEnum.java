@@ -1,4 +1,4 @@
-package ca.ultracrepidarianism.kingdom.database.models.enums;
+package ca.ultracrepidarianism.kingdom.commands.messages;
 
 public class SuccessMessageEnum {
     public static final String KINGDOM_CLAIM ="success.kingdom.claim";

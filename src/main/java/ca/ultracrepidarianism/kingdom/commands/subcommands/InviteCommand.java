@@ -2,7 +2,7 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
-import ca.ultracrepidarianism.kingdom.database.models.enums.SuccessMessageEnum;
+import ca.ultracrepidarianism.kingdom.commands.messages.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

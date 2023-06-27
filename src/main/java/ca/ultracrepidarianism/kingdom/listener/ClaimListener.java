@@ -19,28 +19,37 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class ClaimListener implements Listener {
 
-    private Map<UUID,String> currentPlayerLocationKingdomName= new HashMap<>();
+    private final Map<UUID, String> currentPlayerLocationKingdomName = new HashMap<>();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        Player p = e.getPlayer();
-        e.setCancelled(!canInteract(p, KDChunk.parse(e.getBlock().getChunk())));
+        final Player player = e.getPlayer();
+        e.setCancelled(!canInteract(player, KDChunk.parse(e.getBlock().getChunk())));
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        e.setCancelled(!canInteract(p, KDChunk.parse(e.getBlockPlaced().getChunk())));
+        final Player player = e.getPlayer();
+        e.setCancelled(!canInteract(player, KDChunk.parse(e.getBlockPlaced().getChunk())));
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (e.getHand() == EquipmentSlot.OFF_HAND) return;
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) return;
+        if (e.getHand() == EquipmentSlot.OFF_HAND) {
+            return;
+        }
+
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) {
+            return;
+        }
+
         final Player player = e.getPlayer();
         e.setCancelled(!canInteract(player, KDChunk.parse(e.getClickedBlock().getChunk())));
     }
@@ -48,19 +57,18 @@ public class ClaimListener implements Listener {
     @EventHandler
     public void onEntityExplosion(EntityExplodeEvent e) {
         final Map<KDChunk, Boolean> claims = new HashMap<>();
-        for (final Block b : new ArrayList<>(e.blockList())) {
-            KDChunk currentChunk = KDChunk.parse(b.getChunk());
-            boolean isClaimed;
-            if(claims.containsKey(currentChunk))
-            {
+        for (final Block b : e.blockList()) {
+            final KDChunk currentChunk = KDChunk.parse(b.getChunk());
+            final boolean isClaimed;
+            if (claims.containsKey(currentChunk)) {
                 isClaimed = claims.get(currentChunk);
             } else {
-                KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(currentChunk);
+                final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(currentChunk);
                 isClaimed = claim != null;
-                claims.put(currentChunk,claim != null);
+                claims.put(currentChunk, isClaimed);
             }
 
-            if(isClaimed){
+            if (isClaimed) {
                 e.blockList().remove(b);
             }
         }
@@ -86,13 +94,13 @@ public class ClaimListener implements Listener {
 
         final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
         if (claim != null) {
-            String kingdomName = currentPlayerLocationKingdomName.getOrDefault(e.getPlayer().getUniqueId(),null);
-            if(kingdomName == null || !kingdomName.equals(claim.getKingdom().getName())){
+            final String kingdomName = currentPlayerLocationKingdomName.getOrDefault(e.getPlayer().getUniqueId(), null);
+            if (kingdomName == null || !kingdomName.equals(claim.getKingdom().getName())) {
                 currentPlayerLocationKingdomName.put(e.getPlayer().getUniqueId(), claim.getKingdom().getName());
                 e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
             }
-        }else if(currentPlayerLocationKingdomName.containsKey(e.getPlayer().getUniqueId())){
-                currentPlayerLocationKingdomName.remove(e.getPlayer().getUniqueId());
+        } else {
+            currentPlayerLocationKingdomName.remove(e.getPlayer().getUniqueId());
         }
     }
 
