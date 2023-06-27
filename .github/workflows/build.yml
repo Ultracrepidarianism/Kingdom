@@ -31,26 +31,3 @@ jobs:
       with:
         name: Maven Package
         path: target/*.jar  # Specify the path to the Maven package you want to attach
-
-    - name: Create Release Draft
-      id: create_release
-      uses: actions/create-release@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v0.0.1  # Specify the desired tag name for the release
-        release_name: Release 0.0.1  # Specify the desired release name
-        draft: true  # Set this to 'true' to create a release draft
-        body: |  # Add release notes or description
-          Release notes go here.
-          You can provide more details about the release.
-
-    - name: Attach Maven Package
-      uses: softprops/action-gh-release@v1
-      with:
-        files: target/*.jar  # Specify the path to the Maven package you want to attach
-        tag_name: v1.0.0  # Specify the same tag name used for the release
-
-    - name: Get Release ID
-      id: get_release
-      run: 'echo "Release ID: ${{ steps.create_release.outputs.id }}"'
