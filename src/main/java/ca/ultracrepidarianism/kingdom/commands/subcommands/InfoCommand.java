@@ -1,6 +1,7 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
+import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
@@ -43,7 +44,7 @@ public class InfoCommand extends SubCommand {
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
         final List<KDPlayer> officers = database.getKingdomRepository().findOfficersForKingdom(kdKingdom);
         final List<KDPlayer> members = database.getKingdomRepository().findMembersForKingdom(kdKingdom);
-
+        final List<KDInvite> invites = database.getKingdomRepository().findPendingInvitesForKingdom(kdKingdom);
 
         final String processedOfficers = getProcessedOfficersString(officers);
         final String processedMembers = getProcessedMembersString(members);

@@ -19,7 +19,7 @@ public class PlayerRepository extends Repository {
 
     private final static String TABLE = "players";
 
-    private final Map<String, List<KDInvite>> kdInvitesByPlayerUUID = new HashMap<>();
+    private final Map<String, List<KDInvite>> kdInvitesByPlayerId = new HashMap<>();
 
     public KDPlayer getPlayerByName(final String name) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
@@ -61,29 +61,29 @@ public class PlayerRepository extends Repository {
     }
 
     public List<KDInvite> getPendingInvites(final String playerId) {
-        return kdInvitesByPlayerUUID.get(playerId);
+        return kdInvitesByPlayerId.get(playerId);
     }
 
     public void addPendingInvite(final KDPlayer inviter, final KDPlayer invitee) {
         final String inviteeUniqueId = invitee.getId();
-        final List<KDInvite> invites = kdInvitesByPlayerUUID.getOrDefault(inviteeUniqueId, new ArrayList<>());
+        final List<KDInvite> invites = kdInvitesByPlayerId.getOrDefault(inviteeUniqueId, new ArrayList<>());
 
         invites.add(new KDInvite(inviter, invitee, inviter.getKingdom()));
 
-        kdInvitesByPlayerUUID.put(inviteeUniqueId, invites);
+        kdInvitesByPlayerId.put(inviteeUniqueId, invites);
     }
 
     public void removeAllPendingInvites(final String playerId) {
-        kdInvitesByPlayerUUID.remove(playerId);
+        kdInvitesByPlayerId.remove(playerId);
     }
 
     public void removePendingInvite(final String playerId, final KDKingdom kingdom) {
-        final List<KDInvite> filteredInvites = kdInvitesByPlayerUUID
+        final List<KDInvite> filteredInvites = kdInvitesByPlayerId
                 .get(playerId)
                 .stream()
                 .filter(invite -> invite.getKingdom() != kingdom)
                 .toList();
-        kdInvitesByPlayerUUID.replace(playerId, filteredInvites);
+        kdInvitesByPlayerId.replace(playerId, filteredInvites);
     }
 
     public List<KDPlayer> getPlayersForKingdom(final KDKingdom kingdom) {
