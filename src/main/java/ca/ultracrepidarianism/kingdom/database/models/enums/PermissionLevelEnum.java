@@ -12,7 +12,7 @@ public enum PermissionLevelEnum {
     }
 
     public PermissionLevelEnum getHigherPermissionLevel() {
-        return fromLevel(this.level + 1);
+        return fromLevel(this.level == 3 ? this.level : this.level + 1);
     }
 
     public PermissionLevelEnum getLowerPermissionLevel() {
