@@ -19,7 +19,6 @@ The future of vanilla RPG
   - [x] Claim
   - [x] Unclaim
   - [x] Anti-Grief measures on claims
-    - [ ] Fix wither not checking for claim on EntityChangeBlockEvent
 - Make the messages
   - [x] Claim
   - [x] Create
@@ -54,7 +53,7 @@ The future of vanilla RPG
   - [ ] Unclaim
 - Optimize calls where necessary
 - Explore caching options
-  - Check for [antiWither](https://github.com/Ultracrepidarianism/Kingdom/blob/master/src/main/java/ca/ultracrepidarianism/kingdom/listener/ClaimListener.java#L78-L83)
+  - Check for [onEntityChangeBlock](https://github.com/Ultracrepidarianism/Kingdom/blob/master/src/main/java/ca/ultracrepidarianism/kingdom/listener/ClaimListener.java#L76-L83)
 
 ## [V2]
 - [ ] Outposts
