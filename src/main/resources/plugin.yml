@@ -4,7 +4,7 @@ api-version: 1.16
 author: NullExceptionArg
 main: ca.ultracrepidarianism.kingdom.Kingdom
 libraries:
-  - org.hibernate.orm:hibernate-core:6.2.4.Final
+  - org.hibernate.orm:hibernate-core:6.2.7.Final
   - mysql:mysql-connector-java:8.0.33
   - org.apache.commons:commons-lang3:3.12.0
   - org.apache.commons:commons-collections4:4.4

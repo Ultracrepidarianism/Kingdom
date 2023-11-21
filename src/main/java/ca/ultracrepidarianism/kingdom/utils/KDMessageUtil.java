@@ -2,6 +2,7 @@ package ca.ultracrepidarianism.kingdom.utils;
 
 import ca.ultracrepidarianism.kingdom.Kingdom;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -9,29 +10,38 @@ import java.util.Map;
 
 
 public class KDMessageUtil {
-    public static final String PREFIX = JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("prefix");
+    public static final String PREFIX = JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("prefix").replaceAll("&", "§");
+
+    public static void sendRawMessage(final Player player, final String message) {
+        player.sendMessage(PREFIX + " " + message);
+    }
+
+    public static void sendMessage(final Player player, final String section) {
+        final String message = PREFIX + " " + getMessage(section);
+        player.sendMessage(message);
+    }
+
+    @SafeVarargs
+    public static void sendMessage(final Player player, final String section, final Map.Entry<String, String>... args) {
+        final String message = PREFIX + " " + getMessage(section, args);
+        player.sendMessage(message);
+    }
 
     public static String getMessage(final String section) {
         final String message = getMessageFromSection(section);
+        System.out.println(message);
         if (message != null) {
-            return PREFIX + " " + message;
+            return message.replaceAll("&", "§");
         }
-        return PREFIX + " " + section;
+        return section;
     }
 
     @SafeVarargs
     public static String getMessage(final String section, final Map.Entry<String, String>... args) {
-        String message = getMessageFromSection(section);
-        if (message == null) {
-            return PREFIX + " " + section;
-        }
-
-        message = PREFIX + " " + message;
-
+        String message = getMessage(section);
         for (Map.Entry<String, String> entry : args) {
             message = message.replace("%" + entry.getKey() + "%", entry.getValue());
         }
-
         return message;
     }
 
@@ -41,4 +51,5 @@ public class KDMessageUtil {
 
         return fileConfiguration.getString(section);
     }
+
 }

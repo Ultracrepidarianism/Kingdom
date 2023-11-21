@@ -32,9 +32,20 @@ public class HibernateUtil {
      */
     public static SessionFactory buildSessionFactory() {
         Thread.currentThread().setContextClassLoader(Kingdom.class.getClassLoader());
-        Configuration configuration = new Configuration();
+        final Configuration configuration = new Configuration();
 
-        Properties settings = new Properties();
+        final Properties settings = getProperties();
+
+        configuration.addProperties(settings);
+        configuration.addAnnotatedClass(KDClaim.class);
+        configuration.addAnnotatedClass(KDPlayer.class);
+        configuration.addAnnotatedClass(KDKingdom.class);
+
+        return configuration.buildSessionFactory();
+    }
+
+    private static Properties getProperties() {
+        final Properties settings = new Properties();
         settings.put(AvailableSettings.DRIVER, "com.mysql.cj.jdbc.Driver");
         settings.put(AvailableSettings.URL, sqlInfo.getUrl());
         settings.put(AvailableSettings.USER, sqlInfo.getUsername());
@@ -43,13 +54,7 @@ public class HibernateUtil {
         settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
         settings.put(AvailableSettings.AUTOCOMMIT, "true");
-
-        configuration.addProperties(settings);
-        configuration.addAnnotatedClass(KDClaim.class);
-        configuration.addAnnotatedClass(KDPlayer.class);
-        configuration.addAnnotatedClass(KDKingdom.class);
-
-        return configuration.buildSessionFactory();
+        return settings;
     }
 
     /**

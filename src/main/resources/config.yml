@@ -1,9 +1,12 @@
 prefix: "&r[&6Kingdom&r]"
 
+
+test: "&aVous avez été invité à rejoindre le royaume &e%kingdom%&a. Utilisez la commande /kd join pour accepter la demande."
+
 DBserver:
-  type: MYSQL
+  type: "MYSQL"
   ip: 127.0.0.1
   port: 3306
   database: "minecraft"
-  username: "user"
-  password: "passw0rd"
+  username: "minecraft"
+  password: "Passw0rd!"

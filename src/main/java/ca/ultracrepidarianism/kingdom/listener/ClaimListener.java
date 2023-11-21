@@ -5,8 +5,8 @@ import ca.ultracrepidarianism.kingdom.database.models.KDChunk;
 import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wither;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -19,46 +19,45 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ClaimListener implements Listener {
 
     private final Map<UUID, String> currentPlayerLocationKingdomName = new HashMap<>();
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
-        final Player player = e.getPlayer();
-        e.setCancelled(!canInteract(player, KDChunk.parse(e.getBlock().getChunk())));
+    public void onBlockBreak(final BlockBreakEvent event) {
+        final Player player = event.getPlayer();
+        event.setCancelled(!canInteract(player, KDChunk.parse(event.getBlock().getChunk())));
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        final Player player = e.getPlayer();
-        e.setCancelled(!canInteract(player, KDChunk.parse(e.getBlockPlaced().getChunk())));
+    public void onBlockPlace(final BlockPlaceEvent event) {
+        final Player player = event.getPlayer();
+        event.setCancelled(!canInteract(player, KDChunk.parse(event.getBlockPlaced().getChunk())));
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        if (e.getHand() == EquipmentSlot.OFF_HAND) {
+    public void onInteract(final PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) {
             return;
         }
 
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_AIR) {
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
             return;
         }
 
-        final Player player = e.getPlayer();
-        e.setCancelled(!canInteract(player, KDChunk.parse(e.getClickedBlock().getChunk())));
+        final Player player = event.getPlayer();
+        event.setCancelled(!canInteract(player, KDChunk.parse(event.getClickedBlock().getChunk())));
     }
 
     @EventHandler
-    public void onEntityExplosion(EntityExplodeEvent e) {
+    public void onEntityExplosion(final EntityExplodeEvent event) {
         final Map<KDChunk, Boolean> claims = new HashMap<>();
-        for (final Block b : e.blockList()) {
-            final KDChunk currentChunk = KDChunk.parse(b.getChunk());
+
+        final List<Block> clonedBlockList = new ArrayList<>(event.blockList());
+        for (final Block block : clonedBlockList) {
+            final KDChunk currentChunk = KDChunk.parse(block.getChunk());
             final boolean isClaimed;
             if (claims.containsKey(currentChunk)) {
                 isClaimed = claims.get(currentChunk);
@@ -69,43 +68,44 @@ public class ClaimListener implements Listener {
             }
 
             if (isClaimed) {
-                e.blockList().remove(b);
+                event.blockList().remove(block);
             }
         }
-
     }
 
     @EventHandler
-    public void antiWither(EntityChangeBlockEvent e) {
-        if (e.getEntity() instanceof Wither) {
+    public void onEntityChangeBlock(EntityChangeBlockEvent e) {
+        if (e.getEntityType() == EntityType.WITHER) {
+            e.setCancelled(true);
+        } else if (e.getEntityType() == EntityType.RABBIT) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        if (e.getTo() == null) {
+    public void onPlayerMove(final PlayerMoveEvent event) {
+        if (event.getTo() == null) {
             return;
         }
 
-        if (e.getFrom().getChunk().equals(e.getTo().getChunk())) {
+        if (event.getFrom().getChunk().equals(event.getTo().getChunk())) {
             return;
         }
 
-        final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(KDChunk.parse(e.getTo().getChunk()));
+        final KDClaim claim = DataFacade.getInstance().getClaimRepository().getClaimFromChunk(KDChunk.parse(event.getTo().getChunk()));
         if (claim != null) {
-            final String kingdomName = currentPlayerLocationKingdomName.getOrDefault(e.getPlayer().getUniqueId(), null);
+            final String kingdomName = currentPlayerLocationKingdomName.getOrDefault(event.getPlayer().getUniqueId(), null);
             if (kingdomName == null || !kingdomName.equals(claim.getKingdom().getName())) {
-                currentPlayerLocationKingdomName.put(e.getPlayer().getUniqueId(), claim.getKingdom().getName());
-                e.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
+                currentPlayerLocationKingdomName.put(event.getPlayer().getUniqueId(), claim.getKingdom().getName());
+                event.getPlayer().sendMessage("Entering " + claim.getKingdom().getName());
             }
         } else {
-            currentPlayerLocationKingdomName.remove(e.getPlayer().getUniqueId());
+            currentPlayerLocationKingdomName.remove(event.getPlayer().getUniqueId());
         }
     }
 
     @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent e) {
+    public void onChunkUnload(final ChunkUnloadEvent event) {
 
     }
 

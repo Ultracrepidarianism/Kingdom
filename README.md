@@ -1,12 +1,12 @@
 # Kingdom
  ***
 ### Description
-yes
+The future of vanilla RPG
  ***
 ### Roadmap (In order of priority)
 
-## [Alpha Launch]
-- ~~Complete the Kingdom group system~~
+## [V1]
+- Complete the Kingdom group system
   - [x] Create
   - [x] Leave
   - [x] Disband
@@ -14,22 +14,57 @@ yes
   - [x] Join
   - [x] Promote
   - [x] Demote
-- ~~Complete the claim system (Claim/Unclaim)~~
+  - [x] Get information about the state of the kingdom(info)
+- Complete the claim system
   - [x] Claim
   - [x] Unclaim
-- [x] Anti-Grief measures on claims
-- [ ] Get information about the state of the kingdom(info)
+  - [x] Anti-Grief measures on claims
+    - [ ] Fix wither not checking for claim on EntityChangeBlockEvent
+- Make the messages
+  - [x] Claim
+  - [x] Create
+  - [x] Demote
+  - [x] Disband
+  - [x] Info
+  - [x] Invite
+  - [x] Join
+  - [x] Kick
+  - [x] Leave
+  - [x] Promote
+  - [x] Revoke
+  - [x] Unclaim
+- Better global handling of commands
+  - [ ] Lack of permissions
+  - [ ] Invalid arguments
+  - [ ] Invalid command name
 
-## [Beta Launch]
+## [V1.5]
+- Make an API so other plugins can interact with it
+  - [ ] Claim
+  - [ ] Create
+  - [ ] Demote
+  - [ ] Disband
+  - [ ] Info
+  - [ ] Invite
+  - [ ] Join
+  - [ ] Kick
+  - [ ] Leave
+  - [ ] Promote
+  - [ ] Revoke
+  - [ ] Unclaim
+- Optimize calls where necessary
+- Explore caching options
+  - Check for [antiWither](https://github.com/Ultracrepidarianism/Kingdom/blob/master/src/main/java/ca/ultracrepidarianism/kingdom/listener/ClaimListener.java#L78-L83)
+
+## [V2]
 - [ ] Outposts
 - [ ] Quest system (Quests/Tasks)
 - [ ] Economy system 
+- [ ] Custom roles for permissions
 
-## [V1 Launch]
+## [V3] (lol)
 - [ ] In-game UI
 - [ ] Random Events
 - [ ] Web interface
-- 
-- ## [V2 0.0]
 
 ![UwU](image.png)

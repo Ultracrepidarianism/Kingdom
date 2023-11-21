@@ -1,6 +1,5 @@
 package ca.ultracrepidarianism.kingdom.database.repositories;
 
-import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
 import ca.ultracrepidarianism.kingdom.database.models.KDKingdom;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
@@ -10,12 +9,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.NotImplementedException;
 
-import java.util.Collections;
 import java.util.List;
 
 public class KingdomRepository extends Repository {
-
-    private final static String TABLE = "kingdoms";
 
     public KDKingdom getKingdomByPlayerId(final String playerUUID) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
@@ -87,12 +83,5 @@ public class KingdomRepository extends Repository {
         query.setParameter("permissionLevel", PermissionLevelEnum.MEMBER);
 
         return query.getResultList();
-    }
-
-    public List<KDInvite> findPendingInvitesForKingdom(final KDKingdom kdKingdom) {
-        final EntityManager entityManager = HibernateUtil.getEntityManager();
-
-//        final TypedQuery<KDInvite> query = entityManager.createQuery("FROM KD", KDInvite.class);
-        return Collections.emptyList();
     }
 }

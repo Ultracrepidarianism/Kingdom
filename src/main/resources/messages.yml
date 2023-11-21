@@ -1,5 +1,55 @@
 success:
-  kingdom:
-    claim: 'salut'
-    TAmere: 'bonjour'
-    KEKW: 'howdy'
+  claim: "This piece of land was successfully claimed."
+  create: "Successfully created kingdom &6%kingdom%&f."
+  demote:
+    sender: "Successfully demoted %player% to %rank%."
+    target: "You were demoted to %rank%."
+  kick: "You successfully exiled %player% from the kingdom."
+  disband: "You successfully destroyed the kingdom."
+  invite:
+    sender: "You successfully invited &6%player% &fto join your kingdom."
+    target: "You have been invited to join the kingdom &6%kingdom%"
+  join: "%player% has joined the kingdom!"
+  leave: "You successfully left the kingdom."
+  promote:
+    sender: "Successfully promoted %player% to %rank%."
+    target: "You were promoted to %rank%!"
+  revoke: "You successfully revoked %player%'s invitation to your kingdom."
+  unclaim: "Land successfully unclaimed."
+error:
+  unclaim:
+    doNotOwn: "You do not own this land."
+    notClaimed: "This land isn't claimed."
+    cannotUnclaim: "You cannot unclaim this land."
+  leave:
+    ownerCantLeave: "You cannot leave your own kingdom! Please use &e/kd disband&c"
+  claim:
+    alreadyClaimed: "This land is already claimed."
+  promote:
+    self: "You cannot promote yourself."
+    cantGoHigher: "You cannot promote someone to your rank or higher"
+    cantPromote: "You can't promote someone with the same or more permissions than you."
+  demote:
+    lowest: "This person already has the lowest rank."
+    cantDemote: "You can't demote someone with the same or more permissions than you."
+  join:
+    leaveKingdomFirst: "You need to leave your kingdom first."
+    noPendingInvites: "You have no pending invites."
+    notInvitedToKingdom: "You have not be invited to the kingdom %kingdom%."
+  invite:
+    alreadyInYourKingdom: "%player% is already part of your kingdom. Can't you recognize your own people? Shame."
+  revoke:
+    notInvited: "This player has not been invited to the kingdom."
+  global:
+    noKingdom: "You are not in a Kingdom."
+    permissionLevel: "You do not have the permission to execute this action."
+    alreadyInKingdom: "You are already in a kingdom."
+    playerDoesntExist: "This player does not exist."
+    notInKingdom: "This player is not in your kingdom."
+    ownerOnly: "Only the Kingdom's ruler can perform this action."
+message:
+  info:
+    owner: "Owner"
+    officers: "Officers"
+    members: "Members"
+    noOfficer: "No officer"

@@ -6,15 +6,15 @@ import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 
 public class RevokeCommand extends SubCommand {
     @Override
     public String getPermission() {
-        return "kd.revoke";
+        return "kingdom.revoke";
     }
 
     @Override
@@ -41,19 +41,19 @@ public class RevokeCommand extends SubCommand {
 
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.noKingdom");
             return;
         }
 
         final Player targetPlayer = Bukkit.getPlayer(args[1]);
         if (targetPlayer == null) {
-            player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
+            KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
             return;
         }
 
         final List<KDInvite> kdInvites = database.getPlayerRepository().getPendingInvites(targetPlayer.getUniqueId().toString());
         if (CollectionUtils.isEmpty(kdInvites)) {
-            player.sendMessage("error.revoke.notInvited");
+            KDMessageUtil.sendMessage(player, "error.revoke.notInvited");
             return;
         }
 
@@ -64,11 +64,11 @@ public class RevokeCommand extends SubCommand {
                 .findFirst()
                 .orElse(null);
         if (kdInvite == null) {
-            player.sendMessage("error.revoke.notInvited");
+            KDMessageUtil.sendMessage(player, "error.revoke.notInvited");
             return;
         }
 
         database.getPlayerRepository().removePendingInvite(targetPlayer.getUniqueId().toString(), kdPlayer.getKingdom());
-        player.sendMessage("success.revoke");
+        KDMessageUtil.sendMessage(player, "success.revoke", Map.entry("player", targetPlayer.getName()));
     }
 }

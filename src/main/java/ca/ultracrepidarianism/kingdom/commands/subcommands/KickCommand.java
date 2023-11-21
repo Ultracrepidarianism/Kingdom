@@ -6,6 +6,8 @@ import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class KickCommand extends SubCommand {
     @Override
     public String getPermission() {
@@ -30,33 +32,33 @@ public class KickCommand extends SubCommand {
     @Override
     public void perform(final Player player, final String[] args) {
         if (args.length != 2) {
-            player.sendMessage(KDMessageUtil.getMessage(getUsage()));
+            player.sendMessage(getUsage());
             return;
         }
 
         final KDPlayer officer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (officer.getKingdom() == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.noKingdom");
             return;
         }
 
         if (!officer.getPermissionLevel().hasPermission(PermissionLevelEnum.OFFICER)) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.permissionLevel"));
+            KDMessageUtil.sendMessage(player, "error.global.permissionLevel");
             return;
         }
 
         final KDPlayer target = database.getPlayerRepository().getPlayerByName(args[1]);
         if (target.getKingdom() != officer.getKingdom()) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.notInKingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.notInKingdom");
             return;
         }
 
         if (target.getPermissionLevel().hasPermission(officer.getPermissionLevel())) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.insufficientPermissionLevel"));
+            KDMessageUtil.sendMessage(player, "error.global.permissionLevel");
             return;
         }
 
         database.getKingdomRepository().kickPlayer(target);
-        player.sendMessage(KDMessageUtil.getMessage("success.kingdom.kick"));
+        KDMessageUtil.sendMessage(player, "success.kick", Map.entry("player", target.getName()));
     }
 }

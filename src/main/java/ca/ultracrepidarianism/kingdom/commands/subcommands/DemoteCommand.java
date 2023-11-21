@@ -1,14 +1,13 @@
 package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
-import ca.ultracrepidarianism.kingdom.commands.messages.ErrorMessageEnum;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
-import ca.ultracrepidarianism.kingdom.commands.messages.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class DemoteCommand extends SubCommand {
     @Override
@@ -33,19 +32,19 @@ public class DemoteCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
+        if (args.length != 2) {
+            player.sendMessage(getUsage());
+            return;
+        }
+
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer.getKingdom() == null) {
-            player.sendMessage(KDMessageUtil.getMessage(ErrorMessageEnum.KINGDOM_NO_KINGDOM));
+            KDMessageUtil.sendMessage(player, "error.global.noKingdom");
             return;
         }
 
         if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OWNER)) {
-            player.sendMessage(KDMessageUtil.getMessage(ErrorMessageEnum.KINGDOM_PERMISSION_LEVEL));
-            return;
-        }
-
-        if (args.length != 2) {
-            player.sendMessage(KDMessageUtil.getMessage(getUsage()));
+            KDMessageUtil.sendMessage(player, "error.global.permissionLevel");
             return;
         }
 
@@ -58,25 +57,31 @@ public class DemoteCommand extends SubCommand {
         }
 
         if (targetKdPlayer == null) {
-            player.sendMessage(KDMessageUtil.getMessage(ErrorMessageEnum.KINGDOM_PLAYER_DOESNT_EXIST));
+            KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
             return;
         }
 
         if (targetKdPlayer.getKingdom() == null || targetKdPlayer.getKingdom().getId() != kdPlayer.getKingdom().getId()) {
-            player.sendMessage(KDMessageUtil.getMessage(ErrorMessageEnum.KINGDOM_WRONG_KINGDOM));
+            KDMessageUtil.sendMessage(player, "error.global.notInKingdom");
             return;
         }
 
         final PermissionLevelEnum currentPermissionLevel = targetKdPlayer.getPermissionLevel();
-        if (currentPermissionLevel.getLowerPermissionLevel() == null || currentPermissionLevel.hasPermission(kdPlayer.getPermissionLevel())) {
-            player.sendMessage(KDMessageUtil.getMessage(ErrorMessageEnum.KINGDOM_CANT_DEMOTE));
+        final PermissionLevelEnum previousPermissionLevel = currentPermissionLevel.getPreviousPermissionLevel();
+        // cannot demote a player if it's already at the lowest rank
+        if (previousPermissionLevel == null) {
+            KDMessageUtil.sendMessage(player, "error.demote.lowest");
+        }
+        // Cannot demote someone if has the same rank as you or higher
+        if (currentPermissionLevel.hasPermission(kdPlayer.getPermissionLevel())) {
+            KDMessageUtil.sendMessage(player, "error.demote.cantDemote");
             return;
         }
 
-        database.getPlayerRepository().updatePermissionLevelForPlayer(targetKdPlayer, currentPermissionLevel.getLowerPermissionLevel());
+        database.getPlayerRepository().updatePermissionLevelForPlayer(targetKdPlayer, previousPermissionLevel);
         if (targetPlayer != null) {
-            targetPlayer.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_DEMOTE_TARGET));
+            KDMessageUtil.sendMessage(player, "success.demote.target", Map.entry("rank", previousPermissionLevel.name()));
         }
-        player.sendMessage(KDMessageUtil.getMessage(SuccessMessageEnum.KINGDOM_DEMOTE_SENDER));
+        KDMessageUtil.sendMessage(player, "success.demote.sender");
     }
 }

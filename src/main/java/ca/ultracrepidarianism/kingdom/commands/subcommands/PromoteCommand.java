@@ -5,7 +5,6 @@ import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class PromoteCommand extends SubCommand {
@@ -31,19 +30,19 @@ public class PromoteCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
+        if (args.length != 2) {
+            player.sendMessage(getUsage());
+            return;
+        }
+
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer.getKingdom() == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.nokingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.noKingdom");
             return;
         }
 
         if (!kdPlayer.getPermissionLevel().hasPermission(PermissionLevelEnum.OWNER)) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.permissionLevel"));
-            return;
-        }
-
-        if (args.length != 2) {
-            player.sendMessage(KDMessageUtil.getMessage(getUsage()));
+            KDMessageUtil.sendMessage(player, "error.global.ownerOnly");
             return;
         }
 
@@ -56,26 +55,36 @@ public class PromoteCommand extends SubCommand {
         }
 
         if (targetKdPlayer == null) {
-            player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist.");
+            KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
+            return;
+        }
+
+        if (targetKdPlayer.getId().equals(kdPlayer.getId())) {
+            KDMessageUtil.sendMessage(player, "error.promote.self");
             return;
         }
 
         if (targetKdPlayer.getKingdom().getId() != kdPlayer.getKingdom().getId()) {
-            player.sendMessage(KDMessageUtil.getMessage("error.promote.notInKingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.notInKingdom");
             return;
         }
-
 
         final PermissionLevelEnum currentPermissionLevel = targetKdPlayer.getPermissionLevel();
-        if (currentPermissionLevel.getHigherPermissionLevel() == kdPlayer.getPermissionLevel()) {
-            player.sendMessage(KDMessageUtil.getMessage("error.promote.cantGoHigher"));
+        final PermissionLevelEnum nextPermissionLevel = currentPermissionLevel.getNextPermissionLevel();
+        if (currentPermissionLevel == kdPlayer.getPermissionLevel()) {
+            KDMessageUtil.sendMessage(player, "error.promote.cantPromote");
             return;
         }
 
-        database.getPlayerRepository().updatePermissionLevelForPlayer(targetKdPlayer, currentPermissionLevel.getHigherPermissionLevel());
-        if (targetPlayer != null) {
-            targetPlayer.sendMessage(KDMessageUtil.getMessage("success.promote.target"));
+        if (nextPermissionLevel == null) {
+            KDMessageUtil.sendMessage(player, "error.promote.cantGoHigher");
+            return;
         }
-        player.sendMessage(KDMessageUtil.getMessage("success.promote.sender"));
+
+        database.getPlayerRepository().updatePermissionLevelForPlayer(targetKdPlayer, nextPermissionLevel);
+        if (targetPlayer != null) {
+            KDMessageUtil.sendMessage(targetPlayer, "success.promote.target");
+        }
+        KDMessageUtil.sendMessage(player, "success.promote.sender");
     }
 }

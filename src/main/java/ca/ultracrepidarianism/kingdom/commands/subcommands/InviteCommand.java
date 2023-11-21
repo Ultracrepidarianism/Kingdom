@@ -2,16 +2,16 @@ package ca.ultracrepidarianism.kingdom.commands.subcommands;
 
 import ca.ultracrepidarianism.kingdom.commands.SubCommand;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
-import ca.ultracrepidarianism.kingdom.commands.messages.SuccessMessageEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class InviteCommand extends SubCommand {
     @Override
     public String getPermission() {
-        return "kd.invite";
+        return "kingdom.invite";
     }
 
     @Override
@@ -38,26 +38,34 @@ public class InviteCommand extends SubCommand {
 
         final KDPlayer inviter = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (inviter.getKingdom() == null) {
-            player.sendMessage(KDMessageUtil.getMessage("error.global.noKingdom"));
+            KDMessageUtil.sendMessage(player, "error.global.noKingdom");
             return;
         }
 
         final Player invitee = Bukkit.getPlayer(args[1]);
         if (invitee == null) {
-            player.sendMessage(ChatColor.RED + "The player " + args[1] + " doesn't exist or isn't connected");
+            KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
             return;
         }
 
         final KDPlayer inviteePlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(invitee);
         if (inviteePlayer.getKingdom() != null && inviteePlayer.getKingdom().getId() == inviteePlayer.getKingdom().getId()) {
-            player.sendMessage("This player is already in your kingdom.");
+            KDMessageUtil.sendMessage(player, "error.invite.alreadyInYourKingdom", Map.entry("player", inviteePlayer.getName()));
             return;
         }
 
         database.getPlayerRepository().addPendingInvite(inviter, inviteePlayer);
-        player.sendMessage(SuccessMessageEnum.KINGDOM_INVITE_SENDER);
-        invitee.sendMessage(SuccessMessageEnum.KINGDOM_INVITE_TARGET);
-        //invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the kingdom " + inviter.getKingdom().getName() + ". Please do" + ChatColor.YELLOW + " /kd join" + ChatColor.GREEN + " to join their team.");
+        KDMessageUtil.sendMessage(
+                player,
+                "success.invite.sender",
+                Map.entry("player", invitee.getDisplayName())
+        );
         //player.sendMessage(ChatColor.GREEN + "An invitation to join your kingdom has been sent to " + invitee.getDisplayName() + ".");
+        KDMessageUtil.sendMessage(
+                invitee,
+                "success.invite.target",
+                Map.entry("kingdom", inviter.getKingdom().getName())
+        );
+        //invitee.sendMessage(ChatColor.GREEN + "You have been invited to join the kingdom " + inviter.getKingdom().getName() + ". Please do" + ChatColor.YELLOW + " /kd join" + ChatColor.GREEN + " to join their team.");
     }
 }
