@@ -10,6 +10,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 public class UnclaimCommand extends SubCommand {
@@ -98,38 +100,37 @@ public class UnclaimCommand extends SubCommand {
     }
 
     private boolean canUnclaim(KDChunk chunk, Set<KDChunk> allChunks, Set<KDChunk> chunksToReach, Set<KDChunk> chunksReached) {
-        return true; // temp
-//        if (chunk == null) {
-//            return false;
-//        }
-//
-//        chunksReached.add(chunk);
-//        chunksToReach.remove(chunk);
-//
-//        if (chunksToReach.size() == 0) {
-//            return true;
-//        }
-//
-//        final KDChunk N = new KDChunk(chunk.getWorld(), chunk.getX(), chunk.getZ() - 1);
-//        final KDChunk S = new KDChunk(chunk.getWorld(), chunk.getX(), chunk.getZ() + 1);
-//        final KDChunk E = new KDChunk(chunk.getWorld(), chunk.getX() + 1, chunk.getZ());
-//        final KDChunk W = new KDChunk(chunk.getWorld(), chunk.getX() - 1, chunk.getZ());
-//
-//        final Queue<KDChunk> queuedChunk = new LinkedList<>();
-//        if (allChunks.contains(N) && !chunksReached.contains(N)) {
-//            queuedChunk.add(N);
-//        }
-//        if (allChunks.contains(S) && !chunksReached.contains(S)) {
-//            queuedChunk.add(S);
-//        }
-//        if (allChunks.contains(E) && !chunksReached.contains(E)) {
-//            queuedChunk.add(E);
-//        }
-//        if (allChunks.contains(W) && !chunksReached.contains(W)) {
-//            queuedChunk.add(W);
-//        }
-//
-//        return canUnclaim(queuedChunk.poll(), allChunks, chunksToReach, chunksReached);
+        if (chunk == null) {
+            return false;
+        }
+
+        chunksReached.add(chunk);
+        chunksToReach.remove(chunk);
+
+        if (chunksToReach.size() == 0) {
+            return true;
+        }
+
+        final KDChunk N = new KDChunk(chunk.getWorld(), chunk.getX(), chunk.getZ() - 1);
+        final KDChunk S = new KDChunk(chunk.getWorld(), chunk.getX(), chunk.getZ() + 1);
+        final KDChunk E = new KDChunk(chunk.getWorld(), chunk.getX() + 1, chunk.getZ());
+        final KDChunk W = new KDChunk(chunk.getWorld(), chunk.getX() - 1, chunk.getZ());
+
+        final Queue<KDChunk> queuedChunk = new LinkedList<>();
+        if (allChunks.contains(N) && !chunksReached.contains(N)) {
+            queuedChunk.add(N);
+        }
+        if (allChunks.contains(S) && !chunksReached.contains(S)) {
+            queuedChunk.add(S);
+        }
+        if (allChunks.contains(E) && !chunksReached.contains(E)) {
+            queuedChunk.add(E);
+        }
+        if (allChunks.contains(W) && !chunksReached.contains(W)) {
+            queuedChunk.add(W);
+        }
+
+        return canUnclaim(queuedChunk.poll(), allChunks, chunksToReach, chunksReached);
 
     }
 }

@@ -6,32 +6,9 @@ The future of vanilla RPG
 ### Roadmap (In order of priority)
 
 ## [V1]
-- Complete the Kingdom group system
-  - [x] Create
-  - [x] Leave
-  - [x] Disband
-  - [x] Invite
-  - [x] Join
-  - [x] Promote
-  - [x] Demote
-  - [x] Get information about the state of the kingdom(info)
-- Complete the claim system
-  - [x] Claim
-  - [x] Unclaim
-  - [x] Anti-Grief measures on claims
-- Make the messages
-  - [x] Claim
-  - [x] Create
-  - [x] Demote
-  - [x] Disband
-  - [x] Info
-  - [x] Invite
-  - [x] Join
-  - [x] Kick
-  - [x] Leave
-  - [x] Promote
-  - [x] Revoke
-  - [x] Unclaim
+- ~~Complete the Kingdom group system~~
+- ~~Complete the claim system~~
+- ~~Make the messages~~
 - Better global handling of commands
   - [ ] Lack of permissions
   - [ ] Invalid arguments
