@@ -3,20 +3,20 @@ package ca.ultracrepidarianism.kingdom.database.connections;
 import ca.ultracrepidarianism.kingdom.database.connections.enums.ConnectionType;
 
 public abstract class ConnectionInfo {
-    private final ConnectionType connectionType;
     protected final String address;
     protected final String port;
     protected final String database;
+    private final ConnectionType connectionType;
     private final String username;
     private final String password;
 
     ConnectionInfo(
-        final ConnectionType connectionType,
-        final String address,
-        final String port,
-        final String database,
-        final String username,
-        final String password
+            final ConnectionType connectionType,
+            final String address,
+            final String port,
+            final String database,
+            final String username,
+            final String password
     ) {
         this.connectionType = connectionType;
         this.address = address;
@@ -30,11 +30,11 @@ public abstract class ConnectionInfo {
         return connectionType;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 

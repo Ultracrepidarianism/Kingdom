@@ -8,12 +8,12 @@ public class MySqlInfo extends ConnectionInfo {
 
     public MySqlInfo() {
         super(
-            ConnectionType.MYSQL,
-            JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.ip"),
-            JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.port"),
-            JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.database"),
-            JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.username"),
-            JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.password")
+                ConnectionType.MYSQL,
+                JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.ip"),
+                JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.port"),
+                JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.database"),
+                JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.username"),
+                JavaPlugin.getPlugin(Kingdom.class).getConfig().getString("DBserver.password")
         );
     }
 

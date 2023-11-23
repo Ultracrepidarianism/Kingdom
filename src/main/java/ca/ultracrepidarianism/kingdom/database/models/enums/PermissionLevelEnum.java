@@ -11,6 +11,15 @@ public enum PermissionLevelEnum {
         this.level = level;
     }
 
+    public static PermissionLevelEnum fromLevel(final int level) {
+        for (final PermissionLevelEnum permission : PermissionLevelEnum.values()) {
+            if (permission.getLevel() == level) {
+                return permission;
+            }
+        }
+        return null;
+    }
+
     public PermissionLevelEnum getNextPermissionLevel() {
         return fromLevel(this.level);
     }
@@ -21,15 +30,6 @@ public enum PermissionLevelEnum {
 
     public int getLevel() {
         return level;
-    }
-
-    public static PermissionLevelEnum fromLevel(final int level) {
-        for (final PermissionLevelEnum permission : PermissionLevelEnum.values()) {
-            if (permission.getLevel() == level) {
-                return permission;
-            }
-        }
-        return null;
     }
 
     public boolean hasPermission(final PermissionLevelEnum permissionLevel) {

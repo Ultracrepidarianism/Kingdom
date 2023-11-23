@@ -44,11 +44,11 @@ public class ClaimRepository extends Repository {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
 
         final TypedQuery<KDChunk> typedQuery = entityManager.createQuery("SELECT chunk FROM KDClaim where kingdom.id = :kingdomId", KDChunk.class);
-        typedQuery.setParameter("kingdomId",kingdom.getId());
+        typedQuery.setParameter("kingdomId", kingdom.getId());
         return typedQuery.getResultStream().collect(Collectors.toSet());
     }
 
-    public void removeClaim(final KDClaim claim){
+    public void removeClaim(final KDClaim claim) {
         final EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 

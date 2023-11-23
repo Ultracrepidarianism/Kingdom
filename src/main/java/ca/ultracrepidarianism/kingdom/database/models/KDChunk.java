@@ -21,6 +21,10 @@ public class KDChunk {
         this.z = z;
     }
 
+    public static KDChunk parse(final org.bukkit.Chunk chunk) {
+        return new KDChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+    }
+
     public String getWorld() {
         return world;
     }
@@ -31,10 +35,6 @@ public class KDChunk {
 
     public int getZ() {
         return z;
-    }
-
-    public static KDChunk parse(final org.bukkit.Chunk chunk) {
-        return new KDChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
     @Override
