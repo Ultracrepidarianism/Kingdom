@@ -55,7 +55,7 @@ public class InfoCommand extends SubCommand {
 
         final String kingdomInfo = "---------- [" + ChatColor.GOLD + kdKingdom.getName() + ChatColor.RESET + "] ----------\n" +
                 ChatColor.RESET + KDMessageUtil.getMessage("message.info.owner") + ": " + ChatColor.RESET + kdKingdom.getOwner().getName() + "\n" +
-                ChatColor.RESET + KDMessageUtil.getMessage("message.info.officers") + " (" + officers.size() + "):" + ChatColor.RESET + processedOfficers + "\n" +
+                ChatColor.RESET + KDMessageUtil.getMessage("message.info.officers") + " (" + officers.size() + "): " + ChatColor.RESET + processedOfficers + "\n" +
                 ChatColor.RESET + KDMessageUtil.getMessage("message.info.members") + " (" + members.size() + "): " + ChatColor.RESET + processedMembers;
 
         KDMessageUtil.sendRawMessage(player, kingdomInfo);
@@ -71,7 +71,7 @@ public class InfoCommand extends SubCommand {
 
     private String getProcessedMembersString(List<KDPlayer> members) {
         if (CollectionUtils.isEmpty(members)) {
-            return StringUtils.EMPTY;
+            return ChatColor.RED + KDMessageUtil.getMessage("message.info.noMember") + ChatColor.RESET;
         }
 
         return StringUtils.joinWith(", ", members);

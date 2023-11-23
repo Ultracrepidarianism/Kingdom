@@ -1,19 +1,16 @@
 package ca.ultracrepidarianism.kingdom.commands;
 
 import ca.ultracrepidarianism.kingdom.commands.subcommands.*;
-import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
-import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CommandManager implements TabExecutor {
 
@@ -36,14 +33,17 @@ public class CommandManager implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         if (commandSender instanceof Player player) {
             if (command.getLabel().equalsIgnoreCase("kingdom")) {
                 if (args.length > 0) {
-                    final SubCommand subCommand = subCommands.stream().filter(x -> x.getLabel().equalsIgnoreCase(args[0])).findFirst().orElse(null);
+                    final String commandName = args[0];
+                    final String[] filteredArgs = ArrayUtils.remove(args, 0);
+
+                    final SubCommand subCommand = subCommands.stream().filter(x -> x.getLabel().equalsIgnoreCase(commandName)).findFirst().orElse(null);
                     if (subCommand != null) {
 //                        if (player.hasPermission(subCommand.getPermission())) {
-                            subCommand.perform(player, args);
+                        subCommand.perform(player, filteredArgs);
 //                        } else {
 //                            player.sendMessage(ChatColor.RED + KDMessageUtil.getMessage("error.global.permissionLevel"));
 ////                            player.sendMessage(ChatColor.RED + "You do not have the permission to use this command.");
@@ -59,7 +59,7 @@ public class CommandManager implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String prefix, String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String prefix, String[] strings) {
         if (StringUtils.equalsAnyIgnoreCase(prefix, "kd", "kingdom")) {
             if (strings.length == 1) {
                 return subCommands

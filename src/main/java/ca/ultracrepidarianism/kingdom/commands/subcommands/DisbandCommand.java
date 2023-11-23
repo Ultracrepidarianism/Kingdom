@@ -21,7 +21,7 @@ public class DisbandCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return null;
+        return "/kd disband";
     }
 
     @Override

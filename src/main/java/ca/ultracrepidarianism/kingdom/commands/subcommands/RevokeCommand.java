@@ -34,7 +34,7 @@ public class RevokeCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -45,7 +45,7 @@ public class RevokeCommand extends SubCommand {
             return;
         }
 
-        final Player targetPlayer = Bukkit.getPlayer(args[1]);
+        final Player targetPlayer = Bukkit.getPlayer(args[0]);
         if (targetPlayer == null) {
             KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
             return;

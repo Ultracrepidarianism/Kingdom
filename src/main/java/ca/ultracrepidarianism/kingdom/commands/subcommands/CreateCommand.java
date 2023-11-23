@@ -30,7 +30,7 @@ public class CreateCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -38,9 +38,11 @@ public class CreateCommand extends SubCommand {
         final KDPlayer kdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(player);
         if (kdPlayer.getKingdom() != null) {
             KDMessageUtil.sendMessage(player, "error.global.alreadyInKingdom");
-        } else {
-            database.getKingdomRepository().createKingdom(kdPlayer, args[1]);
-            KDMessageUtil.sendMessage(player, "success.create", Map.entry("kingdom", args[1]));
+            return;
         }
+
+        final String kingdomName = args[0];
+        database.getKingdomRepository().createKingdom(kdPlayer, kingdomName);
+        KDMessageUtil.sendMessage(player, "success.create", Map.entry("kingdom", kingdomName));
     }
 }

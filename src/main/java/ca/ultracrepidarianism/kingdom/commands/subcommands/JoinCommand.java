@@ -5,7 +5,8 @@ import ca.ultracrepidarianism.kingdom.database.models.KDInvite;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.repositories.PlayerRepository;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
-import com.mysql.cj.util.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,7 @@ public class JoinCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/kd join";
+        return "/kd join (kingdomName)";
     }
 
     @Override
@@ -36,7 +37,7 @@ public class JoinCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length == 0 || args.length > 2) {
+        if (args.length > 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -55,22 +56,15 @@ public class JoinCommand extends SubCommand {
             return;
         }
 
-        final KDInvite invite;
-        if (args.length == 1) {
-            invite = kdInvites.get(kdInvites.size() - 1);
-        } else {
-            final String kingdomName = args[1];
-            invite = kdInvites.stream()
-                    .filter(x -> StringUtils.indexOfIgnoreCase(x.getKingdom().getName(), kingdomName) >= 0)
-                    .findFirst().orElse(null);
-            if (invite == null) {
-                KDMessageUtil.sendMessage(
-                        player,
-                        "error.join.notInvitedToKingdom",
-                        Map.entry("kingdom", kingdomName)
-                );
-                return;
-            }
+        final String kdName = ArrayUtils.get(args, 0, null);
+        final KDInvite invite = getInviteFromArgs(kdInvites, kdName);
+        if (invite == null) {
+            KDMessageUtil.sendMessage(
+                    player,
+                    "error.join.notInvitedToKingdom",
+                    Map.entry("kingdom", kdName)
+            );
+            return;
         }
 
         final KDPlayer invitee = invite.getInvitee();
@@ -85,5 +79,23 @@ public class JoinCommand extends SubCommand {
                 KDMessageUtil.sendRawMessage(member, message);
             }
         }
+    }
+
+    /**
+     * Get invite for the kdName or returns the first invite in the invites list.
+     * When the kdInvites is empty and kdName is null, it'll return null
+     *
+     * @param kdInvites
+     * @param kdName
+     * @return The kdInvite or null
+     */
+    private KDInvite getInviteFromArgs(final List<KDInvite> kdInvites, final String kdName) {
+        if (StringUtils.isNotEmpty(kdName)) {
+            return kdInvites.stream()
+                    .filter(x -> StringUtils.indexOfIgnoreCase(x.getKingdom().getName(), kdName) >= 0)
+                    .findFirst().orElse(null);
+        }
+
+        return kdInvites.get(kdInvites.size() - 1);
     }
 }

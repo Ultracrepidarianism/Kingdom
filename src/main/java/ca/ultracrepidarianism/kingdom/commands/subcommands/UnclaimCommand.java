@@ -6,6 +6,7 @@ import ca.ultracrepidarianism.kingdom.database.models.KDClaim;
 import ca.ultracrepidarianism.kingdom.database.models.KDPlayer;
 import ca.ultracrepidarianism.kingdom.database.models.enums.PermissionLevelEnum;
 import ca.ultracrepidarianism.kingdom.utils.KDMessageUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.entity.Player;
 
@@ -65,6 +66,19 @@ public class UnclaimCommand extends SubCommand {
         }
 
         final Set<KDChunk> chunks = database.getClaimRepository().getChunksForKingdom(kdPlayer.getKingdom());
+        final Set<KDChunk> chunksToReach = getChunksToReach(kdClaim, chunks);
+
+        chunks.remove(kdClaim.getChunk());
+        final KDChunk firstChunk = chunksToReach.stream().findFirst().orElse(null);
+        if (firstChunk == null || canUnclaim(firstChunk, chunks, chunksToReach, new HashSet<>())) {
+            database.getClaimRepository().removeClaim(kdClaim);
+            KDMessageUtil.sendMessage(player, "success.unclaim");
+            return;
+        }
+        KDMessageUtil.sendMessage(player, "error.unclaim.cannotUnclaim");
+    }
+
+    private Set<KDChunk> getChunksToReach(KDClaim kdClaim, Set<KDChunk> chunks) {
         final Set<KDChunk> chunksToReach = new HashSet<>();
         final KDChunk kdChunk = kdClaim.getChunk();
 
@@ -88,15 +102,7 @@ public class UnclaimCommand extends SubCommand {
             chunksToReach.add(temp);
         }
 
-
-        chunks.remove(kdClaim.getChunk());
-        final KDChunk firstChunk = chunksToReach.stream().findFirst().orElse(null);
-        if (firstChunk == null || canUnclaim(firstChunk, chunks, chunksToReach, new HashSet<>())) {
-            database.getClaimRepository().removeClaim(kdClaim);
-            KDMessageUtil.sendMessage(player, "success.unclaim");
-            return;
-        }
-        KDMessageUtil.sendMessage(player, "error.unclaim.cannotUnclaim");
+        return chunksToReach;
     }
 
     private boolean canUnclaim(KDChunk chunk, Set<KDChunk> allChunks, Set<KDChunk> chunksToReach, Set<KDChunk> chunksReached) {
@@ -107,7 +113,7 @@ public class UnclaimCommand extends SubCommand {
         chunksReached.add(chunk);
         chunksToReach.remove(chunk);
 
-        if (chunksToReach.size() == 0) {
+        if (CollectionUtils.isEmpty(chunksToReach)) {
             return true;
         }
 

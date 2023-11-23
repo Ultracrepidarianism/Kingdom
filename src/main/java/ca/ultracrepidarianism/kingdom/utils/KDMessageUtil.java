@@ -29,7 +29,6 @@ public class KDMessageUtil {
 
     public static String getMessage(final String section) {
         final String message = getMessageFromSection(section);
-        System.out.println(message);
         if (message != null) {
             return message.replaceAll("&", "§");
         }

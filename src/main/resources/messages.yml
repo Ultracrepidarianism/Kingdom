@@ -53,3 +53,4 @@ message:
     officers: "Officers"
     members: "Members"
     noOfficer: "No officer"
+    noMember: "No member"

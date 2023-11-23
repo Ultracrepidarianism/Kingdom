@@ -31,7 +31,7 @@ public class InviteCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -42,7 +42,7 @@ public class InviteCommand extends SubCommand {
             return;
         }
 
-        final Player invitee = Bukkit.getPlayer(args[1]);
+        final Player invitee = Bukkit.getPlayer(args[0]);
         if (invitee == null) {
             KDMessageUtil.sendMessage(player, "error.global.playerDoesntExist");
             return;

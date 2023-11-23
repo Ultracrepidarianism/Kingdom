@@ -20,7 +20,7 @@ public class PromoteCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/kd promote <user>";
+        return "/kd promote <playerName>";
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PromoteCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -46,10 +46,11 @@ public class PromoteCommand extends SubCommand {
             return;
         }
 
-        final Player targetPlayer = Bukkit.getPlayer(args[1]);
+        final String userName = args[0];
+        final Player targetPlayer = Bukkit.getPlayer(userName);
         final KDPlayer targetKdPlayer;
         if (targetPlayer == null) {
-            targetKdPlayer = database.getPlayerRepository().getPlayerByName(args[1]);
+            targetKdPlayer = database.getPlayerRepository().getPlayerByName(userName);
         } else {
             targetKdPlayer = database.getPlayerRepository().getPlayerFromBukkitPlayer(targetPlayer);
         }

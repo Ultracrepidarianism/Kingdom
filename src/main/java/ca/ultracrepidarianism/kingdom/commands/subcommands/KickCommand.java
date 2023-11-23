@@ -21,7 +21,7 @@ public class KickCommand extends SubCommand {
 
     @Override
     public String getUsage() {
-        return "/kd kick";
+        return "/kd kick <playerName>";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class KickCommand extends SubCommand {
 
     @Override
     public void perform(final Player player, final String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             player.sendMessage(getUsage());
             return;
         }
@@ -47,7 +47,7 @@ public class KickCommand extends SubCommand {
             return;
         }
 
-        final KDPlayer target = database.getPlayerRepository().getPlayerByName(args[1]);
+        final KDPlayer target = database.getPlayerRepository().getPlayerByName(args[0]);
         if (target.getKingdom() != officer.getKingdom()) {
             KDMessageUtil.sendMessage(player, "error.global.notInKingdom");
             return;
