@@ -25,12 +25,31 @@ public class HibernateUtil {
     }
 
     /**
+     * This method is used to get the SessionFactory object. If the SessionFactory object has not been instantiated yet, it will be instantiated.
+     *
+     * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
+     */
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
+            sessionFactory = buildSessionFactory();
+        }
+        return sessionFactory;
+    }
+
+    public static EntityManager getEntityManager() {
+        if (entityManager == null || !entityManager.isOpen()) {
+            entityManager = getSessionFactory().createEntityManager();
+        }
+        return entityManager;
+    }
+
+    /**
      * This method is used to build and configure a Hibernate SessionFactory.
      * A SessionFactory in Hibernate is used to create Sessions, which provide an interface between the application and the database.
      *
      * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
      */
-    public static SessionFactory buildSessionFactory() {
+    private static SessionFactory buildSessionFactory() {
         Thread.currentThread().setContextClassLoader(Kingdom.class.getClassLoader());
         final Configuration configuration = new Configuration();
 
@@ -53,27 +72,8 @@ public class HibernateUtil {
         settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
         settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
-        settings.put(AvailableSettings.AUTOCOMMIT, "true");
+        settings.put(AvailableSettings.AUTOCOMMIT, "false");
         return settings;
-    }
-
-    /**
-     * This method is used to get the SessionFactory object. If the SessionFactory object has not been instantiated yet, it will be instantiated.
-     *
-     * @return SessionFactory This returns a SessionFactory object that is fully configured to interact with the defined database.
-     */
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null || sessionFactory.isClosed()) {
-            sessionFactory = buildSessionFactory();
-        }
-        return sessionFactory;
-    }
-
-    public static EntityManager getEntityManager() {
-        if (entityManager == null) {
-            entityManager = getSessionFactory().createEntityManager();
-        }
-        return entityManager;
     }
 
 }

@@ -10,14 +10,14 @@ public class KDPlayer {
     @Id
     private String id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column
     @Enumerated(EnumType.STRING)
     private PermissionLevelEnum permissionLevel;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "kingdomId", foreignKey = @ForeignKey(name = "FK_KINGDOM_PLAYER"))
     private KDKingdom kingdom;
 

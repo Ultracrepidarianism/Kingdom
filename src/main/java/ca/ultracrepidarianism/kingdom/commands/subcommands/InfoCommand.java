@@ -47,8 +47,8 @@ public class InfoCommand extends SubCommand {
         }
 
         final KDKingdom kdKingdom = kdPlayer.getKingdom();
-        final List<KDPlayer> officers = database.getKingdomRepository().findOfficersForKingdom(kdKingdom);
-        final List<KDPlayer> members = database.getKingdomRepository().findMembersForKingdom(kdKingdom);
+        final List<KDPlayer> officers = kdKingdom.getOfficers();
+        final List<KDPlayer> members = kdKingdom.getMembers();
 
         final String processedOfficers = getProcessedOfficersString(officers);
         final String processedMembers = getProcessedMembersString(members);
@@ -66,7 +66,7 @@ public class InfoCommand extends SubCommand {
             return ChatColor.RED + KDMessageUtil.getMessage("message.info.noOfficer") + ChatColor.RESET;
         }
 
-        return StringUtils.joinWith(", ", officers);
+        return StringUtils.joinWith(", ", officers.stream().map(KDPlayer::getName).toArray());
     }
 
     private String getProcessedMembersString(List<KDPlayer> members) {
@@ -74,6 +74,6 @@ public class InfoCommand extends SubCommand {
             return ChatColor.RED + KDMessageUtil.getMessage("message.info.noMember") + ChatColor.RESET;
         }
 
-        return StringUtils.joinWith(", ", members);
+        return StringUtils.joinWith(", ", members.stream().map(KDPlayer::getName).toArray());
     }
 }

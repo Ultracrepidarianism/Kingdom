@@ -3,22 +3,18 @@ package ca.ultracrepidarianism.kingdom.database;
 import ca.ultracrepidarianism.kingdom.database.repositories.ClaimRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.KingdomRepository;
 import ca.ultracrepidarianism.kingdom.database.repositories.PlayerRepository;
-import ca.ultracrepidarianism.kingdom.utils.HibernateUtil;
 
 public class DataFacade {
     private static DataFacade instance;
-
     private final ClaimRepository claimRepository;
     private final KingdomRepository kingdomRepository;
     private final PlayerRepository playerRepository;
 
     private DataFacade() {
-        HibernateUtil.buildSessionFactory();
         DataFacade.instance = this;
         claimRepository = new ClaimRepository();
         kingdomRepository = new KingdomRepository();
         playerRepository = new PlayerRepository();
-
     }
 
     public static DataFacade getInstance() {

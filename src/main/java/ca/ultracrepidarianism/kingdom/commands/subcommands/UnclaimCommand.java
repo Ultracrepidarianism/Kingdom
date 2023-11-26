@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UnclaimCommand extends SubCommand {
     @Override
@@ -65,10 +66,13 @@ public class UnclaimCommand extends SubCommand {
             return;
         }
 
-        final Set<KDChunk> chunks = database.getClaimRepository().getChunksForKingdom(kdPlayer.getKingdom());
+        final Set<KDChunk> chunks = kdPlayer.getKingdom().getClaims()
+                .stream()
+                .map(KDClaim::getChunk)
+                .filter(x -> !x.equals(kdClaim.getChunk()))
+                .collect(Collectors.toUnmodifiableSet());
         final Set<KDChunk> chunksToReach = getChunksToReach(kdClaim, chunks);
 
-        chunks.remove(kdClaim.getChunk());
         final KDChunk firstChunk = chunksToReach.stream().findFirst().orElse(null);
         if (firstChunk == null || canUnclaim(firstChunk, chunks, chunksToReach, new HashSet<>())) {
             database.getClaimRepository().removeClaim(kdClaim);
@@ -105,7 +109,7 @@ public class UnclaimCommand extends SubCommand {
         return chunksToReach;
     }
 
-    private boolean canUnclaim(KDChunk chunk, Set<KDChunk> allChunks, Set<KDChunk> chunksToReach, Set<KDChunk> chunksReached) {
+    private boolean canUnclaim(final KDChunk chunk, final Set<KDChunk> allChunks, final Set<KDChunk> chunksToReach, final Set<KDChunk> chunksReached) {
         if (chunk == null) {
             return false;
         }
